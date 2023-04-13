@@ -8,7 +8,7 @@ import (
 )
 
 type AstCreatorListener struct {
-	AstStack []Ast
+	AstStack []Ast 
 	*parser.BasetigerVisitor
 }
 
@@ -27,7 +27,12 @@ func (ast *AstCreatorListener) VisitErrorNode(node antlr.ErrorNode) {
 
 func (s *AstCreatorListener) EnterEveryRule(ctx antlr.ParserRuleContext) {
 	switch c := ctx.(type) {
-	// TODO: FILL
+	case parser.IFactorContext:
+		s.FactorEnter(c)
+	case parser.IExprContext:
+		s.ExprEnter(c)
+	case parser.ITermContext:
+		s.TermEnter(c)
 	default:
 		break
 	}
@@ -35,13 +40,18 @@ func (s *AstCreatorListener) EnterEveryRule(ctx antlr.ParserRuleContext) {
 
 func (s *AstCreatorListener) ExitEveryRule(ctx antlr.ParserRuleContext) {
 	switch c := ctx.(type) {
-	// TODO: FILL
+	case parser.IFactorContext:
+		s.FactorExit(c)
+	case parser.IExprContext:
+		s.ExprExit(c)
+	case parser.ITermContext:
+		s.TermExit(c)
 	default:
 		break
 	}
 }
 
-func (s *AstCreatorListener) DisplayAST() {
+func (s * AstCreatorListener) DisplayAST() {
 	fmt.Printf("\nAST\n")
 	display(s.AstStack[0], "", true)
 }
@@ -60,7 +70,38 @@ func display(a Ast, prefix string, isLast bool) {
 	}
 
 	switch c := a.(type) {
-	// TODO: FILL
+	case *Expr:
+		if (len(c.Right) == 0) {
+			display(c.Left, prefix, true)
+		} else {
+			display(c.Left, prefix, false)
+		}
+
+		for i, r := range c.Right {
+			if i == len(c.Right) - 1 {
+				display(r.Right, prefix, true)
+			} else {
+				display(r.Right, prefix, false)
+			}
+		}
+	case *Term:
+		if (len(c.Right) == 0) {
+			display(c.Left, prefix, true)
+		} else {
+			display(c.Left, prefix, false)
+		}
+
+		for i, r := range c.Right {
+			if i == len(c.Right) - 1 {
+				display(r.Right, prefix, true)
+			} else {
+				display(r.Right, prefix, false)
+			}
+		}
+	case *Factor:
+		if (c.Expr != nil) {
+			display(c.Expr, prefix, true)
+		}
 	default:
 		break
 	}
