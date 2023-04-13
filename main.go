@@ -4,6 +4,7 @@ import (
 	"ogtiger/ast"
 	"ogtiger/logger"
 	"ogtiger/parser"
+	"os"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 )
@@ -61,6 +62,17 @@ func parse(input string) {
 }
 
 func main() {
-	input := "(1 + ((2 * 3))) / 4 * 5"
-	parse(input)
+	// Take filename as input
+	if len(os.Args) < 2 {
+		log.LogErrorf("No input file provided\n")
+		return
+	}
+
+	data, err := os.ReadFile(os.Args[1])
+	if err != nil {
+		log.LogErrorf("Error while reading file: %s\n", err)
+		return
+	}
+
+	parse(string(data))
 }
