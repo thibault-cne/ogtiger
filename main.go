@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"ogtiger/ast"
 	"ogtiger/logger"
 	"ogtiger/parser"
@@ -58,15 +57,10 @@ func parse(input string) {
 	log.Log("Parsing complete")
 	log.Step()
 
-	fmt.Printf("%d\n", len(listener.AstStack))
-	fmt.Printf("%+#v\n", listener.AstStack[0])
-	expr := listener.AstStack[0].(*ast.Expr)
-	term := expr.Left
-	fmt.Printf("%+#v\n", term.Left.Expr)
-	fmt.Printf("%+#v\n", term.Right[0])
+	listener.DisplayAST()
 }
 
 func main() {
-	input := "1 + (2 * 3)"
+	input := "(1 + ((2 * 3))) / 4 * 5"
 	parse(input)
 }

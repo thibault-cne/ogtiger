@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
@@ -11,7 +12,9 @@ type AstCreatorListener struct {
 	*parser.BasetigerVisitor
 }
 
-type Ast interface {}
+type Ast interface {
+	Display() string
+}
 
 // Example
 func (ast *AstCreatorListener) VisitTerminal(node antlr.TerminalNode) {
@@ -43,6 +46,62 @@ func (s *AstCreatorListener) ExitEveryRule(ctx antlr.ParserRuleContext) {
 		s.ExprExit(c)
 	case parser.ITermContext:
 		s.TermExit(c)
+	default:
+		break
+	}
+}
+
+func (s * AstCreatorListener) DisplayAST() {
+	fmt.Printf("\nAST\n")
+	display(s.AstStack[0], "", true)
+}
+
+func display(a Ast, prefix string, isLast bool) {
+	if a == nil {
+		return
+	}
+
+	if isLast {
+		fmt.Printf("%s└───%s\n", prefix, a.Display())
+		prefix += "    "
+	} else {
+		fmt.Printf("%s├───%s\n", prefix, a.Display())
+		prefix += "    "
+	}
+
+	switch c := a.(type) {
+	case *Expr:
+		if (len(c.Right) == 0) {
+			display(c.Left, prefix, true)
+		} else {
+			display(c.Left, prefix, false)
+		}
+
+		for i, r := range c.Right {
+			if i == len(c.Right) - 1 {
+				display(r.Right, prefix, true)
+			} else {
+				display(r.Right, prefix, false)
+			}
+		}
+	case *Term:
+		if (len(c.Right) == 0) {
+			display(c.Left, prefix, true)
+		} else {
+			display(c.Left, prefix, false)
+		}
+
+		for i, r := range c.Right {
+			if i == len(c.Right) - 1 {
+				display(r.Right, prefix, true)
+			} else {
+				display(r.Right, prefix, false)
+			}
+		}
+	case *Factor:
+		if (c.Expr != nil) {
+			display(c.Expr, prefix, true)
+		}
 	default:
 		break
 	}

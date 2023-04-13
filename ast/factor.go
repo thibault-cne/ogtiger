@@ -1,13 +1,22 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"strconv"
 )
 
 type Factor struct {
-	Expr *Expr
+	Expr Ast
 	Digit int
+}
+
+func (f Factor) Display() string {
+	if f.Expr == nil {
+		return fmt.Sprintf(" factor %d", f.Digit)
+	}
+	
+	return " factor"
 }
 
 func  (l *AstCreatorListener) FactorEnter(ctx parser.IFactorContext) {
@@ -31,13 +40,8 @@ func  (l *AstCreatorListener) FactorExit(ctx parser.IFactorContext) {
 		}
 
 		factor.Digit, _ = strconv.Atoi(temp)
-	} else {
-		factor.Expr = l.AstStack[len(l.AstStack)-1].(*Expr)
 
-		// Pop the last element of the stack
-		l.AstStack = l.AstStack[:len(l.AstStack)-1]
+		// Push the new element on the stack
+		l.AstStack = append(l.AstStack, factor)
 	}
-
-	// Push the new element on the stack
-	l.AstStack = append(l.AstStack, factor)
 }
