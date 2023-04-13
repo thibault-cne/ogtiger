@@ -9,7 +9,7 @@ type OperationTantQue struct {
 }
 
 func (e OperationTantQue) Display() string {
-	return " while"
+	return " tantque"
 }
 
 func (l *AstCreatorListener) OperationTantQueEnter(ctx parser.IOperationTantqueContext) {

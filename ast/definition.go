@@ -11,7 +11,7 @@ type Definition struct {
 }
 
 func (e *Definition) Display() string {
-	return " definition"
+	return " letin"
 }
 
 func (l *AstCreatorListener) DefinitionEnter(ctx parser.IDefinitionContext) {

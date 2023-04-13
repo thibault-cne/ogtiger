@@ -10,7 +10,7 @@ type SequenceInstruction struct {
 }
 
 func (e *SequenceInstruction) Display() string {
-	return " addition"
+	return " sequence"
 }
 
 func (l *AstCreatorListener) SequenceInstructionEnter(ctx parser.ISequenceInstructionContext) {

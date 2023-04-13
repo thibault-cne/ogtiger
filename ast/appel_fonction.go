@@ -9,7 +9,7 @@ type AppelFonction struct {
 }
 
 func (a AppelFonction) Display() string {
-	return " appelFonction"
+	return " appel"
 }
 
 func (l *AstCreatorListener) AppelFonctionEnter(ctx parser.AppelFonctionContext) {
