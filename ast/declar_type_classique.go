@@ -20,12 +20,12 @@ func (l *AstCreatorListener) DeclarationTypeClassiqueEnter(ctx parser.Declaratio
 
 func (l *AstCreatorListener) DeclarationTypeClassiqueExit(ctx parser.DeclarationTypeClassiqueContext) {
 	// Get back the last element of the stack
-	opDeclType := &DeclarationTypeClassique{
+	declType := &DeclarationTypeClassique{
 		Ctx: ctx,
 	}
 
-	opDeclType.Identifiant = l.PopAst()
-	opDeclType.Type = l.PopAst()
+	declType.Identifiant = l.PopAst()
+	declType.Type = l.PopAst()
 
-	l.PushAst(opDeclType)
+	l.PushAst(declType)
 }
