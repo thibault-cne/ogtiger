@@ -5,6 +5,7 @@ version: '3'
 tasks:
   create-parser:
     cmds:
+      - mkdir -p parser
       - java -jar ./lib/antlr-4.12.0-complete.jar -Dlanguage=Go ./grammar/tiger.g4 -no-listener -visitor -o ./parser
       - mv parser/grammar/* parser
       - rm -d parser/grammar
