@@ -79,13 +79,9 @@ declaration
 ;
 
 declarationType
-:   'type' identifiant '=' declarationType2
-;
-
-declarationType2
-: identifiant #DeclarationTypeClassique
-| 'array' 'of' identifiant #DeclarationArrayType
-| '{' ( declarationChamp ( ',' declarationChamp )* )? '}' #DeclarationRecordType
+:   'type' identifiant '=' identifiant #DeclarationTypeClassique
+|   'type' identifiant '=' 'array' 'of' identifiant #DeclarationArrayType
+|   'type' identifiant '=' '{' ( declarationChamp ( ',' declarationChamp )* )? '}' #DeclarationRecordType
 ;
 
 declarationChamp
