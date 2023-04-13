@@ -2,8 +2,6 @@ package ast
 
 import (
 	"ogtiger/parser"
-
-	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 )
 
 type Integer struct {
@@ -25,7 +23,7 @@ func (l *AstCreatorListener) IntegerExit(ctx parser.EntierContext) {
 		Ctx: ctx,
 	}
 
-	it.Valeur = ctx.GetChild(0).(*antlr.TerminalNodeImpl).GetText()
+	it.Valeur = ctx.GetText()
 
 	l.PushAst(it)
 }
