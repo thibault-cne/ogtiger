@@ -1,7 +1,6 @@
 package ast
 
 import (
-	"fmt"
 	"ogtiger/parser"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
@@ -14,7 +13,7 @@ type AstCreatorListener struct {
 
 // Example
 func (ast *AstCreatorListener) VisitTerminal(node antlr.TerminalNode) {
-	fmt.Printf("%v\n", node.GetText())
+	//fmt.Printf("%v\n", node.GetText())
 }
 
 func (ast *AstCreatorListener) VisitErrorNode(node antlr.ErrorNode) {
