@@ -49,13 +49,10 @@ operationNegation
 
 expressionValeur
 :   
-    identifiant ( expressionValeur2 )? #ExpressionIdentifiant
-;
-
-expressionValeur2
-: '(' ( expression ( ',' expression )* )? ')'                                                #AppelFonction
-| ('[' expression ']'('of' expressionUnaire | ('.' identifiant | '[' expression ']')*) | '.' identifiant('.' identifiant | '[' expression ']')*) #ListeAcces
-| '{' ( identifiant '=' expression ( ',' identifiant '=' expression )* )? '}'                #InstanciationType
+    identifiant #ExpressionIdentifiant
+|   identifiant '(' ( expression ( ',' expression )* )? ')' #AppelFonction
+|   identifiant ('[' expression ']'('of' expressionUnaire | ('.' identifiant | '[' expression ']')*) | '.' identifiant('.' identifiant | '[' expression ']')*) #ListeAcces
+|   identifiant '{' ( identifiant '=' expression ( ',' identifiant '=' expression )* )? '}' #InstanciationType
 ;
 
 operationSi
