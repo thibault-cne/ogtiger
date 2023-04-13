@@ -7,13 +7,13 @@ import (
 )
 
 type Term struct {
-	Left Factor
-	Right []TermRight
+	Left *Factor
+	Right []*TermRight
 }
 
 type TermRight struct {
 	Op string
-	Right Factor
+	Right *Factor
 }
 
 func  (l *AstCreatorListener) TermEnter(ctx parser.ITermContext) {
@@ -28,19 +28,19 @@ func  (l *AstCreatorListener) TermExit(ctx parser.ITermContext) {
 	// l.AstStack = l.AstStack[:len(l.AstStack)-1]
 
 	// Get the first term
-	factor := l.AstStack[len(l.AstStack)-1]
+	factor := l.AstStack[len(l.AstStack)-1].(*Factor)
 
 	// Pop the last element of the stack
 	l.AstStack = l.AstStack[:len(l.AstStack)-1]
 
-	term.Left = factor.(Factor)
+	term.Left = factor
 
 	// Get minus and plus and term number
-	for i := 1; i < (ctx.GetChildCount() - 1) / 2; i++ {
-		right := TermRight{}
+	for i := 0; i < (ctx.GetChildCount() - 1) / 2; i++ {
+		right := &TermRight{}
 
-		right.Op = ctx.GetChild(2 * i).(antlr.TerminalNode).GetText()
-		right.Right = l.AstStack[len(l.AstStack)-1].(Factor)
+		right.Op = ctx.GetChild(2 * i + 1).(*antlr.TerminalNodeImpl).GetText()
+		right.Right = l.AstStack[len(l.AstStack)-1].(*Factor)
 
 		// Pop the last element of the stack
 		l.AstStack = l.AstStack[:len(l.AstStack)-1]

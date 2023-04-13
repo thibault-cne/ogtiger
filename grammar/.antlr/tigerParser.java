@@ -96,13 +96,13 @@ public class tigerParser extends Parser {
 		public TermContext term(int i) {
 			return getRuleContext(TermContext.class,i);
 		}
-		public List<TerminalNode> PLUS() { return getTokens(tigerParser.PLUS); }
-		public TerminalNode PLUS(int i) {
-			return getToken(tigerParser.PLUS, i);
+		public List<TerminalNode> MULTIPLY() { return getTokens(tigerParser.MULTIPLY); }
+		public TerminalNode MULTIPLY(int i) {
+			return getToken(tigerParser.MULTIPLY, i);
 		}
-		public List<TerminalNode> MINUS() { return getTokens(tigerParser.MINUS); }
-		public TerminalNode MINUS(int i) {
-			return getToken(tigerParser.MINUS, i);
+		public List<TerminalNode> DIVIDE() { return getTokens(tigerParser.DIVIDE); }
+		public TerminalNode DIVIDE(int i) {
+			return getToken(tigerParser.DIVIDE, i);
 		}
 		public ExprContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -122,12 +122,12 @@ public class tigerParser extends Parser {
 			setState(11);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==PLUS || _la==MINUS) {
+			while (_la==MULTIPLY || _la==DIVIDE) {
 				{
 				{
 				setState(7);
 				_la = _input.LA(1);
-				if ( !(_la==PLUS || _la==MINUS) ) {
+				if ( !(_la==MULTIPLY || _la==DIVIDE) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -163,13 +163,13 @@ public class tigerParser extends Parser {
 		public FactorContext factor(int i) {
 			return getRuleContext(FactorContext.class,i);
 		}
-		public List<TerminalNode> MULTIPLY() { return getTokens(tigerParser.MULTIPLY); }
-		public TerminalNode MULTIPLY(int i) {
-			return getToken(tigerParser.MULTIPLY, i);
+		public List<TerminalNode> PLUS() { return getTokens(tigerParser.PLUS); }
+		public TerminalNode PLUS(int i) {
+			return getToken(tigerParser.PLUS, i);
 		}
-		public List<TerminalNode> DIVIDE() { return getTokens(tigerParser.DIVIDE); }
-		public TerminalNode DIVIDE(int i) {
-			return getToken(tigerParser.DIVIDE, i);
+		public List<TerminalNode> MINUS() { return getTokens(tigerParser.MINUS); }
+		public TerminalNode MINUS(int i) {
+			return getToken(tigerParser.MINUS, i);
 		}
 		public TermContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -189,12 +189,12 @@ public class tigerParser extends Parser {
 			setState(19);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==MULTIPLY || _la==DIVIDE) {
+			while (_la==PLUS || _la==MINUS) {
 				{
 				{
 				setState(15);
 				_la = _input.LA(1);
-				if ( !(_la==MULTIPLY || _la==DIVIDE) ) {
+				if ( !(_la==PLUS || _la==MINUS) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -296,7 +296,7 @@ public class tigerParser extends Parser {
 		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\n$\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\3\2\3\2\3\2\7\2\f\n\2\f\2\16\2\17\13\2\3\3\3\3\3\3\7\3\24\n"+
 		"\3\f\3\16\3\27\13\3\3\4\3\4\3\4\3\4\3\4\6\4\36\n\4\r\4\16\4\37\5\4\"\n"+
-		"\4\3\4\2\2\5\2\4\6\2\4\3\2\4\5\3\2\6\7\2$\2\b\3\2\2\2\4\20\3\2\2\2\6!"+
+		"\4\3\4\2\2\5\2\4\6\2\4\3\2\6\7\3\2\4\5\2$\2\b\3\2\2\2\4\20\3\2\2\2\6!"+
 		"\3\2\2\2\b\r\5\4\3\2\t\n\t\2\2\2\n\f\5\4\3\2\13\t\3\2\2\2\f\17\3\2\2\2"+
 		"\r\13\3\2\2\2\r\16\3\2\2\2\16\3\3\2\2\2\17\r\3\2\2\2\20\25\5\6\4\2\21"+
 		"\22\t\3\2\2\22\24\5\6\4\2\23\21\3\2\2\2\24\27\3\2\2\2\25\23\3\2\2\2\25"+

@@ -6,7 +6,7 @@ import (
 )
 
 type Factor struct {
-	Expr Ast
+	Expr *Expr
 	Digit int
 }
 
@@ -32,7 +32,7 @@ func  (l *AstCreatorListener) FactorExit(ctx parser.IFactorContext) {
 
 		factor.Digit, _ = strconv.Atoi(temp)
 	} else {
-		factor.Expr = l.AstStack[len(l.AstStack)-1]
+		factor.Expr = l.AstStack[len(l.AstStack)-1].(*Expr)
 
 		// Pop the last element of the stack
 		l.AstStack = l.AstStack[:len(l.AstStack)-1]

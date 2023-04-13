@@ -21,9 +21,9 @@ WS : [ \t\n\r]+ -> skip;
  */
 
 // Entry rule
-expr : term ((PLUS | MINUS) term)*;
+expr : term ((MULTIPLY | DIVIDE) term)*;
 
-term : factor ((MULTIPLY | DIVIDE) factor)*;
+term : factor ((PLUS | MINUS) factor)*;
 
 factor : LPAREN expr RPAREN
        | DIGIT+;

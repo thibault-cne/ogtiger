@@ -1,19 +1,20 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 )
 
 type Expr struct {
-	Left Term
-	Right []ExprRight
+	Left *Term
+	Right []*ExprRight
 }
 
 type ExprRight struct {
 	Op string
-	Right Term
+	Right *Term
 }
 
 func  (l *AstCreatorListener) ExprEnter(ctx parser.IExprContext) {
@@ -28,19 +29,20 @@ func  (l *AstCreatorListener) ExprExit(ctx parser.IExprContext) {
 	// l.AstStack = l.AstStack[:len(l.AstStack)-1]
 
 	// Get the first term
-	term := l.AstStack[len(l.AstStack)-1]
+	term := l.AstStack[len(l.AstStack)-1].(*Term)
 
 	// Pop the last element of the stack
 	l.AstStack = l.AstStack[:len(l.AstStack)-1]
 
-	expr.Left = term.(Term)
+	expr.Left = term
 
 	// Get minus and plus and term number
-	for i := 1; i < (ctx.GetChildCount() - 1) / 2; i++ {
-		right := ExprRight{}
+	fmt.Printf("%d\n\n", ctx.GetChildCount())
+	for i := 0; i < (ctx.GetChildCount() - 1) / 2; i++ {
+		right := &ExprRight{}
 
-		right.Op = ctx.GetChild(2 * i).(antlr.TerminalNode).GetText()
-		right.Right = l.AstStack[len(l.AstStack)-1].(Term)
+		right.Op = ctx.GetChild(2 * i + 1).(*antlr.TerminalNodeImpl).GetText()
+		right.Right = l.AstStack[len(l.AstStack)-1].(*Term)
 
 		// Pop the last element of the stack
 		l.AstStack = l.AstStack[:len(l.AstStack)-1]
