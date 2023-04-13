@@ -22,13 +22,11 @@ func  (l *AstCreatorListener) ExpressionUnaireExit(ctx parser.IExpressionUnaireC
 	}
 
 	// Get the first expr
-	expr := l.AstStack[len(l.AstStack)-1]
-
 	// Pop the last element of the stack
-	l.AstStack = l.AstStack[:len(l.AstStack)-1]
+	expr := l.PopAst()
 
 	expressionUnaire.Expr = expr
 
 	// Push the new element on the stack
-	l.AstStack = append(l.AstStack, expressionUnaire)
+	l.PushAst(expressionUnaire)
 }
