@@ -9,6 +9,7 @@ import (
 type ListAcces struct {
 	Identifiant Ast
 	AccesChamps []Ast
+	Ctx 	   parser.ListeAccesContext
 }
 
 func (l ListAcces) Display() string {
@@ -22,7 +23,7 @@ func (l *AstCreatorListener) ListAccesEnter(ctx parser.ListeAccesContext) {
 func (l *AstCreatorListener) ListAccesExit(ctx parser.ListeAccesContext) {
 	count, maxCount := 1, ctx.GetChildCount()
 
-	listAcces := &ListAcces{}
+	listAcces := &ListAcces{Ctx: ctx}
 
 	// Get the identifiant
 	listAcces.Identifiant = l.PopAst()

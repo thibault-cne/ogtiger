@@ -6,6 +6,7 @@ type InstanciationType struct {
 	Identifiant Ast
 	Identifiants []Ast
 	Expressions []Ast
+	Ctx parser.InstanciationTypeContext
 }
 
 func (i InstanciationType) Display() string {
@@ -17,7 +18,7 @@ func  (l *AstCreatorListener) InstanciationTypeEnter(ctx parser.InstanciationTyp
 }
 
 func  (l *AstCreatorListener) InstanciationTypeExit(ctx parser.InstanciationTypeContext) {
-	instanciationType := &InstanciationType{}
+	instanciationType := &InstanciationType{Ctx: ctx}
 
 	// Get the identifiant
 	identifiant := l.PopAst()
