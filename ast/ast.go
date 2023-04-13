@@ -16,6 +16,16 @@ type Ast interface {
 	Display() string
 }
 
+func (ast *AstCreatorListener) PopAst() Ast {
+	a := ast.AstStack[len(ast.AstStack)-1]
+	ast.AstStack = ast.AstStack[:len(ast.AstStack)-1]
+	return a
+}
+
+func (ast *AstCreatorListener) PushAst(a Ast) {
+	ast.AstStack = append(ast.AstStack, a)
+}
+
 // Example
 func (ast *AstCreatorListener) VisitTerminal(node antlr.TerminalNode) {
 	// fmt.Printf("%v\n", node.GetText())
