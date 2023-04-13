@@ -13,6 +13,10 @@ func (e *SequenceInstruction) Display() string {
 	return " sequence"
 }
 
+func (e *SequenceInstruction) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) SequenceInstructionEnter(ctx parser.ISequenceInstructionContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }

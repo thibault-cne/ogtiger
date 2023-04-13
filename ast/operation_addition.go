@@ -21,6 +21,10 @@ func (e *OperationAddition) Display() string {
 	return " addition"
 }
 
+func (e *OperationAddition) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) OperationAdditionEnter(ctx parser.IOperationAdditionContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }

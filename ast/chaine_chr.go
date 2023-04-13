@@ -15,6 +15,10 @@ func (e *ChaineChr) Display() string {
 	return " string"
 }
 
+func (e *ChaineChr) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) ChaineChrEnter(ctx parser.ChaineChrContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }

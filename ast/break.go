@@ -12,6 +12,10 @@ func (e *Break) Display() string {
 	return " break"
 }
 
+func (e *Break) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) BreakEnter(ctx parser.BreakContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }

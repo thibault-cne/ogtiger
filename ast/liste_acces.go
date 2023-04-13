@@ -9,11 +9,15 @@ import (
 type ListAcces struct {
 	Identifiant Ast
 	AccesChamps []Ast
-	Ctx 	   parser.ListeAccesContext
+	Ctx         parser.ListeAccesContext
 }
 
-func (l ListAcces) Display() string {
+func (l *ListAcces) Display() string {
 	return " listAcces"
+}
+
+func (e *ListAcces) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) ListAccesEnter(ctx parser.ListeAccesContext) {
@@ -32,7 +36,7 @@ func (l *AstCreatorListener) ListAccesExit(ctx parser.ListeAccesContext) {
 	for count < maxCount {
 		text := ctx.GetChild(count).(*antlr.TerminalNodeImpl).GetText()
 
-		if (text == ".") {
+		if text == "." {
 			count += 1
 		} else {
 			count += 2

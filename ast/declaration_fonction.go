@@ -5,15 +5,19 @@ import (
 )
 
 type DeclarationFontion struct {
-	Id Ast
+	Id   Ast
 	Type Ast
 	Args []Ast
 	Expr Ast
 	Ctx  parser.IDeclarationFonctionContext
 }
 
-func (e DeclarationFontion) Display() string {
+func (e *DeclarationFontion) Display() string {
 	return " declarationFontion"
+}
+
+func (e *DeclarationFontion) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) DeclarationFontionEnter(ctx parser.IDeclarationFonctionContext) {

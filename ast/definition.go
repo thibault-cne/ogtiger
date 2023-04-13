@@ -14,6 +14,10 @@ func (e *Definition) Display() string {
 	return " letin"
 }
 
+func (e *Definition) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) DefinitionEnter(ctx parser.IDefinitionContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }

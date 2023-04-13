@@ -8,8 +8,12 @@ type OperationEt struct {
 	Ctx   parser.IOperationEtContext
 }
 
-func (e OperationEt) Display() string {
+func (e *OperationEt) Display() string {
 	return " et"
+}
+
+func (e *OperationEt) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) OperationEtEnter(ctx parser.IOperationEtContext) {

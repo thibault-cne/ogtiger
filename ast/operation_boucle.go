@@ -10,8 +10,12 @@ type OperationBoucle struct {
 	Ctx      parser.IOperationBoucleContext
 }
 
-func (e OperationBoucle) Display() string {
+func (e *OperationBoucle) Display() string {
 	return " pour"
+}
+
+func (e *OperationBoucle) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) OperationBoucleEnter(ctx parser.IOperationBoucleContext) {

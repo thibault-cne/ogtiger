@@ -6,12 +6,16 @@ import (
 )
 
 type Identifiant struct {
-	Id string
+	Id  string
 	Ctx parser.IIdentifiantContext
 }
 
-func (e Identifiant) Display() string {
+func (e *Identifiant) Display() string {
 	return fmt.Sprintf(" identifiant %s", e.Id)
+}
+
+func (e *Identifiant) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) IdentifiantEnter(ctx parser.IIdentifiantContext) {
@@ -20,7 +24,7 @@ func (l *AstCreatorListener) IdentifiantEnter(ctx parser.IIdentifiantContext) {
 
 func (l *AstCreatorListener) IdentifiantExit(ctx parser.IIdentifiantContext) {
 	identifiant := &Identifiant{
-		Id: ctx.GetText(),
+		Id:  ctx.GetText(),
 		Ctx: ctx,
 	}
 

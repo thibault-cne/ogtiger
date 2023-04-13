@@ -21,6 +21,10 @@ func (e *OperationComparaison) Display() string {
 	return " comparaison"
 }
 
+func (e *OperationComparaison) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) OperationComparaisonEnter(ctx parser.IOperationComparaisonContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }

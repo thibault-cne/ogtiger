@@ -3,14 +3,18 @@ package ast
 import "ogtiger/parser"
 
 type DeclarationValeur struct {
-	Id Ast
+	Id   Ast
 	Type Ast
 	Expr Ast
 	Ctx  parser.IDeclarationValeurContext
 }
 
-func (e DeclarationValeur) Display() string {
+func (e *DeclarationValeur) Display() string {
 	return " declarationValeur"
+}
+
+func (e *DeclarationValeur) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) DeclarationValeurEnter(ctx parser.IDeclarationValeurContext) {

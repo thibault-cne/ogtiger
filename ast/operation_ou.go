@@ -8,8 +8,12 @@ type OperationOu struct {
 	Ctx   parser.IOperationOuContext
 }
 
-func (e OperationOu) Display() string {
+func (e *OperationOu) Display() string {
 	return " ou"
+}
+
+func (e *OperationOu) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) OperationOuEnter(ctx parser.IOperationOuContext) {

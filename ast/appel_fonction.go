@@ -8,8 +8,12 @@ type AppelFonction struct {
 	Ctx         parser.AppelFonctionContext
 }
 
-func (a AppelFonction) Display() string {
+func (a *AppelFonction) Display() string {
 	return " appel"
+}
+
+func (a *AppelFonction) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) AppelFonctionEnter(ctx parser.AppelFonctionContext) {

@@ -8,8 +8,12 @@ type OperationTantQue struct {
 	Ctx   parser.IOperationTantqueContext
 }
 
-func (e OperationTantQue) Display() string {
+func (e *OperationTantQue) Display() string {
 	return " tantque"
+}
+
+func (e *OperationTantQue) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) OperationTantQueEnter(ctx parser.IOperationTantqueContext) {

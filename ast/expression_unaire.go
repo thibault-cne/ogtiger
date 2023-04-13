@@ -7,8 +7,12 @@ type ExpressionUnaire struct {
 	Ctx  parser.IExpressionUnaireContext
 }
 
-func (e ExpressionUnaire) Display() string {
+func (e *ExpressionUnaire) Display() string {
 	return " expressionUnaire"
+}
+
+func (e *ExpressionUnaire) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) ExpressionUnaireEnter(ctx parser.IExpressionUnaireContext) {

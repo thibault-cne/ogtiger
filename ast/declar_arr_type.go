@@ -14,6 +14,10 @@ func (e *DeclarationArrayType) Display() string {
 	return " array_type"
 }
 
+func (e *DeclarationArrayType) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) DeclarationArrayTypeEnter(ctx parser.DeclarationArrayTypeContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }

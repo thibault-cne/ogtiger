@@ -13,6 +13,10 @@ func (p *Program) Display() string {
 	return " program"
 }
 
+func (e *Program) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) ProgramEnter(ctx parser.IProgramContext) {
 	// l.AstStack = append(l.AstStack, &Program{})
 }

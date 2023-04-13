@@ -3,13 +3,17 @@ package ast
 import "ogtiger/parser"
 
 type DeclarationChamp struct {
-	Left Ast
+	Left  Ast
 	Rigth Ast
-	Ctx  parser.IDeclarationChampContext
+	Ctx   parser.IDeclarationChampContext
 }
 
-func (e DeclarationChamp) Display() string {
+func (e *DeclarationChamp) Display() string {
 	return " declarationChamp"
+}
+
+func (e *DeclarationChamp) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) DeclarationChampEnter(ctx parser.IDeclarationChampContext) {

@@ -14,6 +14,10 @@ func (e *DeclarationTypeClassique) Display() string {
 	return " alias"
 }
 
+func (e *DeclarationTypeClassique) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) DeclarationTypeClassiqueEnter(ctx parser.DeclarationTypeClassiqueContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }

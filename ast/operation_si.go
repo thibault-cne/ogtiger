@@ -9,8 +9,12 @@ type OperationSi struct {
 	Ctx  parser.IOperationSiContext
 }
 
-func (e OperationSi) Display() string {
+func (e *OperationSi) Display() string {
 	return " si"
+}
+
+func (e *OperationSi) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) OperationSiEnter(ctx parser.IOperationSiContext) {

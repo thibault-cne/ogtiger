@@ -12,6 +12,10 @@ func (e *Nil) Display() string {
 	return " nil"
 }
 
+func (e *Nil) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) NilEnter(ctx parser.NilContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }

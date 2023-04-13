@@ -13,6 +13,10 @@ func (e *Integer) Display() string {
 	return " int"
 }
 
+func (e *Integer) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) IntegerEnter(ctx parser.EntierContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }

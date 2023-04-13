@@ -3,21 +3,25 @@ package ast
 import "ogtiger/parser"
 
 type InstanciationType struct {
-	Identifiant Ast
+	Identifiant  Ast
 	Identifiants []Ast
-	Expressions []Ast
-	Ctx parser.InstanciationTypeContext
+	Expressions  []Ast
+	Ctx          parser.InstanciationTypeContext
 }
 
-func (i InstanciationType) Display() string {
+func (i *InstanciationType) Display() string {
 	return " instanciationType"
 }
 
-func  (l *AstCreatorListener) InstanciationTypeEnter(ctx parser.InstanciationTypeContext) {
+func (e *InstanciationType) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
+func (l *AstCreatorListener) InstanciationTypeEnter(ctx parser.InstanciationTypeContext) {
 	// Nothing to do
 }
 
-func  (l *AstCreatorListener) InstanciationTypeExit(ctx parser.InstanciationTypeContext) {
+func (l *AstCreatorListener) InstanciationTypeExit(ctx parser.InstanciationTypeContext) {
 	instanciationType := &InstanciationType{Ctx: ctx}
 
 	// Get the identifiant

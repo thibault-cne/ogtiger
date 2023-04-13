@@ -21,6 +21,10 @@ func (e *OperationMultiplication) Display() string {
 	return " multiplication"
 }
 
+func (e *OperationMultiplication) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) OperationMultiplicationEnter(ctx parser.IOperationMultiplicationContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }

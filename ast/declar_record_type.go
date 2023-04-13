@@ -14,6 +14,10 @@ func (e *DeclarationRecordType) Display() string {
 	return " record_type"
 }
 
+func (e *DeclarationRecordType) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) DeclarationRecordTypeEnter(ctx parser.DeclarationRecordTypeContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }

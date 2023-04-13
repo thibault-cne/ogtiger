@@ -7,8 +7,12 @@ type OperationNegation struct {
 	Ctx  parser.IOperationNegationContext
 }
 
-func (e OperationNegation) Display() string {
+func (e *OperationNegation) Display() string {
 	return " negation"
+}
+
+func (e *OperationNegation) Draw(prefix string) {
+	// TODO: Draw the AST
 }
 
 func (l *AstCreatorListener) OperationNegationEnter(ctx parser.IOperationNegationContext) {

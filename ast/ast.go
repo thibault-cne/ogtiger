@@ -14,6 +14,7 @@ type AstCreatorListener struct {
 
 type Ast interface {
 	Display() string
+	Draw(prefix string)
 }
 
 func (ast *AstCreatorListener) PopAst() Ast {
@@ -197,9 +198,5 @@ func display(a Ast, prefix string, isLast bool) {
 		prefix += "    "
 	}
 
-	switch a.(type) {
-	// TODO: FILL
-	default:
-		break
-	}
+	a.Draw(prefix)
 }

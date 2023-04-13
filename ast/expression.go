@@ -14,6 +14,10 @@ func (e *Expression) Display() string {
 	return " expression"
 }
 
+func (e *Expression) Draw(prefix string) {
+	// TODO: Draw the AST
+}
+
 func (l *AstCreatorListener) ExprEnter(ctx parser.IExpressionContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }
