@@ -27,13 +27,13 @@ func (l *AstCreatorListener) OperationSiExit(ctx parser.IOperationSiContext) {
 	// Get the second term
 	then := l.AstStack[len(l.AstStack)-1]       // Take it from the top
 	l.AstStack = l.AstStack[:len(l.AstStack)-1] // Remove it
-	OperationSi.Cond = then                     // Store it
+	OperationSi.Then = then                     // Store it
 
 	if ctx.GetChildCount() == 6 {
 		// Get the third term
 		el := l.AstStack[len(l.AstStack)-1]         // Take it from the top
 		l.AstStack = l.AstStack[:len(l.AstStack)-1] // Remove it
-		OperationSi.Cond = el                       // Store it
+		OperationSi.Else = el                       // Store it
 	}
 
 	// Push the new element on the stack
