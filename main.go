@@ -1,31 +1,11 @@
 package main
 
 import (
+	"ogtiger/ast"
 	"ogtiger/parser"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 )
-
-type echoListener struct {
-	*parser.BasetigerVisitor
-}
-
-// Example
-func (s *echoListener) VisitTerminal(node antlr.TerminalNode) {
-	//fmt.Printf("%v\n", node.GetText())
-}
-
-func (s *echoListener) VisitErrorNode(node antlr.ErrorNode) {
-	// fmt.Printf("%v\n", node.GetText())
-}
-
-func (s *echoListener) EnterEveryRule(ctx antlr.ParserRuleContext) {
-	// fmt.Printf("%v\n", ctx.GetText())
-}
-
-func (s *echoListener) ExitEveryRule(ctx antlr.ParserRuleContext) {
-	// fmt.Printf("%v\n", ctx.GetText())
-}
 
 // Parse the input expression and build the AST
 func parse(input string) {
@@ -42,13 +22,13 @@ func parse(input string) {
 	p := parser.NewtigerParser(tokenStream)
 
 	// Create a listener to build the AST
-	listener := &echoListener{}
+	listener := &ast.AstCreatorListener{}
 
 	// Walk the parse tree using the listener to build the AST
 	antlr.ParseTreeWalkerDefault.Walk(listener, p.Expr())
 }
 
 func main() {
-	input := "2 * ((3 + 4)"
+	input := "2 * (3 + 4)"
 	parse(input)
 }
