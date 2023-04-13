@@ -22,22 +22,12 @@ func (l *AstCreatorListener) OperationOuExit(ctx parser.IOperationOuContext) {
 		return
 	}
 
-	// Get the first exprEt
-	exprEt := l.AstStack[len(l.AstStack)-1]
-
-	// Pop the last element of the stack
-	l.AstStack = l.AstStack[:len(l.AstStack)-1]
-
-	operationOu.Left = exprEt
+	operationOu.Left = l.PopAst()
 
 	// Get the other exprEt
 	for i := 0; i < (ctx.GetChildCount()-1)/2; i++ {
-		operationOu.Right = append(operationOu.Right, l.AstStack[len(l.AstStack)-1])
-
-		// Pop the last element of the stack
-		l.AstStack = l.AstStack[:len(l.AstStack)-1]
+		operationOu.Right = append(operationOu.Right, l.PopAst())
 	}
 
-	// Push the new element on the stack
-	l.AstStack = append(l.AstStack, operationOu)
+	l.PushAst(operationOu)
 }

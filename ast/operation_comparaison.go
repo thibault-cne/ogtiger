@@ -32,24 +32,17 @@ func (l *AstCreatorListener) OperationComparaisonExit(ctx parser.ExpressionConte
 		return
 	}
 
-	// Get the first term
-	left := l.AstStack[len(l.AstStack)-1]       // Take it from the top
-	l.AstStack = l.AstStack[:len(l.AstStack)-1] // Remove it
-	opCompar.Left = left                        // Store it
+	opCompar.Left = l.PopAst()
 
 	// Get minus and plus and term number
 	for i := 0; i < (ctx.GetChildCount()-1)/2; i++ {
 		right := &OperationComparaisonFD{}
 
 		right.Op = ctx.GetChild(2*i + 1).(*antlr.TerminalNodeImpl).GetText()
-		right.Right = l.AstStack[len(l.AstStack)-1]
-
-		// Pop the last element of the stack
-		l.AstStack = l.AstStack[:len(l.AstStack)-1]
+		right.Right = l.PopAst()
 
 		opCompar.Right = append(opCompar.Right, right)
 	}
 
-	// Push the new element on the stack
-	l.AstStack = append(l.AstStack, opCompar)
+	l.PushAst(opCompar)
 }

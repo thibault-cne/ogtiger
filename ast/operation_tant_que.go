@@ -18,16 +18,8 @@ func (l *AstCreatorListener) OperationTantQueEnter(ctx parser.IOperationTantqueC
 func (l *AstCreatorListener) OperationTantQueExit(ctx parser.IOperationTantqueContext) {
 	oT := &OperationTantQue{}
 
-	// Get the first term
-	cond := l.AstStack[len(l.AstStack)-1]       // Take it from the top
-	l.AstStack = l.AstStack[:len(l.AstStack)-1] // Remove it
-	oT.Cond = cond                              // Store it
+	oT.Cond = l.PopAst()
+	oT.Block = l.PopAst()
 
-	// Get the second term
-	blk := l.AstStack[len(l.AstStack)-1]        // Take it from the top
-	l.AstStack = l.AstStack[:len(l.AstStack)-1] // Remove it
-	oT.Block = blk                              // Store it
-
-	// Push the new element on the stack
-	l.AstStack = append(l.AstStack, oT)
+	l.PushAst(oT)
 }

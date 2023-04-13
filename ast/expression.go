@@ -25,16 +25,8 @@ func (l *AstCreatorListener) ExprExit(ctx parser.ExpressionContext) {
 		return
 	}
 
-	// Get the first term
-	left := l.AstStack[len(l.AstStack)-1]       // Take it from the top
-	l.AstStack = l.AstStack[:len(l.AstStack)-1] // Remove it
-	expr.Left = left                            // Store it
+	expr.Left = l.PopAst()
+	expr.Right = l.PopAst()
 
-	// Get the second term
-	right := l.AstStack[len(l.AstStack)-1]
-	l.AstStack = l.AstStack[:len(l.AstStack)-1]
-	expr.Right = right
-
-	// Push the new element on the stack
-	l.AstStack = append(l.AstStack, expr)
+	l.PushAst(expr)
 }

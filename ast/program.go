@@ -12,23 +12,17 @@ func (p *Program) Display() string {
 	return " program"
 }
 
-func  (l *AstCreatorListener) ProgramEnter(ctx parser.IProgramContext) {
+func (l *AstCreatorListener) ProgramEnter(ctx parser.IProgramContext) {
 	// l.AstStack = append(l.AstStack, &Program{})
 }
 
-func  (l *AstCreatorListener) ProgramExit(ctx parser.IProgramContext) {
+func (l *AstCreatorListener) ProgramExit(ctx parser.IProgramContext) {
 	// We push the Program struct to the stack as it is the entrypoint
 
 	prog := &Program{}
 
-	// Unstack the last expr and put it in the struct
-	expr := l.AstStack[len(l.AstStack)-1]
-
-	// Pop the last element of the stack
-	l.AstStack = l.AstStack[:len(l.AstStack)-1]
-
-	prog.Expr = expr
+	prog.Expr = l.PopAst()
 
 	// Push the new element on the stack
-	l.AstStack = append(l.AstStack, prog)
+	l.PushAst(prog)
 }

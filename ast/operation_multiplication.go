@@ -26,30 +26,23 @@ func (l *AstCreatorListener) OperationMultiplicationEnter(ctx parser.ExpressionC
 
 func (l *AstCreatorListener) OperationMultiplicationExit(ctx parser.ExpressionContext) {
 	// Get back the last element of the stack
-	opAddition := &OperationMultiplication{}
+	opMultiplication := &OperationMultiplication{}
 
 	if ctx.GetChildCount() == 1 {
 		return
 	}
 
-	// Get the first term
-	left := l.AstStack[len(l.AstStack)-1]       // Take it from the top
-	l.AstStack = l.AstStack[:len(l.AstStack)-1] // Remove it
-	opAddition.Left = left                      // Store it
+	opMultiplication.Left = l.PopAst()
 
 	// Get minus and plus and term number
 	for i := 0; i < (ctx.GetChildCount()-1)/2; i++ {
 		right := &OperationMultiplicationFD{}
 
 		right.Op = ctx.GetChild(2*i + 1).(*antlr.TerminalNodeImpl).GetText()
-		right.Right = l.AstStack[len(l.AstStack)-1]
+		right.Right = l.PopAst()
 
-		// Pop the last element of the stack
-		l.AstStack = l.AstStack[:len(l.AstStack)-1]
-
-		opAddition.Right = append(opAddition.Right, right)
+		opMultiplication.Right = append(opMultiplication.Right, right)
 	}
 
-	// Push the new element on the stack
-	l.AstStack = append(l.AstStack, opAddition)
+	l.PushAst(opMultiplication)
 }

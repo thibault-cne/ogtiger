@@ -17,14 +17,7 @@ func (l *AstCreatorListener) OperationNegationEnter(ctx parser.IOperationNegatio
 func (l *AstCreatorListener) OperationNegationExit(ctx parser.IOperationNegationContext) {
 	operationNegation := &OperationNegation{}
 
-	// Get the first expr
-	expr := l.AstStack[len(l.AstStack)-1]
+	operationNegation.Expr = l.PopAst()
 
-	// Pop the last element of the stack
-	l.AstStack = l.AstStack[:len(l.AstStack)-1]
-
-	operationNegation.Expr = expr
-
-	// Push the new element on the stack
-	l.AstStack = append(l.AstStack, operationNegation)
+	l.PushAst(operationNegation)
 }
