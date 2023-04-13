@@ -7,10 +7,10 @@ type OperationNegation struct {
 }
 
 func (e OperationNegation) Display() string {
-	return " operationNegation"
+	return " negation"
 }
 
-func  (l *AstCreatorListener) OperationNegationEnter(ctx parser.IOperationNegationContext) {
+func (l *AstCreatorListener) OperationNegationEnter(ctx parser.IOperationNegationContext) {
 	// l.AstStack = append(l.AstStack, &ExprOu{})
 }
 

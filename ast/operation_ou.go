@@ -3,19 +3,19 @@ package ast
 import "ogtiger/parser"
 
 type OperationOu struct {
-	Left Ast
-	Right []Ast 
+	Left  Ast
+	Right []Ast
 }
 
 func (e OperationOu) Display() string {
-	return " operationOu"
+	return " ou"
 }
 
-func  (l *AstCreatorListener) OperationOuEnter(ctx parser.IOperationOuContext) {
+func (l *AstCreatorListener) OperationOuEnter(ctx parser.IOperationOuContext) {
 	// l.AstStack = append(l.AstStack, &ExprOu{})
 }
 
-func  (l *AstCreatorListener) OperationOuExit(ctx parser.IOperationOuContext) {
+func (l *AstCreatorListener) OperationOuExit(ctx parser.IOperationOuContext) {
 	operationOu := &OperationOu{}
 
 	if ctx.GetChildCount() == 1 {
@@ -31,7 +31,7 @@ func  (l *AstCreatorListener) OperationOuExit(ctx parser.IOperationOuContext) {
 	operationOu.Left = exprEt
 
 	// Get the other exprEt
-	for i := 0; i < (ctx.GetChildCount() - 1) / 2; i++ {
+	for i := 0; i < (ctx.GetChildCount()-1)/2; i++ {
 		operationOu.Right = append(operationOu.Right, l.AstStack[len(l.AstStack)-1])
 
 		// Pop the last element of the stack

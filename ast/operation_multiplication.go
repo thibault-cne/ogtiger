@@ -17,7 +17,7 @@ type OperationMultiplicationFD struct {
 }
 
 func (e *OperationMultiplication) Display() string {
-	return " addition"
+	return " multiplication"
 }
 
 func (l *AstCreatorListener) OperationMultiplicationEnter(ctx parser.ExpressionContext) {
