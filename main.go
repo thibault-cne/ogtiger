@@ -48,7 +48,7 @@ func parse(input string) {
 	p.RemoveErrorListeners()
 	p.AddErrorListener(emptyErrorListener)
 	listener := &ast.AstCreatorListener{}
-	antlr.ParseTreeWalkerDefault.Walk(listener, p.Expr())
+	antlr.ParseTreeWalkerDefault.Walk(listener, p.Program())
 
 	if failed {
 		return
