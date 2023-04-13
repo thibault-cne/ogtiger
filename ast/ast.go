@@ -7,13 +7,15 @@ import (
 )
 
 type AstCreatorListener struct {
-	Output string
+	AstStack []Ast 
 	*parser.BasetigerVisitor
 }
 
+type Ast interface {}
+
 // Example
 func (ast *AstCreatorListener) VisitTerminal(node antlr.TerminalNode) {
-	//fmt.Printf("%v\n", node.GetText())
+	// fmt.Printf("%v\n", node.GetText())
 }
 
 func (ast *AstCreatorListener) VisitErrorNode(node antlr.ErrorNode) {
@@ -21,9 +23,27 @@ func (ast *AstCreatorListener) VisitErrorNode(node antlr.ErrorNode) {
 }
 
 func (s *AstCreatorListener) EnterEveryRule(ctx antlr.ParserRuleContext) {
-	// fmt.Printf("%v\n", ctx.GetText())
+	switch c := ctx.(type) {
+	case parser.IFactorContext:
+		s.FactorEnter(c)
+	case parser.IExprContext:
+		s.ExprEnter(c)
+	case parser.ITermContext:
+		s.TermEnter(c)
+	default:
+		break
+	}
 }
 
 func (s *AstCreatorListener) ExitEveryRule(ctx antlr.ParserRuleContext) {
-	// fmt.Printf("%v\n", ctx.GetText())
+	switch c := ctx.(type) {
+	case parser.IFactorContext:
+		s.FactorExit(c)
+	case parser.IExprContext:
+		s.ExprExit(c)
+	case parser.ITermContext:
+		s.TermExit(c)
+	default:
+		break
+	}
 }

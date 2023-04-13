@@ -1,0 +1,14 @@
+DIGIT=1
+PLUS=2
+MINUS=3
+MULTIPLY=4
+DIVIDE=5
+LPAREN=6
+RPAREN=7
+WS=8
+'+'=2
+'-'=3
+'*'=4
+'/'=5
+'('=6
+')'=7

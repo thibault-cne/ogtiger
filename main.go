@@ -59,6 +59,6 @@ func parse(input string) {
 }
 
 func main() {
-	input := "2 * (3 + 4)"
+	input := "3 + 4"
 	parse(input)
 }
