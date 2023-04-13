@@ -1,0 +1,15 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  create-parser:
+    cmds:
+      - pigeon grammar/tiger.peg > parser/temp_parser
+      - echo "package parser"|cat - parser/temp_parser > /tmp/out && mv /tmp/out parser/temp_parser
+      - gofmt parser/temp_parser > parser/parser.go
+      - rm parser/temp_parser
+    silent: true
