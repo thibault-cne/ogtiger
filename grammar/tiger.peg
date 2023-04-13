@@ -1,8 +1,0 @@
-// Define the top-level rule
-ArithmeticExpr <- AddExpr
-
-// Define the rules for addition and subtraction
-AddExpr        <- MultExpr ( '+' MultExpr / '-' MultExpr )*
-MultExpr       <- Atom ( '*' Atom / '/' Atom )*
-Atom           <- '(' ArithmeticExpr ')' / Number
-Number <- [0-9]+
