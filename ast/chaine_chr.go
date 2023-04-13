@@ -12,7 +12,7 @@ type ChaineChr struct {
 }
 
 func (e *ChaineChr) Display() string {
-	return " alias"
+	return " string"
 }
 
 func (l *AstCreatorListener) ChaineChrEnter(ctx parser.ChaineChrContext) {

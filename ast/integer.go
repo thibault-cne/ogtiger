@@ -12,7 +12,7 @@ type Integer struct {
 }
 
 func (e *Integer) Display() string {
-	return " alias"
+	return " int"
 }
 
 func (l *AstCreatorListener) IntegerEnter(ctx parser.EntierContext) {
