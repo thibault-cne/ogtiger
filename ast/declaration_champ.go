@@ -1,6 +1,10 @@
 package ast
 
-import "ogtiger/parser"
+import (
+	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
+)
 
 type DeclarationChamp struct {
 	Left  Ast
@@ -12,7 +16,7 @@ func (e *DeclarationChamp) Display() string {
 	return " declarationChamp"
 }
 
-func (e *DeclarationChamp) Draw(prefix string) {
+func (e *DeclarationChamp) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

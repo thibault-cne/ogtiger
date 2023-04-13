@@ -2,6 +2,8 @@ package ast
 
 import (
 	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
 )
 
 type Expression struct {
@@ -14,7 +16,7 @@ func (e *Expression) Display() string {
 	return " expression"
 }
 
-func (e *Expression) Draw(prefix string) {
+func (e *Expression) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

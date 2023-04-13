@@ -4,6 +4,7 @@ import (
 	"ogtiger/parser"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	"github.com/goccy/go-graphviz"
 )
 
 type OperationAddition struct {
@@ -21,7 +22,7 @@ func (e *OperationAddition) Display() string {
 	return " addition"
 }
 
-func (e *OperationAddition) Draw(prefix string) {
+func (e *OperationAddition) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

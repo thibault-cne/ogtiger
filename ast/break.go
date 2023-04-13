@@ -2,6 +2,8 @@ package ast
 
 import (
 	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
 )
 
 type Break struct {
@@ -12,7 +14,7 @@ func (e *Break) Display() string {
 	return " break"
 }
 
-func (e *Break) Draw(prefix string) {
+func (e *Break) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

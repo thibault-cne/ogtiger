@@ -1,10 +1,13 @@
 package ast
 
 import (
+	"bytes"
 	"fmt"
+	"log"
 	"ogtiger/parser"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	"github.com/goccy/go-graphviz"
 )
 
 type AstCreatorListener struct {
@@ -14,7 +17,7 @@ type AstCreatorListener struct {
 
 type Ast interface {
 	Display() string
-	Draw(prefix string)
+	Draw(prefix string, g *graphviz.Graphviz)
 }
 
 func (ast *AstCreatorListener) PopAst() Ast {
@@ -182,10 +185,23 @@ func (s *AstCreatorListener) ExitEveryRule(ctx antlr.ParserRuleContext) {
 
 func (s *AstCreatorListener) DisplayAST() {
 	fmt.Printf("\nAST\n")
-	display(s.AstStack[0], "", true)
+
+	g := graphviz.New()
+	graph, err := g.Graph()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	display(s.AstStack[0], "", true, g)
+
+	var buf bytes.Buffer
+	if err := g.Render(graph, "dot", &buf); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(buf.String())
 }
 
-func display(a Ast, prefix string, isLast bool) {
+func display(a Ast, prefix string, isLast bool, g *graphviz.Graphviz) {
 	if a == nil {
 		return
 	}
@@ -198,5 +214,5 @@ func display(a Ast, prefix string, isLast bool) {
 		prefix += "    "
 	}
 
-	a.Draw(prefix)
+	a.Draw(prefix, g)
 }

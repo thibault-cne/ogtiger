@@ -2,6 +2,8 @@ package ast
 
 import (
 	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
 )
 
 type SequenceInstruction struct {
@@ -13,7 +15,7 @@ func (e *SequenceInstruction) Display() string {
 	return " sequence"
 }
 
-func (e *SequenceInstruction) Draw(prefix string) {
+func (e *SequenceInstruction) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

@@ -1,6 +1,10 @@
 package ast
 
-import "ogtiger/parser"
+import (
+	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
+)
 
 type OperationEt struct {
 	Left  Ast
@@ -12,7 +16,7 @@ func (e *OperationEt) Display() string {
 	return " et"
 }
 
-func (e *OperationEt) Draw(prefix string) {
+func (e *OperationEt) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

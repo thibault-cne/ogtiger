@@ -3,6 +3,8 @@ package ast
 import (
 	"fmt"
 	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
 )
 
 type Identifiant struct {
@@ -14,7 +16,7 @@ func (e *Identifiant) Display() string {
 	return fmt.Sprintf(" identifiant %s", e.Id)
 }
 
-func (e *Identifiant) Draw(prefix string) {
+func (e *Identifiant) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

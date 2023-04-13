@@ -1,6 +1,10 @@
 package ast
 
-import "ogtiger/parser"
+import (
+	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
+)
 
 type OperationSi struct {
 	Cond Ast
@@ -13,7 +17,7 @@ func (e *OperationSi) Display() string {
 	return " si"
 }
 
-func (e *OperationSi) Draw(prefix string) {
+func (e *OperationSi) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

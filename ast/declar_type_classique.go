@@ -2,6 +2,8 @@ package ast
 
 import (
 	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
 )
 
 type DeclarationTypeClassique struct {
@@ -14,7 +16,7 @@ func (e *DeclarationTypeClassique) Display() string {
 	return " alias"
 }
 
-func (e *DeclarationTypeClassique) Draw(prefix string) {
+func (e *DeclarationTypeClassique) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

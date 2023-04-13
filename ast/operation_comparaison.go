@@ -4,6 +4,7 @@ import (
 	"ogtiger/parser"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	"github.com/goccy/go-graphviz"
 )
 
 type OperationComparaison struct {
@@ -21,7 +22,7 @@ func (e *OperationComparaison) Display() string {
 	return " comparaison"
 }
 
-func (e *OperationComparaison) Draw(prefix string) {
+func (e *OperationComparaison) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

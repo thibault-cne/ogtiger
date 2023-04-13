@@ -2,6 +2,8 @@ package ast
 
 import (
 	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
 )
 
 type DeclarationRecordType struct {
@@ -14,7 +16,7 @@ func (e *DeclarationRecordType) Display() string {
 	return " record_type"
 }
 
-func (e *DeclarationRecordType) Draw(prefix string) {
+func (e *DeclarationRecordType) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

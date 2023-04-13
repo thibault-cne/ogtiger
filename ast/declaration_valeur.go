@@ -1,6 +1,10 @@
 package ast
 
-import "ogtiger/parser"
+import (
+	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
+)
 
 type DeclarationValeur struct {
 	Id   Ast
@@ -13,7 +17,7 @@ func (e *DeclarationValeur) Display() string {
 	return " declarationValeur"
 }
 
-func (e *DeclarationValeur) Draw(prefix string) {
+func (e *DeclarationValeur) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

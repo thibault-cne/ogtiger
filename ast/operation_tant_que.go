@@ -1,6 +1,10 @@
 package ast
 
-import "ogtiger/parser"
+import (
+	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
+)
 
 type OperationTantQue struct {
 	Cond  Ast
@@ -12,7 +16,7 @@ func (e *OperationTantQue) Display() string {
 	return " tantque"
 }
 
-func (e *OperationTantQue) Draw(prefix string) {
+func (e *OperationTantQue) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

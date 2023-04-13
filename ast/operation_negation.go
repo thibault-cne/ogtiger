@@ -1,6 +1,10 @@
 package ast
 
-import "ogtiger/parser"
+import (
+	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
+)
 
 type OperationNegation struct {
 	Expr Ast
@@ -11,7 +15,7 @@ func (e *OperationNegation) Display() string {
 	return " negation"
 }
 
-func (e *OperationNegation) Draw(prefix string) {
+func (e *OperationNegation) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

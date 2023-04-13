@@ -1,6 +1,10 @@
 package ast
 
-import "ogtiger/parser"
+import (
+	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
+)
 
 type InstanciationType struct {
 	Identifiant  Ast
@@ -13,7 +17,7 @@ func (i *InstanciationType) Display() string {
 	return " instanciationType"
 }
 
-func (e *InstanciationType) Draw(prefix string) {
+func (e *InstanciationType) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

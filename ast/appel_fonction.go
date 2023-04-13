@@ -1,6 +1,10 @@
 package ast
 
-import "ogtiger/parser"
+import (
+	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
+)
 
 type AppelFonction struct {
 	Identifiant Ast
@@ -12,7 +16,7 @@ func (a *AppelFonction) Display() string {
 	return " appel"
 }
 
-func (a *AppelFonction) Draw(prefix string) {
+func (a *AppelFonction) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

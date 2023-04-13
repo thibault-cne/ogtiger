@@ -4,6 +4,7 @@ import (
 	"ogtiger/parser"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	"github.com/goccy/go-graphviz"
 )
 
 type ListAcces struct {
@@ -16,7 +17,7 @@ func (l *ListAcces) Display() string {
 	return " listAcces"
 }
 
-func (e *ListAcces) Draw(prefix string) {
+func (e *ListAcces) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 

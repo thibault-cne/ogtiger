@@ -2,6 +2,8 @@ package ast
 
 import (
 	"ogtiger/parser"
+
+	"github.com/goccy/go-graphviz"
 )
 
 type Nil struct {
@@ -12,7 +14,7 @@ func (e *Nil) Display() string {
 	return " nil"
 }
 
-func (e *Nil) Draw(prefix string) {
+func (e *Nil) Draw(prefix string, g *graphviz.Graphviz) {
 	// TODO: Draw the AST
 }
 
