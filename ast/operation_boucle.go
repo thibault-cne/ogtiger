@@ -10,7 +10,7 @@ type OperationBoucle struct {
 }
 
 func (e OperationBoucle) Display() string {
-	return " si"
+	return " for"
 }
 
 func (l *AstCreatorListener) OperationBoucleEnter(ctx parser.IOperationBoucleContext) {

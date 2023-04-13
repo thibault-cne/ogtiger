@@ -8,7 +8,7 @@ type OperationTantQue struct {
 }
 
 func (e OperationTantQue) Display() string {
-	return " si"
+	return " while"
 }
 
 func (l *AstCreatorListener) OperationTantQueEnter(ctx parser.IOperationTantqueContext) {
