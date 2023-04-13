@@ -12,11 +12,11 @@ func (p *Program) Display() string {
 	return " program"
 }
 
-func  (l *AstCreatorListener) ExprEnter(ctx parser.IProgramContext) {
+func  (l *AstCreatorListener) ProgramEnter(ctx parser.IProgramContext) {
 	// l.AstStack = append(l.AstStack, &Program{})
 }
 
-func  (l *AstCreatorListener) ExprExit(ctx parser.IProgramContext) {
+func  (l *AstCreatorListener) ProgramExit(ctx parser.IProgramContext) {
 	// We push the Program struct to the stack as it is the entrypoint
 
 	prog := &Program{}
