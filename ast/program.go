@@ -6,6 +6,7 @@ import (
 
 type Program struct {
 	Expr Ast
+	Ctx  parser.IProgramContext
 }
 
 func (p *Program) Display() string {
@@ -17,9 +18,9 @@ func (l *AstCreatorListener) ProgramEnter(ctx parser.IProgramContext) {
 }
 
 func (l *AstCreatorListener) ProgramExit(ctx parser.IProgramContext) {
-	// We push the Program struct to the stack as it is the entrypoint
-
-	prog := &Program{}
+	prog := &Program{
+		Ctx: ctx,
+	}
 
 	prog.Expr = l.PopAst()
 

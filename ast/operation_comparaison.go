@@ -9,6 +9,7 @@ import (
 type OperationComparaison struct {
 	Left  Ast
 	Right []*OperationComparaisonFD
+	Ctx   parser.IOperationComparaisonContext
 }
 
 type OperationComparaisonFD struct {
@@ -20,13 +21,15 @@ func (e *OperationComparaison) Display() string {
 	return " comparaison"
 }
 
-func (l *AstCreatorListener) OperationComparaisonEnter(ctx parser.ExpressionContext) {
+func (l *AstCreatorListener) OperationComparaisonEnter(ctx parser.IOperationComparaisonContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }
 
-func (l *AstCreatorListener) OperationComparaisonExit(ctx parser.ExpressionContext) {
+func (l *AstCreatorListener) OperationComparaisonExit(ctx parser.IOperationComparaisonContext) {
 	// Get back the last element of the stack
-	opCompar := &OperationComparaison{}
+	opCompar := &OperationComparaison{
+		Ctx: ctx,
+	}
 
 	if ctx.GetChildCount() == 1 {
 		return

@@ -7,19 +7,21 @@ import (
 type Definition struct {
 	Declarations []Ast
 	Expressions  []Ast
+	Ctx          parser.IDefinitionContext
 }
 
 func (e *Definition) Display() string {
 	return " definition"
 }
 
-func (l *AstCreatorListener) DefinitionEnter(ctx parser.DefinitionContext) {
+func (l *AstCreatorListener) DefinitionEnter(ctx parser.IDefinitionContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }
 
-func (l *AstCreatorListener) DefinitionExit(ctx parser.DefinitionContext) {
-	// Get back the last element of the stack
-	expr := &Definition{}
+func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
+	expr := &Definition{
+		Ctx: ctx,
+	}
 
 	for range ctx.AllDeclaration() {
 		expr.Declarations = append(expr.Declarations, l.PopAst())

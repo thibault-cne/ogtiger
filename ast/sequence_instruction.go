@@ -6,19 +6,22 @@ import (
 
 type SequenceInstruction struct {
 	Instructions []Ast
+	Ctx          parser.ISequenceInstructionContext
 }
 
 func (e *SequenceInstruction) Display() string {
 	return " addition"
 }
 
-func (l *AstCreatorListener) SequenceInstructionEnter(ctx parser.ExpressionContext) {
+func (l *AstCreatorListener) SequenceInstructionEnter(ctx parser.ISequenceInstructionContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }
 
-func (l *AstCreatorListener) SequenceInstructionExit(ctx parser.ExpressionContext) {
+func (l *AstCreatorListener) SequenceInstructionExit(ctx parser.ISequenceInstructionContext) {
 	// Get back the last element of the stack
-	opSeq := &SequenceInstruction{}
+	opSeq := &SequenceInstruction{
+		Ctx: ctx,
+	}
 
 	// Get minus and plus and term number
 	for i := 1; i < ctx.GetChildCount(); i += 2 {

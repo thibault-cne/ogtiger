@@ -4,6 +4,7 @@ import "ogtiger/parser"
 
 type OperationNegation struct {
 	Expr Ast
+	Ctx  parser.IOperationNegationContext
 }
 
 func (e OperationNegation) Display() string {
@@ -15,7 +16,9 @@ func (l *AstCreatorListener) OperationNegationEnter(ctx parser.IOperationNegatio
 }
 
 func (l *AstCreatorListener) OperationNegationExit(ctx parser.IOperationNegationContext) {
-	operationNegation := &OperationNegation{}
+	operationNegation := &OperationNegation{
+		Ctx: ctx,
+	}
 
 	operationNegation.Expr = l.PopAst()
 

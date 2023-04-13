@@ -4,19 +4,22 @@ import "ogtiger/parser"
 
 type AppelFonction struct {
 	Identifiant Ast
-	Args []Ast
+	Args        []Ast
+	Ctx         parser.AppelFonctionContext
 }
 
 func (a AppelFonction) Display() string {
 	return " appelFonction"
 }
 
-func  (l *AstCreatorListener) AppelFonctionEnter(ctx parser.AppelFonctionContext) {
+func (l *AstCreatorListener) AppelFonctionEnter(ctx parser.AppelFonctionContext) {
 	// Nothing to do
 }
 
-func  (l *AstCreatorListener) AppelFonctionExit(ctx parser.AppelFonctionContext) {
-	appelFonction := &AppelFonction{}
+func (l *AstCreatorListener) AppelFonctionExit(ctx parser.AppelFonctionContext) {
+	appelFonction := &AppelFonction{
+		Ctx: ctx,
+	}
 
 	// Get the identifiant
 	expr := l.PopAst()
@@ -24,7 +27,7 @@ func  (l *AstCreatorListener) AppelFonctionExit(ctx parser.AppelFonctionContext)
 	appelFonction.Identifiant = expr
 
 	// Get the args
-	for i := 2; i < ctx.GetChildCount() - 1; i += 2 {
+	for i := 2; i < ctx.GetChildCount()-1; i += 2 {
 		// Pop the last element of the stack
 		// Add it to the args
 		appelFonction.Args = append(appelFonction.Args, l.PopAst())

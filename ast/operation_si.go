@@ -6,6 +6,7 @@ type OperationSi struct {
 	Cond Ast
 	Then Ast
 	Else Ast
+	Ctx  parser.IOperationSiContext
 }
 
 func (e OperationSi) Display() string {
@@ -17,7 +18,9 @@ func (l *AstCreatorListener) OperationSiEnter(ctx parser.IOperationSiContext) {
 }
 
 func (l *AstCreatorListener) OperationSiExit(ctx parser.IOperationSiContext) {
-	OperationSi := &OperationSi{}
+	OperationSi := &OperationSi{
+		Ctx: ctx,
+	}
 
 	OperationSi.Cond = l.PopAst()
 	OperationSi.Then = l.PopAst()

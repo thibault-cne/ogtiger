@@ -5,6 +5,7 @@ import "ogtiger/parser"
 type OperationTantQue struct {
 	Cond  Ast
 	Block Ast
+	Ctx   parser.IOperationTantqueContext
 }
 
 func (e OperationTantQue) Display() string {
@@ -16,7 +17,9 @@ func (l *AstCreatorListener) OperationTantQueEnter(ctx parser.IOperationTantqueC
 }
 
 func (l *AstCreatorListener) OperationTantQueExit(ctx parser.IOperationTantqueContext) {
-	oT := &OperationTantQue{}
+	oT := &OperationTantQue{
+		Ctx: ctx,
+	}
 
 	oT.Cond = l.PopAst()
 	oT.Block = l.PopAst()

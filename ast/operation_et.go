@@ -5,6 +5,7 @@ import "ogtiger/parser"
 type OperationEt struct {
 	Left  Ast
 	Right []Ast
+	Ctx   parser.IOperationEtContext
 }
 
 func (e OperationEt) Display() string {
@@ -16,7 +17,9 @@ func (l *AstCreatorListener) OperationEtEnter(ctx parser.IOperationEtContext) {
 }
 
 func (l *AstCreatorListener) OperationEtExit(ctx parser.IOperationEtContext) {
-	operationEt := &OperationEt{}
+	operationEt := &OperationEt{
+		Ctx: ctx,
+	}
 
 	if ctx.GetChildCount() == 1 {
 		return

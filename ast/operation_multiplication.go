@@ -9,6 +9,7 @@ import (
 type OperationMultiplication struct {
 	Left  Ast
 	Right []*OperationMultiplicationFD
+	Ctx   parser.IOperationMultiplicationContext
 }
 
 type OperationMultiplicationFD struct {
@@ -20,13 +21,15 @@ func (e *OperationMultiplication) Display() string {
 	return " multiplication"
 }
 
-func (l *AstCreatorListener) OperationMultiplicationEnter(ctx parser.ExpressionContext) {
+func (l *AstCreatorListener) OperationMultiplicationEnter(ctx parser.IOperationMultiplicationContext) {
 	// l.AstStack = append(l.AstStack, &Expr{})
 }
 
-func (l *AstCreatorListener) OperationMultiplicationExit(ctx parser.ExpressionContext) {
+func (l *AstCreatorListener) OperationMultiplicationExit(ctx parser.IOperationMultiplicationContext) {
 	// Get back the last element of the stack
-	opMultiplication := &OperationMultiplication{}
+	opMultiplication := &OperationMultiplication{
+		Ctx: ctx,
+	}
 
 	if ctx.GetChildCount() == 1 {
 		return

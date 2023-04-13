@@ -7,6 +7,7 @@ type OperationBoucle struct {
 	StartVal Ast
 	EndVal   Ast
 	Block    Ast
+	Ctx      parser.IOperationBoucleContext
 }
 
 func (e OperationBoucle) Display() string {
@@ -18,7 +19,9 @@ func (l *AstCreatorListener) OperationBoucleEnter(ctx parser.IOperationBoucleCon
 }
 
 func (l *AstCreatorListener) OperationBoucleExit(ctx parser.IOperationBoucleContext) {
-	oB := &OperationBoucle{}
+	oB := &OperationBoucle{
+		Ctx: ctx,
+	}
 
 	oB.Start = l.PopAst()
 	oB.StartVal = l.PopAst()
