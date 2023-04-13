@@ -25,7 +25,7 @@ func (l *AstCreatorListener) OperationEtExit(ctx parser.IOperationEtContext) {
 	operationEt.Left = l.PopAst()
 
 	// Get the other exprEt
-	for i := 0; i < (ctx.GetChildCount()-1)/2; i++ {
+	for i := 0; i < len(ctx.AllOperationComparaison())-1; i++ {
 		operationEt.Right = append(operationEt.Right, l.PopAst())
 	}
 
