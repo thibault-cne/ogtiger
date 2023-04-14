@@ -10,7 +10,14 @@ import (
 
 type OperationAddition struct {
 	Left  Ast
-	Right []*OperationAdditionFD
+	Right Ast
+	Ctx   parser.IOperationAdditionContext
+	Type  ttype.TigerType
+}
+
+type OperationSoustraction struct {
+	Left  Ast
+	Right Ast
 	Ctx   parser.IOperationAdditionContext
 	Type  ttype.TigerType
 }
@@ -19,24 +26,26 @@ func (e *OperationAddition) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-type OperationAdditionFD struct {
-	Op    string
-	Right Ast
-}
-
-func (e *OperationAddition) Display() string {
-	return " addition"
+func (e *OperationSoustraction) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *OperationAddition) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("OperationAddition")
+	node, _ := g.CreateNode("+")
 	left := e.Left.Draw(g)
 	g.CreateEdge("Left", node, left)
+	right := e.Right.Draw(g)
+	g.CreateEdge("Right", node, right)
 
-	for _, right := range e.Right {
-		rightNode := right.Right.Draw(g)
-		g.CreateEdge("Right", node, rightNode)
-	}
+	return node
+}
+
+func (e *OperationSoustraction) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("-")
+	left := e.Left.Draw(g)
+	g.CreateEdge("Left", node, left)
+	right := e.Right.Draw(g)
+	g.CreateEdge("Right", node, right)
 
 	return node
 }
@@ -46,26 +55,41 @@ func (l *AstCreatorListener) OperationAdditionEnter(ctx parser.IOperationAdditio
 }
 
 func (l *AstCreatorListener) OperationAdditionExit(ctx parser.IOperationAdditionContext) {
-	// Get back the last element of the stack
-	opAddition := &OperationAddition{
-		Ctx: ctx,
-	}
-
 	if ctx.GetChildCount() == 1 {
 		return
 	}
 
-	opAddition.Left = l.PopAst()
+	// Get back the last element of the stack
+	elements := make([]Ast, 0)
 
-	// Get minus and plus and term number
-	for i := 0; i < (ctx.GetChildCount()-1)/2; i++ {
-		right := &OperationAdditionFD{}
-
-		right.Op = ctx.GetChild(2*i + 1).(*antlr.TerminalNodeImpl).GetText()
-		right.Right = l.PopAst()
-
-		opAddition.Right = append(opAddition.Right, right)
+	for i := 0; i < (ctx.GetChildCount() + 1) / 2; i++ {
+		elements = append(elements, l.PopAst())
 	}
 
-	l.PushAst(opAddition)
+	node := elements[len(elements)-1]
+	elements = elements[:len(elements)-1]
+
+	// Get minus and plus and term number
+	for i := 0; 2 * i < (ctx.GetChildCount()-1); i++ {
+		switch ctx.GetChild(2*i + 1).(*antlr.TerminalNodeImpl).GetText() {
+		case "+":
+			temp := &OperationAddition{
+				Ctx: ctx,
+				Left: node,
+				Right: elements[len(elements)-1],
+			}
+			node = temp
+		case "-":
+			temp := &OperationSoustraction{
+				Ctx: ctx,
+				Left: node,
+				Right: elements[len(elements)-1],
+			}
+			node = temp
+		}
+
+		elements = elements[:len(elements)-1]
+	}
+
+	l.PushAst(node)
 }

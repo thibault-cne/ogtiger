@@ -1,7 +1,6 @@
 package ast
 
 import (
-	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -16,10 +15,6 @@ type Identifiant struct {
 
 func (e *Identifiant) ReturnType() ttype.TigerType {
 	return e.Type
-}
-
-func (e *Identifiant) Display() string {
-	return fmt.Sprintf(" identifiant %s", e.Id)
 }
 
 func (e *Identifiant) Draw(g *cgraph.Graph) *cgraph.Node {

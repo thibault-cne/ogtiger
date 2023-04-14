@@ -18,7 +18,6 @@ type AstCreatorListener struct {
 }
 
 type Ast interface {
-	Display() string
 	Draw(g *cgraph.Graph) *cgraph.Node
 	ReturnType() ttype.TigerType
 }
@@ -202,4 +201,12 @@ func (s *AstCreatorListener) DisplayAST() {
 		log.Fatal(err)
 	}
 	fmt.Println(buf.String())
+
+	fmt.Printf("\n")
+	prog := s.AstStack[0].(*Program)
+	first := prog.Expr.(*OperationAddition)
+	snd := first.Left.(*OperationAddition)
+	fmt.Printf("%#+v\n", first)
+	fmt.Printf("%#+v\n", snd)
+	fmt.Printf("%#+v\n", snd.Right)
 }

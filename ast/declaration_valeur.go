@@ -28,8 +28,8 @@ func (e *DeclarationValeur) Draw(g *cgraph.Graph) *cgraph.Node {
 	id := e.Id.Draw(g)
 	g.CreateEdge("Id", node, id)
 
-	if e.Type != nil {
-		typeNode := e.Type.Draw(g)
+	if e.VType != nil {
+		typeNode := e.VType.Draw(g)
 		g.CreateEdge("Type", node, typeNode)
 	}
 

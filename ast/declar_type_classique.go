@@ -27,7 +27,7 @@ func (e *DeclarationTypeClassique) Draw(g *cgraph.Graph) *cgraph.Node {
 	id := e.Identifiant.Draw(g)
 	g.CreateEdge("Id", node, id)
 
-	typeNode := e.Type.Draw(g)
+	typeNode := e.TType.Draw(g)
 	g.CreateEdge("Type", node, typeNode)
 
 	return node

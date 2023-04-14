@@ -17,10 +17,6 @@ func (e *Integer) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *Integer) Display() string {
-	return " int"
-}
-
 func (e *Integer) Draw(g *cgraph.Graph) *cgraph.Node {
 	node, _ := g.CreateNode("Integer")
 	node.SetLabel(e.Valeur)
