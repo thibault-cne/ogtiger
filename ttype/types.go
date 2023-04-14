@@ -8,6 +8,7 @@ const (
 	Record
 	AnyRecord
 	Array
+	Type
 	NoReturn
 )
 
@@ -65,6 +66,24 @@ func (t *TigerType) Equals(other *TigerType) bool {
 	}
 
 	return true
+}
+
+func (t *TigerType) SizeInStack() int {
+	switch t.ID {
+	case Int:
+		return 4
+	case String:
+		return 4
+	case Record:
+		return 4
+	case AnyRecord:
+		return 4
+	case Array:
+		return 4
+	case Type:
+		return 0
+	}
+	return 0
 }
 
 func NewTigerType(id TypeID) TigerType {
