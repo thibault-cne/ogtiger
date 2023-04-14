@@ -2,12 +2,18 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type Nil struct {
-	Ctx parser.NilContext
+	Ctx  parser.NilContext
+	Type ttype.TigerType
+}
+
+func (e *Nil) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *Nil) Display() string {

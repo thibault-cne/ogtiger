@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz"
@@ -19,6 +20,7 @@ type AstCreatorListener struct {
 type Ast interface {
 	Display() string
 	Draw(prefix string, g *cgraph.Graph)
+	ReturnType() ttype.TigerType
 }
 
 func (ast *AstCreatorListener) PopAst() Ast {

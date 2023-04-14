@@ -2,6 +2,7 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
@@ -10,6 +11,11 @@ type OperationEt struct {
 	Left  Ast
 	Right []Ast
 	Ctx   parser.IOperationEtContext
+	Type  ttype.TigerType
+}
+
+func (e *OperationEt) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *OperationEt) Display() string {

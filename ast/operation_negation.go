@@ -2,6 +2,7 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
@@ -9,6 +10,11 @@ import (
 type OperationNegation struct {
 	Expr Ast
 	Ctx  parser.IOperationNegationContext
+	Type ttype.TigerType
+}
+
+func (e *OperationNegation) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *OperationNegation) Display() string {

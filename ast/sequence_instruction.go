@@ -2,6 +2,7 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
@@ -9,6 +10,11 @@ import (
 type SequenceInstruction struct {
 	Instructions []Ast
 	Ctx          parser.ISequenceInstructionContext
+	Type         ttype.TigerType
+}
+
+func (e *SequenceInstruction) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *SequenceInstruction) Display() string {

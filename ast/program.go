@@ -2,6 +2,7 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
@@ -9,6 +10,11 @@ import (
 type Program struct {
 	Expr Ast
 	Ctx  parser.IProgramContext
+	Type ttype.TigerType
+}
+
+func (e *Program) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (p *Program) Display() string {

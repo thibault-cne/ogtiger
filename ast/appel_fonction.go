@@ -2,6 +2,7 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
@@ -10,13 +11,18 @@ type AppelFonction struct {
 	Identifiant Ast
 	Args        []Ast
 	Ctx         parser.AppelFonctionContext
+	Type        ttype.TigerType
 }
 
-func (a *AppelFonction) Display() string {
+func (e *AppelFonction) ReturnType() ttype.TigerType {
+	return e.Type
+}
+
+func (e *AppelFonction) Display() string {
 	return " appel"
 }
 
-func (a *AppelFonction) Draw(prefix string, g *cgraph.Graph) {
+func (e *AppelFonction) Draw(prefix string, g *cgraph.Graph) {
 	// TODO: Draw the AST
 }
 

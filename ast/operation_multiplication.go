@@ -2,6 +2,7 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
@@ -11,6 +12,11 @@ type OperationMultiplication struct {
 	Left  Ast
 	Right []*OperationMultiplicationFD
 	Ctx   parser.IOperationMultiplicationContext
+	Type  ttype.TigerType
+}
+
+func (e *OperationMultiplication) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 type OperationMultiplicationFD struct {

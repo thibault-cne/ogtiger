@@ -3,13 +3,19 @@ package ast
 import (
 	"fmt"
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type Identifiant struct {
-	Id  string
-	Ctx parser.IIdentifiantContext
+	Id   string
+	Ctx  parser.IIdentifiantContext
+	Type ttype.TigerType
+}
+
+func (e *Identifiant) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *Identifiant) Display() string {

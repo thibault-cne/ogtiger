@@ -2,14 +2,20 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type DeclarationRecordType struct {
 	Identifiant Ast
-	Type        Ast
+	RType       Ast
 	Ctx         parser.DeclarationRecordTypeContext
+	Type        ttype.TigerType
+}
+
+func (e *DeclarationRecordType) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *DeclarationRecordType) Display() string {
@@ -31,7 +37,7 @@ func (l *AstCreatorListener) DeclarationRecordTypeExit(ctx parser.DeclarationRec
 	}
 
 	declRecordType.Identifiant = l.PopAst()
-	declRecordType.Type = l.PopAst()
+	declRecordType.RType = l.PopAst()
 
 	l.PushAst(declRecordType)
 }
