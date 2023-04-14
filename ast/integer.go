@@ -32,7 +32,8 @@ func (l *AstCreatorListener) IntegerEnter(ctx parser.EntierContext) {
 func (l *AstCreatorListener) IntegerExit(ctx parser.EntierContext) {
 	// Get back the last element of the stack
 	it := &Integer{
-		Ctx: ctx,
+		Ctx:  ctx,
+		Type: ttype.NewTigerType(ttype.Int),
 	}
 
 	it.Valeur = ctx.GetText()

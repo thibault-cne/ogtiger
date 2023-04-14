@@ -31,7 +31,8 @@ func (l *AstCreatorListener) NilEnter(ctx parser.NilContext) {
 func (l *AstCreatorListener) NilExit(ctx parser.NilContext) {
 	// Get back the last element of the stack
 	it := &Nil{
-		Ctx: ctx,
+		Ctx:  ctx,
+		Type: ttype.NewTigerType(ttype.AnyRecord),
 	}
 
 	l.PushAst(it)

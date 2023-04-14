@@ -33,7 +33,8 @@ func (l *AstCreatorListener) ChaineChrEnter(ctx parser.ChaineChrContext) {
 func (l *AstCreatorListener) ChaineChrExit(ctx parser.ChaineChrContext) {
 	// Get back the last element of the stack
 	chainChr := &ChaineChr{
-		Ctx: ctx,
+		Ctx:  ctx,
+		Type: ttype.NewTigerType(ttype.String),
 	}
 
 	chainChr.Valeur = ctx.GetChild(0).(*antlr.TerminalNodeImpl).GetText()
