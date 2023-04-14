@@ -2,6 +2,7 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
@@ -12,6 +13,11 @@ type OperationBoucle struct {
 	EndVal   Ast
 	Block    Ast
 	Ctx      parser.IOperationBoucleContext
+	Type     ttype.TigerType
+}
+
+func (e *OperationBoucle) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *OperationBoucle) Display() string {

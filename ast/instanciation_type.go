@@ -2,6 +2,7 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
@@ -11,6 +12,11 @@ type InstanciationType struct {
 	Identifiants []Ast
 	Expressions  []Ast
 	Ctx          parser.InstanciationTypeContext
+	Type         ttype.TigerType
+}
+
+func (e *InstanciationType) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (i *InstanciationType) Display() string {

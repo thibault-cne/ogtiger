@@ -2,12 +2,18 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type Break struct {
-	Ctx parser.BreakContext
+	Ctx  parser.BreakContext
+	Type ttype.TigerType
+}
+
+func (e *Break) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *Break) Display() string {

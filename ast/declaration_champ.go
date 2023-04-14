@@ -2,6 +2,7 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
@@ -10,6 +11,11 @@ type DeclarationChamp struct {
 	Left  Ast
 	Rigth Ast
 	Ctx   parser.IDeclarationChampContext
+	Type  ttype.TigerType
+}
+
+func (e *DeclarationChamp) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *DeclarationChamp) Display() string {

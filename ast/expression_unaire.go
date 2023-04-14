@@ -2,6 +2,7 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
@@ -9,6 +10,11 @@ import (
 type ExpressionUnaire struct {
 	Expr Ast
 	Ctx  parser.IExpressionUnaireContext
+	Type ttype.TigerType
+}
+
+func (e *ExpressionUnaire) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *ExpressionUnaire) Display() string {

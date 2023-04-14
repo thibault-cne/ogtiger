@@ -2,16 +2,22 @@ package ast
 
 import (
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type DeclarationFontion struct {
-	Id   Ast
-	Type Ast
-	Args []Ast
-	Expr Ast
-	Ctx  parser.IDeclarationFonctionContext
+	Id    Ast
+	FType Ast
+	Args  []Ast
+	Expr  Ast
+	Ctx   parser.IDeclarationFonctionContext
+	Type  ttype.TigerType
+}
+
+func (e *DeclarationFontion) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *DeclarationFontion) Display() string {
@@ -55,7 +61,7 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 
 	// Pop the type if it exists
 	if len(ctx.AllIdentifiant()) > 1 {
-		declarationFontion.Type = l.PopAst()
+		declarationFontion.FType = l.PopAst()
 	}
 
 	declarationFontion.Expr = l.PopAst()
