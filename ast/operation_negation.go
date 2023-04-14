@@ -11,10 +11,10 @@ import (
 type OperationNegation struct {
 	Expr Ast
 	Ctx  parser.IOperationNegationContext
-	Type ttype.TigerType
+	Type *ttype.TigerType
 }
 
-func (e *OperationNegation) ReturnType() ttype.TigerType {
+func (e *OperationNegation) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 

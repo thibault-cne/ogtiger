@@ -13,21 +13,21 @@ type OperationMultiplication struct {
 	Left  Ast
 	Right Ast
 	Ctx   parser.IOperationMultiplicationContext
-	Type  ttype.TigerType
+	Type  *ttype.TigerType
 }
 
 type OperationDivision struct {
 	Left  Ast
 	Right Ast
 	Ctx   parser.IOperationMultiplicationContext
-	Type  ttype.TigerType
+	Type  *ttype.TigerType
 }
 
-func (e *OperationMultiplication) ReturnType() ttype.TigerType {
+func (e *OperationMultiplication) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
-func (e *OperationDivision) ReturnType() ttype.TigerType {
+func (e *OperationDivision) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
@@ -69,7 +69,7 @@ func (l *AstCreatorListener) OperationMultiplicationExit(ctx parser.IOperationMu
 	// Get back the elements needed from the stack
 	elements := make([]Ast, 0)
 
-	for i := 0; i < (ctx.GetChildCount() + 1) / 2; i++ {
+	for i := 0; i < (ctx.GetChildCount()+1)/2; i++ {
 		elements = append(elements, l.PopAst())
 	}
 
@@ -77,19 +77,19 @@ func (l *AstCreatorListener) OperationMultiplicationExit(ctx parser.IOperationMu
 	elements = elements[:len(elements)-1]
 
 	// Get minus and plus and term number
-	for i := 0; 2 * i < (ctx.GetChildCount()-1); i++ {
+	for i := 0; 2*i < (ctx.GetChildCount() - 1); i++ {
 		switch ctx.GetChild(2*i + 1).(*antlr.TerminalNodeImpl).GetText() {
 		case "*":
 			temp := &OperationMultiplication{
-				Ctx: ctx,
-				Left: node,
+				Ctx:   ctx,
+				Left:  node,
 				Right: elements[len(elements)-1],
 			}
 			node = temp
 		case "/":
 			temp := &OperationDivision{
-				Ctx: ctx,
-				Left: node,
+				Ctx:   ctx,
+				Left:  node,
 				Right: elements[len(elements)-1],
 			}
 			node = temp

@@ -13,10 +13,10 @@ type OperationSi struct {
 	Then Ast
 	Else Ast
 	Ctx  parser.IOperationSiContext
-	Type ttype.TigerType
+	Type *ttype.TigerType
 }
 
-func (e *OperationSi) ReturnType() ttype.TigerType {
+func (e *OperationSi) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
@@ -24,7 +24,7 @@ func (e *OperationSi) Draw(g *cgraph.Graph) *cgraph.Node {
 	nodeId := fmt.Sprintf("N%p", e)
 	node, _ := g.CreateNode(nodeId)
 	node.SetLabel("Si")
-	
+
 	cond := e.Cond.Draw(g)
 	g.CreateEdge("Cond", node, cond)
 

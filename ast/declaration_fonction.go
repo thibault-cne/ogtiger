@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -14,10 +15,10 @@ type DeclarationFontion struct {
 	FType Ast
 	Expr  Ast
 	Ctx   parser.IDeclarationFonctionContext
-	Type  ttype.TigerType
+	Type  *ttype.TigerType
 }
 
-func (e *DeclarationFontion) ReturnType() ttype.TigerType {
+func (e *DeclarationFontion) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
@@ -60,12 +61,22 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 	}
 
 	// Pop all args
+	args := []*ttype.FunctionParameter{}
 	for i := 0; i < len(ctx.AllDeclarationChamp()); i++ {
 		// Prepend the arg
-		declarationFontion.Args = append([]Ast{ l.PopAst() }, declarationFontion.Args...)
+		declarationFontion.Args = append([]Ast{l.PopAst()}, declarationFontion.Args...)
+		args = append(args, &ttype.FunctionParameter{
+			Name: declarationFontion.Args[i].(*DeclarationChamp).Left.(*Identifiant).Id,
+			Type: declarationFontion.Args[i].(*DeclarationChamp).Right.(*Identifiant).ReturnType(),
+		})
 	}
 
 	declarationFontion.Id = l.PopAst()
+
+	// Verify that the Id is not already defined
+	if _, err := l.Slt.GetSymbol(declarationFontion.Id.(*Identifiant).Id); err == nil {
+		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, ctx, declarationFontion.Id.(*Identifiant).Id)
+	}
 
 	l.PushAst(declarationFontion)
 }

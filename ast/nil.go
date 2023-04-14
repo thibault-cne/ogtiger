@@ -10,10 +10,10 @@ import (
 
 type Nil struct {
 	Ctx  parser.NilContext
-	Type ttype.TigerType
+	Type *ttype.TigerType
 }
 
-func (e *Nil) ReturnType() ttype.TigerType {
+func (e *Nil) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 

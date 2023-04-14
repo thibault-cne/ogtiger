@@ -9,10 +9,16 @@ const (
 	AnyRecord
 	Array
 	Type
+	Function
 	NoReturn
 )
 
 type RecordField struct {
+	Name string
+	Type *TigerType
+}
+
+type FunctionParameter struct {
 	Name string
 	Type *TigerType
 }
@@ -25,6 +31,10 @@ type TigerType struct {
 
 	// For arrays
 	ElementType *TigerType
+
+	// For functions
+	Parameters []*FunctionParameter
+	ReturnType *TigerType
 }
 
 func (t *TigerType) Equals(other *TigerType) bool {
@@ -82,26 +92,36 @@ func (t *TigerType) SizeInStack() int {
 		return 4
 	case Type:
 		return 0
+	case Function:
+		return 0
 	}
 	return 0
 }
 
-func NewTigerType(id TypeID) TigerType {
-	return TigerType{
+func NewTigerType(id TypeID) *TigerType {
+	return &TigerType{
 		ID: id,
 	}
 }
 
-func NewRecordType(fields []*RecordField) TigerType {
-	return TigerType{
+func NewRecordType(fields []*RecordField) *TigerType {
+	return &TigerType{
 		ID:     Record,
 		Fields: fields,
 	}
 }
 
-func NewArrayType(elementType *TigerType) TigerType {
-	return TigerType{
+func NewArrayType(elementType *TigerType) *TigerType {
+	return &TigerType{
 		ID:          Array,
 		ElementType: elementType,
+	}
+}
+
+func NewFunctionType(returnType *TigerType, parameters []*FunctionParameter) *TigerType {
+	return &TigerType{
+		ID:         Function,
+		Parameters: parameters,
+		ReturnType: returnType,
 	}
 }

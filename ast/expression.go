@@ -12,10 +12,10 @@ type Expression struct {
 	Left  Ast
 	Right Ast
 	Ctx   parser.IExpressionContext
-	Type  ttype.TigerType
+	Type  *ttype.TigerType
 }
 
-func (e *Expression) ReturnType() ttype.TigerType {
+func (e *Expression) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 

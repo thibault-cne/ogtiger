@@ -12,10 +12,10 @@ type OperationTantQue struct {
 	Cond  Ast
 	Block Ast
 	Ctx   parser.IOperationTantqueContext
-	Type  ttype.TigerType
+	Type  *ttype.TigerType
 }
 
-func (e *OperationTantQue) ReturnType() ttype.TigerType {
+func (e *OperationTantQue) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 

@@ -13,21 +13,21 @@ type OperationAddition struct {
 	Left  Ast
 	Right Ast
 	Ctx   parser.IOperationAdditionContext
-	Type  ttype.TigerType
+	Type  *ttype.TigerType
 }
 
 type OperationSoustraction struct {
 	Left  Ast
 	Right Ast
 	Ctx   parser.IOperationAdditionContext
-	Type  ttype.TigerType
+	Type  *ttype.TigerType
 }
 
-func (e *OperationAddition) ReturnType() ttype.TigerType {
+func (e *OperationAddition) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
-func (e *OperationSoustraction) ReturnType() ttype.TigerType {
+func (e *OperationSoustraction) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
@@ -69,7 +69,7 @@ func (l *AstCreatorListener) OperationAdditionExit(ctx parser.IOperationAddition
 	// Get back the elements needed from the stack
 	elements := make([]Ast, 0)
 
-	for i := 0; i < (ctx.GetChildCount() + 1) / 2; i++ {
+	for i := 0; i < (ctx.GetChildCount()+1)/2; i++ {
 		elements = append(elements, l.PopAst())
 	}
 
@@ -77,19 +77,19 @@ func (l *AstCreatorListener) OperationAdditionExit(ctx parser.IOperationAddition
 	elements = elements[:len(elements)-1]
 
 	// Get minus and plus and term number
-	for i := 0; 2 * i < (ctx.GetChildCount()-1); i++ {
+	for i := 0; 2*i < (ctx.GetChildCount() - 1); i++ {
 		switch ctx.GetChild(2*i + 1).(*antlr.TerminalNodeImpl).GetText() {
 		case "+":
 			temp := &OperationAddition{
-				Ctx: ctx,
-				Left: node,
+				Ctx:   ctx,
+				Left:  node,
 				Right: elements[len(elements)-1],
 			}
 			node = temp
 		case "-":
 			temp := &OperationSoustraction{
-				Ctx: ctx,
-				Left: node,
+				Ctx:   ctx,
+				Left:  node,
 				Right: elements[len(elements)-1],
 			}
 			node = temp

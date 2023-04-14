@@ -11,10 +11,10 @@ import (
 type Identifiant struct {
 	Id   string
 	Ctx  parser.IIdentifiantContext
-	Type ttype.TigerType
+	Type *ttype.TigerType
 }
 
-func (e *Identifiant) ReturnType() ttype.TigerType {
+func (e *Identifiant) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 

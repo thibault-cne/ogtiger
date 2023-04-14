@@ -10,10 +10,10 @@ import (
 
 type Break struct {
 	Ctx  parser.BreakContext
-	Type ttype.TigerType
+	Type *ttype.TigerType
 }
 
-func (e *Break) ReturnType() ttype.TigerType {
+func (e *Break) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 

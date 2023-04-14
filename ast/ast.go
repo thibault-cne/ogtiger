@@ -3,7 +3,9 @@ package ast
 import (
 	"bytes"
 	"log"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
@@ -14,11 +16,26 @@ import (
 type AstCreatorListener struct {
 	AstStack []Ast
 	*parser.BasetigerVisitor
+
+	// The symbol table
+	Slt *slt.SymbolTable
+
+	// The logger
+	Logger *logger.StepLogger
+}
+
+func NewAstCreatorListener(L *logger.StepLogger) *AstCreatorListener {
+	slt := slt.NewSymbolTable()
+	return &AstCreatorListener{
+		AstStack: make([]Ast, 0),
+		Slt:      slt,
+		Logger:   L,
+	}
 }
 
 type Ast interface {
 	Draw(g *cgraph.Graph) *cgraph.Node
-	ReturnType() ttype.TigerType
+	ReturnType() *ttype.TigerType
 }
 
 func (ast *AstCreatorListener) PopAst() Ast {

@@ -13,10 +13,10 @@ type InstanciationType struct {
 	Identifiants []Ast
 	Expressions  []Ast
 	Ctx          parser.InstanciationTypeContext
-	Type         ttype.TigerType
+	Type         *ttype.TigerType
 }
 
-func (e *InstanciationType) ReturnType() ttype.TigerType {
+func (e *InstanciationType) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
@@ -54,7 +54,7 @@ func (l *AstCreatorListener) InstanciationTypeExit(ctx parser.InstanciationTypeC
 	identifiantsCount := len(ctx.AllIdentifiant())
 
 	// Get the identifiants and the expressions
-	for i := 0; i < identifiantsCount - 1; i++ {
+	for i := 0; i < identifiantsCount-1; i++ {
 		// Pop the last element of the stack
 		// Add it to the identifiants
 		instanciationType.Identifiants = append([]Ast{ l.PopAst() }, instanciationType.Identifiants...)

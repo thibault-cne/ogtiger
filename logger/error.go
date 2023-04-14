@@ -3,6 +3,8 @@ package logger
 import (
 	"fmt"
 	"time"
+
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 )
 
 // Implement a step based logger, steps are on the same line
@@ -15,6 +17,8 @@ type StepLogger struct {
 	err bool
 	// Max step
 	max int
+	// Semantic errors
+	errors []*SemanticError
 }
 
 func NewStepLogger(max int) *StepLogger {
@@ -23,6 +27,12 @@ func NewStepLogger(max int) *StepLogger {
 		start: time.Now(),
 		max:   max,
 	}
+}
+
+func (l *StepLogger) NewSemanticError(err SemError, ctx antlr.ParserRuleContext, args ...interface{}) {
+	e := NewSemanticError(err, ctx, args)
+
+	l.errors = append(l.errors, e)
 }
 
 // Increment the step

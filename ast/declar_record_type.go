@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -10,12 +11,12 @@ import (
 
 type DeclarationRecordType struct {
 	Identifiant Ast
-	RType       Ast
+	Champs      []Ast
 	Ctx         parser.DeclarationRecordTypeContext
-	Type        ttype.TigerType
+	Type        *ttype.TigerType
 }
 
-func (e *DeclarationRecordType) ReturnType() ttype.TigerType {
+func (e *DeclarationRecordType) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
@@ -27,8 +28,14 @@ func (e *DeclarationRecordType) Draw(g *cgraph.Graph) *cgraph.Node {
 	id := e.Identifiant.Draw(g)
 	g.CreateEdge("Id", node, id)
 
-	typeNode := e.RType.Draw(g)
-	g.CreateEdge("Type", node, typeNode)
+	cnodeId := fmt.Sprintf("N%pc", e.Champs)
+	cnode, _ := g.CreateNode(cnodeId)
+	cnode.SetLabel("Champs")
+
+	for _, champ := range e.Champs {
+		typeNode := champ.Draw(g)
+		g.CreateEdge("Champ", cnode, typeNode)
+	}
 
 	return node
 }
@@ -43,8 +50,29 @@ func (l *AstCreatorListener) DeclarationRecordTypeExit(ctx parser.DeclarationRec
 		Ctx: ctx,
 	}
 
-	declRecordType.RType = l.PopAst()
+	for range ctx.AllDeclarationChamp() {
+		declRecordType.Champs = append(declRecordType.Champs, l.PopAst())
+	}
+
 	declRecordType.Identifiant = l.PopAst()
+
+	// Verify that the type is not already defined
+	if _, err := l.Slt.GetSymbol(declRecordType.Identifiant.(*Identifiant).Id); err == nil {
+		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, &ctx, declRecordType.Identifiant.(*Identifiant).Id)
+	}
+
+	typeFields := []*ttype.RecordField{}
+	for _, champ := range declRecordType.Champs {
+		if champ.(*DeclarationChamp).Right.ReturnType() == nil {
+			l.Logger.NewSemanticError(logger.ErrorTypeIsNotDefined, &ctx, champ.(*DeclarationChamp).Right.(*Identifiant).Id)
+		}
+		typeFields = append(typeFields, &ttype.RecordField{
+			Name: champ.(*DeclarationChamp).Left.(*Identifiant).Id,
+			Type: champ.(*DeclarationChamp).Right.ReturnType(),
+		})
+	}
+
+	l.Slt.CreateSymbol(declRecordType.Identifiant.(*Identifiant).Id, ttype.NewRecordType(typeFields))
 
 	l.PushAst(declRecordType)
 }

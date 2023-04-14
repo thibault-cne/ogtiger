@@ -12,10 +12,10 @@ type OperationOu struct {
 	Left  Ast
 	Right Ast
 	Ctx   parser.IOperationOuContext
-	Type  ttype.TigerType
+	Type  *ttype.TigerType
 }
 
-func (e *OperationOu) ReturnType() ttype.TigerType {
+func (e *OperationOu) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
@@ -46,7 +46,7 @@ func (l *AstCreatorListener) OperationOuExit(ctx parser.IOperationOuContext) {
 	// Get the other exprEt
 	for i := 0; i < len(ctx.AllOperationEt())-1; i++ {
 		node = &OperationOu{
-			Ctx:  ctx,
+			Ctx:   ctx,
 			Left:  node,
 			Right: l.PopAst(),
 		}

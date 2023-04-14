@@ -12,10 +12,10 @@ type AppelFonction struct {
 	Identifiant Ast
 	Args        []Ast
 	Ctx         parser.AppelFonctionContext
-	Type        ttype.TigerType
+	Type        *ttype.TigerType
 }
 
-func (e *AppelFonction) ReturnType() ttype.TigerType {
+func (e *AppelFonction) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 

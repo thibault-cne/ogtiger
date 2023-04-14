@@ -10,14 +10,14 @@ import (
 )
 
 type OperationComparaison struct {
-	Op   string
+	Op    string
 	Left  Ast
 	Right Ast
 	Ctx   parser.IOperationComparaisonContext
-	Type  ttype.TigerType
+	Type  *ttype.TigerType
 }
 
-func (e *OperationComparaison) ReturnType() ttype.TigerType {
+func (e *OperationComparaison) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
@@ -25,7 +25,7 @@ func (e *OperationComparaison) Draw(g *cgraph.Graph) *cgraph.Node {
 	nodeId := fmt.Sprintf("N%p", e)
 	node, _ := g.CreateNode(nodeId)
 	node.SetLabel("OperationComparaison")
-	
+
 	left := e.Left.Draw(g)
 	g.CreateEdge("Left", node, left)
 	right := e.Right.Draw(g)

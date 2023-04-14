@@ -12,10 +12,10 @@ import (
 type ChaineChr struct {
 	Valeur string
 	Ctx    parser.ChaineChrContext
-	Type   ttype.TigerType
+	Type   *ttype.TigerType
 }
 
-func (e *ChaineChr) ReturnType() ttype.TigerType {
+func (e *ChaineChr) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 

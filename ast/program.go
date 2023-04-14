@@ -11,10 +11,10 @@ import (
 type Program struct {
 	Expr Ast
 	Ctx  parser.IProgramContext
-	Type ttype.TigerType
+	Type *ttype.TigerType
 }
 
-func (e *Program) ReturnType() ttype.TigerType {
+func (e *Program) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
@@ -22,7 +22,7 @@ func (e *Program) Draw(g *cgraph.Graph) *cgraph.Node {
 	nodeId := fmt.Sprintf("N%p", e)
 	node, _ := g.CreateNode(nodeId)
 	node.SetLabel("Program")
-	
+
 	expr := e.Expr.Draw(g)
 	g.CreateEdge("Expr", node, expr)
 

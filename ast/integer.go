@@ -11,10 +11,10 @@ import (
 type Integer struct {
 	Valeur string
 	Ctx    parser.EntierContext
-	Type   ttype.TigerType
+	Type   *ttype.TigerType
 }
 
-func (e *Integer) ReturnType() ttype.TigerType {
+func (e *Integer) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 

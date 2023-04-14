@@ -48,7 +48,7 @@ func parse(input string) {
 	p := parser.NewtigerParser(tokenStream)
 	p.RemoveErrorListeners()
 	p.AddErrorListener(emptyErrorListener)
-	listener := &ast.AstCreatorListener{}
+	listener := ast.NewAstCreatorListener(log)
 	antlr.ParseTreeWalkerDefault.Walk(listener, p.Program())
 
 	if failed {

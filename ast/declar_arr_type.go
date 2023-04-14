@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -12,10 +13,10 @@ type DeclarationArrayType struct {
 	Identifiant Ast
 	AType       Ast
 	Ctx         parser.DeclarationArrayTypeContext
-	Type        ttype.TigerType
+	Type        *ttype.TigerType
 }
 
-func (e *DeclarationArrayType) ReturnType() ttype.TigerType {
+func (e *DeclarationArrayType) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
@@ -45,6 +46,13 @@ func (l *AstCreatorListener) DeclarationArrayTypeExit(ctx parser.DeclarationArra
 
 	declArrType.AType = l.PopAst()
 	declArrType.Identifiant = l.PopAst()
+
+	// Verify that the type is not already defined
+	if _, err := l.Slt.GetSymbol(declArrType.Identifiant.(*Identifiant).Id); err == nil {
+		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, &ctx, declArrType.Identifiant.(*Identifiant).Id)
+	}
+
+	l.Slt.CreateSymbol(declArrType.Identifiant.(*Identifiant).Id, declArrType.AType.ReturnType())
 
 	l.PushAst(declArrType)
 }

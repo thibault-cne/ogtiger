@@ -10,12 +10,12 @@ import (
 
 type DeclarationChamp struct {
 	Left  Ast
-	Rigth Ast
+	Right Ast
 	Ctx   parser.IDeclarationChampContext
-	Type  ttype.TigerType
+	Type  *ttype.TigerType
 }
 
-func (e *DeclarationChamp) ReturnType() ttype.TigerType {
+func (e *DeclarationChamp) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
@@ -27,7 +27,7 @@ func (e *DeclarationChamp) Draw(g *cgraph.Graph) *cgraph.Node {
 	left := e.Left.Draw(g)
 	g.CreateEdge("Left", node, left)
 
-	right := e.Rigth.Draw(g)
+	right := e.Right.Draw(g)
 	g.CreateEdge("Rigth", node, right)
 
 	return node
@@ -42,7 +42,7 @@ func (l *AstCreatorListener) DeclarationChampExit(ctx parser.IDeclarationChampCo
 		Ctx: ctx,
 	}
 
-	declarationChamp.Rigth = l.PopAst()
+	declarationChamp.Right = l.PopAst()
 	declarationChamp.Left = l.PopAst()
 
 	l.PushAst(declarationChamp)

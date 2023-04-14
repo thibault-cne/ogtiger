@@ -12,10 +12,10 @@ type Definition struct {
 	Declarations []Ast
 	Expressions  []Ast
 	Ctx          parser.IDefinitionContext
-	Type         ttype.TigerType
+	Type         *ttype.TigerType
 }
 
-func (e *Definition) ReturnType() ttype.TigerType {
+func (e *Definition) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 

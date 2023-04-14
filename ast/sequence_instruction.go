@@ -11,10 +11,10 @@ import (
 type SequenceInstruction struct {
 	Instructions []Ast
 	Ctx          parser.ISequenceInstructionContext
-	Type         ttype.TigerType
+	Type         *ttype.TigerType
 }
 
-func (e *SequenceInstruction) ReturnType() ttype.TigerType {
+func (e *SequenceInstruction) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 

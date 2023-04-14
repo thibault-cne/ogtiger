@@ -14,10 +14,10 @@ type OperationBoucle struct {
 	EndVal   Ast
 	Block    Ast
 	Ctx      parser.IOperationBoucleContext
-	Type     ttype.TigerType
+	Type     *ttype.TigerType
 }
 
-func (e *OperationBoucle) ReturnType() ttype.TigerType {
+func (e *OperationBoucle) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 

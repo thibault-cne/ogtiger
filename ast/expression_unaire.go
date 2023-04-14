@@ -11,10 +11,10 @@ import (
 type ExpressionUnaire struct {
 	Expr Ast
 	Ctx  parser.IExpressionUnaireContext
-	Type ttype.TigerType
+	Type *ttype.TigerType
 }
 
-func (e *ExpressionUnaire) ReturnType() ttype.TigerType {
+func (e *ExpressionUnaire) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
