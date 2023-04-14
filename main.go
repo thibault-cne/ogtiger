@@ -3,6 +3,7 @@ package main
 import (
 	"ogtiger/ast"
 	"ogtiger/logger"
+	"ogtiger/options"
 	"ogtiger/parser"
 	"os"
 
@@ -62,13 +63,14 @@ func parse(input string) {
 }
 
 func main() {
-	// Take filename as input
-	if len(os.Args) < 2 {
-		log.LogErrorf("No input file provided\n")
+	options, err := options.Parse(os.Args)
+
+	if err != nil {
+		log.LogErrorf("Error while parsing options: %s\n", err)
 		return
 	}
 
-	data, err := os.ReadFile(os.Args[1])
+	data, err := os.ReadFile(options.File)
 	if err != nil {
 		log.LogErrorf("Error while reading file: %s\n", err)
 		return
