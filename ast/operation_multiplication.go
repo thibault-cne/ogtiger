@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -10,7 +11,14 @@ import (
 
 type OperationMultiplication struct {
 	Left  Ast
-	Right []*OperationMultiplicationFD
+	Right Ast
+	Ctx   parser.IOperationMultiplicationContext
+	Type  ttype.TigerType
+}
+
+type OperationDivision struct {
+	Left  Ast
+	Right Ast
 	Ctx   parser.IOperationMultiplicationContext
 	Type  ttype.TigerType
 }
@@ -19,24 +27,32 @@ func (e *OperationMultiplication) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-type OperationMultiplicationFD struct {
-	Op    string
-	Right Ast
-}
-
-func (e *OperationMultiplication) Display() string {
-	return " multiplication"
+func (e *OperationDivision) ReturnType() ttype.TigerType {
+	return e.Type
 }
 
 func (e *OperationMultiplication) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("OperationMultiplication")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("*")
+
 	left := e.Left.Draw(g)
 	g.CreateEdge("Left", node, left)
+	right := e.Right.Draw(g)
+	g.CreateEdge("Right", node, right)
 
-	for _, right := range e.Right {
-		rightNode := right.Right.Draw(g)
-		g.CreateEdge("Right", node, rightNode)
-	}
+	return node
+}
+
+func (e *OperationDivision) Draw(g *cgraph.Graph) *cgraph.Node {
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("/")
+
+	left := e.Left.Draw(g)
+	g.CreateEdge("Left", node, left)
+	right := e.Right.Draw(g)
+	g.CreateEdge("Right", node, right)
 
 	return node
 }
@@ -46,26 +62,41 @@ func (l *AstCreatorListener) OperationMultiplicationEnter(ctx parser.IOperationM
 }
 
 func (l *AstCreatorListener) OperationMultiplicationExit(ctx parser.IOperationMultiplicationContext) {
-	// Get back the last element of the stack
-	opMultiplication := &OperationMultiplication{
-		Ctx: ctx,
-	}
-
 	if ctx.GetChildCount() == 1 {
 		return
 	}
 
-	opMultiplication.Left = l.PopAst()
+	// Get back the elements needed from the stack
+	elements := make([]Ast, 0)
 
-	// Get minus and plus and term number
-	for i := 0; i < (ctx.GetChildCount()-1)/2; i++ {
-		right := &OperationMultiplicationFD{}
-
-		right.Op = ctx.GetChild(2*i + 1).(*antlr.TerminalNodeImpl).GetText()
-		right.Right = l.PopAst()
-
-		opMultiplication.Right = append(opMultiplication.Right, right)
+	for i := 0; i < (ctx.GetChildCount() + 1) / 2; i++ {
+		elements = append(elements, l.PopAst())
 	}
 
-	l.PushAst(opMultiplication)
+	node := elements[len(elements)-1]
+	elements = elements[:len(elements)-1]
+
+	// Get minus and plus and term number
+	for i := 0; 2 * i < (ctx.GetChildCount()-1); i++ {
+		switch ctx.GetChild(2*i + 1).(*antlr.TerminalNodeImpl).GetText() {
+		case "*":
+			temp := &OperationMultiplication{
+				Ctx: ctx,
+				Left: node,
+				Right: elements[len(elements)-1],
+			}
+			node = temp
+		case "/":
+			temp := &OperationDivision{
+				Ctx: ctx,
+				Left: node,
+				Right: elements[len(elements)-1],
+			}
+			node = temp
+		}
+
+		elements = elements[:len(elements)-1]
+	}
+
+	l.PushAst(node)
 }

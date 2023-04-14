@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -18,12 +19,11 @@ func (e *DeclarationRecordType) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *DeclarationRecordType) Display() string {
-	return " record_type"
-}
-
 func (e *DeclarationRecordType) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("DeclarationRecordType")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("DeclarationRecordType")
+
 	id := e.Identifiant.Draw(g)
 	g.CreateEdge("Id", node, id)
 
@@ -43,8 +43,8 @@ func (l *AstCreatorListener) DeclarationRecordTypeExit(ctx parser.DeclarationRec
 		Ctx: ctx,
 	}
 
-	declRecordType.Identifiant = l.PopAst()
 	declRecordType.RType = l.PopAst()
+	declRecordType.Identifiant = l.PopAst()
 
 	l.PushAst(declRecordType)
 }

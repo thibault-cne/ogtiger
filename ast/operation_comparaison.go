@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -9,8 +10,9 @@ import (
 )
 
 type OperationComparaison struct {
+	Op   string
 	Left  Ast
-	Right []*OperationComparaisonFD
+	Right Ast
 	Ctx   parser.IOperationComparaisonContext
 	Type  ttype.TigerType
 }
@@ -19,24 +21,15 @@ func (e *OperationComparaison) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-type OperationComparaisonFD struct {
-	Op    string
-	Right Ast
-}
-
-func (e *OperationComparaison) Display() string {
-	return " comparaison"
-}
-
 func (e *OperationComparaison) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("OperationComparaison")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("OperationComparaison")
+	
 	left := e.Left.Draw(g)
 	g.CreateEdge("Left", node, left)
-
-	for _, right := range e.Right {
-		rightNode := right.Right.Draw(g)
-		g.CreateEdge("Right", node, rightNode)
-	}
+	right := e.Right.Draw(g)
+	g.CreateEdge("Right", node, right)
 
 	return node
 }
@@ -46,26 +39,23 @@ func (l *AstCreatorListener) OperationComparaisonEnter(ctx parser.IOperationComp
 }
 
 func (l *AstCreatorListener) OperationComparaisonExit(ctx parser.IOperationComparaisonContext) {
-	// Get back the last element of the stack
-	opCompar := &OperationComparaison{
-		Ctx: ctx,
-	}
-
 	if ctx.GetChildCount() == 1 {
 		return
 	}
 
-	opCompar.Left = l.PopAst()
-
-	// Get minus and plus and term number
-	for i := 0; i < (ctx.GetChildCount()-1)/2; i++ {
-		right := &OperationComparaisonFD{}
-
-		right.Op = ctx.GetChild(2*i + 1).(*antlr.TerminalNodeImpl).GetText()
-		right.Right = l.PopAst()
-
-		opCompar.Right = append(opCompar.Right, right)
+	opCompar := &OperationComparaison{
+		Ctx: ctx,
 	}
+
+	// Get left and right from stack
+	right := l.PopAst()
+	left := l.PopAst()
+
+	opCompar.Left = left
+	opCompar.Right = right
+
+	// Get operator
+	opCompar.Op = ctx.GetChild(1).(*antlr.TerminalNodeImpl).GetText()
 
 	l.PushAst(opCompar)
 }

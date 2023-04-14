@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -19,12 +20,11 @@ func (e *OperationSi) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *OperationSi) Display() string {
-	return " si"
-}
-
 func (e *OperationSi) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("OperationSi")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("Si")
+	
 	cond := e.Cond.Draw(g)
 	g.CreateEdge("Cond", node, cond)
 
@@ -48,12 +48,12 @@ func (l *AstCreatorListener) OperationSiExit(ctx parser.IOperationSiContext) {
 		Ctx: ctx,
 	}
 
-	OperationSi.Cond = l.PopAst()
-	OperationSi.Then = l.PopAst()
-
 	if ctx.GetChildCount() == 6 {
 		OperationSi.Else = l.PopAst()
 	}
+
+	OperationSi.Then = l.PopAst()
+	OperationSi.Cond = l.PopAst()
 
 	l.PushAst(OperationSi)
 }

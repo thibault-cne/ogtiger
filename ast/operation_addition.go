@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -31,7 +32,10 @@ func (e *OperationSoustraction) ReturnType() ttype.TigerType {
 }
 
 func (e *OperationAddition) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("+")
+	id := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(id)
+	node.SetLabel("+")
+
 	left := e.Left.Draw(g)
 	g.CreateEdge("Left", node, left)
 	right := e.Right.Draw(g)
@@ -41,7 +45,10 @@ func (e *OperationAddition) Draw(g *cgraph.Graph) *cgraph.Node {
 }
 
 func (e *OperationSoustraction) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("-")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("-")
+
 	left := e.Left.Draw(g)
 	g.CreateEdge("Left", node, left)
 	right := e.Right.Draw(g)
@@ -59,7 +66,7 @@ func (l *AstCreatorListener) OperationAdditionExit(ctx parser.IOperationAddition
 		return
 	}
 
-	// Get back the last element of the stack
+	// Get back the elements needed from the stack
 	elements := make([]Ast, 0)
 
 	for i := 0; i < (ctx.GetChildCount() + 1) / 2; i++ {

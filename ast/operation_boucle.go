@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -25,7 +26,10 @@ func (e *OperationBoucle) Display() string {
 }
 
 func (e *OperationBoucle) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("OperationBoucle")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("OperationBoucle")
+
 	start := e.Start.Draw(g)
 	g.CreateEdge("Start", node, start)
 
@@ -50,10 +54,10 @@ func (l *AstCreatorListener) OperationBoucleExit(ctx parser.IOperationBoucleCont
 		Ctx: ctx,
 	}
 
-	oB.Start = l.PopAst()
-	oB.StartVal = l.PopAst()
-	oB.EndVal = l.PopAst()
 	oB.Block = l.PopAst()
+	oB.EndVal = l.PopAst()
+	oB.StartVal = l.PopAst()
+	oB.Start = l.PopAst()
 
 	// Push the new element on the stack
 	l.AstStack = append(l.AstStack, oB)

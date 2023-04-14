@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -18,12 +19,9 @@ func (e *ChaineChr) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *ChaineChr) Display() string {
-	return " string"
-}
-
 func (e *ChaineChr) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("ChaineChr")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
 	node.SetLabel(e.Valeur)
 
 	return node

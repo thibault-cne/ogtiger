@@ -1,1 +1,7 @@
-x + 2 + 4 + 6
+let
+    function f(x: int) : int = (
+        x + 4
+    )
+in
+    f(3)
+end

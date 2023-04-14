@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -24,7 +25,9 @@ func (i *InstanciationType) Display() string {
 }
 
 func (e *InstanciationType) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("InstanciationType")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("InstanciationType")
 
 	identifiant := e.Identifiant.Draw(g)
 	g.CreateEdge("Identifiant", node, identifiant)
@@ -47,16 +50,11 @@ func (l *AstCreatorListener) InstanciationTypeEnter(ctx parser.InstanciationType
 func (l *AstCreatorListener) InstanciationTypeExit(ctx parser.InstanciationTypeContext) {
 	instanciationType := &InstanciationType{Ctx: ctx}
 
-	// Get the identifiant
-	identifiant := l.PopAst()
-
-	instanciationType.Identifiant = identifiant
-
 	// Get the identifiants count
 	identifiantsCount := len(ctx.AllIdentifiant())
 
 	// Get the identifiants and the expressions
-	for i := 0; i < identifiantsCount; i++ {
+	for i := 0; i < identifiantsCount - 1; i++ {
 		// Pop the last element of the stack
 		// Add it to the identifiants
 		instanciationType.Identifiants = append(instanciationType.Identifiants, l.PopAst())
@@ -65,6 +63,15 @@ func (l *AstCreatorListener) InstanciationTypeExit(ctx parser.InstanciationTypeC
 		// Add it to the expressions
 		instanciationType.Expressions = append(instanciationType.Expressions, l.PopAst())
 	}
+
+	// Reverse the identifiants and the expressions
+	for i := 0; i < identifiantsCount/2; i++ {
+		instanciationType.Identifiants[i], instanciationType.Identifiants[identifiantsCount-i-1] = instanciationType.Identifiants[identifiantsCount-i-1], instanciationType.Identifiants[i]
+		instanciationType.Expressions[i], instanciationType.Expressions[identifiantsCount-i-1] = instanciationType.Expressions[identifiantsCount-i-1], instanciationType.Expressions[i]
+	}
+
+	// Get the identifiant
+	instanciationType.Identifiant = l.PopAst()
 
 	// Push the new element on the stack
 	l.PushAst(instanciationType)

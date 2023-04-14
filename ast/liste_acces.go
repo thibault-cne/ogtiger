@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
@@ -18,7 +19,9 @@ func (l *ListAcces) Display() string {
 }
 
 func (e *ListAcces) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("ListAcces")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("ListAcces")
 
 	id := e.Identifiant.Draw(g)
 
@@ -43,9 +46,6 @@ func (l *AstCreatorListener) ListAccesExit(ctx parser.ListeAccesContext) {
 
 	listAcces := &ListAcces{Ctx: ctx}
 
-	// Get the identifiant
-	listAcces.Identifiant = l.PopAst()
-
 	// Get the accesChamps
 	for count < maxCount {
 		text := ctx.GetChild(count).(*antlr.TerminalNodeImpl).GetText()
@@ -60,4 +60,12 @@ func (l *AstCreatorListener) ListAccesExit(ctx parser.ListeAccesContext) {
 
 		count += 1
 	}
+
+	// Reverse the list
+	for i, j := 0, len(listAcces.AccesChamps)-1; i < j; i, j = i+1, j-1 {
+		listAcces.AccesChamps[i], listAcces.AccesChamps[j] = listAcces.AccesChamps[j], listAcces.AccesChamps[i]
+	}
+
+	// Get the identifiant
+	listAcces.Identifiant = l.PopAst()
 }

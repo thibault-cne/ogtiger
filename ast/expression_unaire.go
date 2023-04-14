@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -22,7 +23,9 @@ func (e *ExpressionUnaire) Display() string {
 }
 
 func (e *ExpressionUnaire) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("ExpressionUnaire")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("ExpressionUnaire")
 
 	expr := e.Expr.Draw(g)
 	g.CreateEdge("Expr", node, expr)
@@ -35,20 +38,5 @@ func (l *AstCreatorListener) ExpressionUnaireEnter(ctx parser.IExpressionUnaireC
 }
 
 func (l *AstCreatorListener) ExpressionUnaireExit(ctx parser.IExpressionUnaireContext) {
-	expressionUnaire := &ExpressionUnaire{
-		Ctx: ctx,
-	}
-
-	if ctx.GetChildCount() == 1 {
-		return
-	}
-
-	// Get the first expr
-	// Pop the last element of the stack
-	expr := l.PopAst()
-
-	expressionUnaire.Expr = expr
-
-	// Push the new element on the stack
-	l.PushAst(expressionUnaire)
+	// Nothing to do
 }

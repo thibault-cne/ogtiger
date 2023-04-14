@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -9,7 +10,7 @@ import (
 
 type OperationEt struct {
 	Left  Ast
-	Right []Ast
+	Right Ast
 	Ctx   parser.IOperationEtContext
 	Type  ttype.TigerType
 }
@@ -18,19 +19,15 @@ func (e *OperationEt) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *OperationEt) Display() string {
-	return " et"
-}
-
 func (e *OperationEt) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("OperationEt")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("OperationEt")
+	
 	left := e.Left.Draw(g)
 	g.CreateEdge("Left", node, left)
-
-	for i, right := range e.Right {
-		rightNode := right.Draw(g)
-		g.CreateEdge("Right"+string(i), node, rightNode)
-	}
+	right := e.Right.Draw(g)
+	g.CreateEdge("Right", node, right)
 
 	return node
 }
@@ -40,20 +37,20 @@ func (l *AstCreatorListener) OperationEtEnter(ctx parser.IOperationEtContext) {
 }
 
 func (l *AstCreatorListener) OperationEtExit(ctx parser.IOperationEtContext) {
-	operationEt := &OperationEt{
-		Ctx: ctx,
-	}
-
 	if ctx.GetChildCount() == 1 {
 		return
 	}
 
-	operationEt.Left = l.PopAst()
+	node := l.PopAst()
 
 	// Get the other exprEt
 	for i := 0; i < len(ctx.AllOperationComparaison())-1; i++ {
-		operationEt.Right = append(operationEt.Right, l.PopAst())
+		node = &OperationEt{
+			Ctx:  ctx,
+			Left:  node,
+			Right: l.PopAst(),
+		}
 	}
 
-	l.PushAst(operationEt)
+	l.PushAst(node)
 }

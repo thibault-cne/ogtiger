@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -18,12 +19,11 @@ func (e *DeclarationArrayType) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *DeclarationArrayType) Display() string {
-	return " array_type"
-}
-
 func (e *DeclarationArrayType) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("DeclarationArrayType")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("DeclarationArrayType")
+
 	id := e.Identifiant.Draw(g)
 	g.CreateEdge("Id", node, id)
 
@@ -43,8 +43,8 @@ func (l *AstCreatorListener) DeclarationArrayTypeExit(ctx parser.DeclarationArra
 		Ctx: ctx,
 	}
 
-	declArrType.Identifiant = l.PopAst()
 	declArrType.AType = l.PopAst()
+	declArrType.Identifiant = l.PopAst()
 
 	l.PushAst(declArrType)
 }

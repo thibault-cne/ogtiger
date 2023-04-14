@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -18,27 +19,20 @@ func (e *Definition) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *Definition) Display() string {
-	return " letin"
-}
-
 func (e *Definition) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("Let in")
-	def, _ := g.CreateNode("Def")
-	expr, _ := g.CreateNode("Expr")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("Definition")
 
 	for _, declaration := range e.Declarations {
 		declarationNode := declaration.Draw(g)
-		g.CreateEdge("", def, declarationNode)
+		g.CreateEdge("", node, declarationNode)
 	}
 
 	for _, expression := range e.Expressions {
 		expressionNode := expression.Draw(g)
-		g.CreateEdge("", expr, expressionNode)
+		g.CreateEdge("", node, expressionNode)
 	}
-
-	g.CreateEdge("Def", node, def)
-	g.CreateEdge("Expr", node, expr)
 
 	return node
 }
@@ -52,12 +46,22 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 		Ctx: ctx,
 	}
 
+	for range ctx.AllExpression() {
+		expr.Expressions = append(expr.Expressions, l.PopAst())
+	}
+
+	// Reverse the order of the expressions
+	for i, j := 0, len(expr.Expressions)-1; i < j; i, j = i+1, j-1 {
+		expr.Expressions[i], expr.Expressions[j] = expr.Expressions[j], expr.Expressions[i]
+	}
+
 	for range ctx.AllDeclaration() {
 		expr.Declarations = append(expr.Declarations, l.PopAst())
 	}
 
-	for range ctx.AllExpression() {
-		expr.Expressions = append(expr.Expressions, l.PopAst())
+	// Reverse the order of the declarations
+	for i, j := 0, len(expr.Declarations)-1; i < j; i, j = i+1, j-1 {
+		expr.Declarations[i], expr.Declarations[j] = expr.Declarations[j], expr.Declarations[i]
 	}
 
 	l.PushAst(expr)

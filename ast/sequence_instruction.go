@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -17,12 +18,11 @@ func (e *SequenceInstruction) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *SequenceInstruction) Display() string {
-	return " sequence"
-}
-
 func (e *SequenceInstruction) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("SequenceInstruction")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("Sequence")
+
 	for _, instruction := range e.Instructions {
 		instructionNode := instruction.Draw(g)
 		g.CreateEdge("Instruction", node, instructionNode)
@@ -50,6 +50,12 @@ func (l *AstCreatorListener) SequenceInstructionExit(ctx parser.ISequenceInstruc
 	if len(opSeq.Instructions) == 1 {
 		l.PushAst(opSeq.Instructions[0])
 		return
+	}
+
+	// Reverse the slice
+	for i := len(opSeq.Instructions)/2 - 1; i >= 0; i-- {
+		opp := len(opSeq.Instructions) - 1 - i
+		opSeq.Instructions[i], opSeq.Instructions[opp] = opSeq.Instructions[opp], opSeq.Instructions[i]
 	}
 
 	l.PushAst(opSeq)

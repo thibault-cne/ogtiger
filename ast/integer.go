@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -18,7 +19,8 @@ func (e *Integer) ReturnType() ttype.TigerType {
 }
 
 func (e *Integer) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("Integer")
+	id := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(id)
 	node.SetLabel(e.Valeur)
 
 	return node

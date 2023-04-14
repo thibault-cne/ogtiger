@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -17,12 +18,11 @@ func (e *OperationNegation) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *OperationNegation) Display() string {
-	return " negation"
-}
-
 func (e *OperationNegation) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("OperationNegation")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("Negation")
+
 	expr := e.Expr.Draw(g)
 	g.CreateEdge("Expr", node, expr)
 

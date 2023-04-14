@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -19,12 +20,11 @@ func (e *DeclarationValeur) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *DeclarationValeur) Display() string {
-	return " declarationValeur"
-}
-
 func (e *DeclarationValeur) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("DeclarationValeur")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("DeclarationValeur")
+
 	id := e.Id.Draw(g)
 	g.CreateEdge("Id", node, id)
 
@@ -48,13 +48,13 @@ func (l *AstCreatorListener) DeclarationValeurExit(ctx parser.IDeclarationValeur
 		Ctx: ctx,
 	}
 
-	declarationValeur.Id = l.PopAst()
+	declarationValeur.Expr = l.PopAst()
 
 	if len(ctx.AllIdentifiant()) > 1 {
 		declarationValeur.VType = l.PopAst()
 	}
 
-	declarationValeur.Expr = l.PopAst()
+	declarationValeur.Id = l.PopAst()
 
 	l.PushAst(declarationValeur)
 }

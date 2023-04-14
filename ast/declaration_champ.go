@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -18,12 +19,11 @@ func (e *DeclarationChamp) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *DeclarationChamp) Display() string {
-	return " declarationChamp"
-}
-
 func (e *DeclarationChamp) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("DeclarationChamp")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("DeclarationChamp")
+
 	left := e.Left.Draw(g)
 	g.CreateEdge("Left", node, left)
 
@@ -42,8 +42,8 @@ func (l *AstCreatorListener) DeclarationChampExit(ctx parser.IDeclarationChampCo
 		Ctx: ctx,
 	}
 
-	declarationChamp.Left = l.PopAst()
 	declarationChamp.Rigth = l.PopAst()
+	declarationChamp.Left = l.PopAst()
 
 	l.PushAst(declarationChamp)
 }

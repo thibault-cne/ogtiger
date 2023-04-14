@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -9,7 +10,7 @@ import (
 
 type OperationOu struct {
 	Left  Ast
-	Right []Ast
+	Right Ast
 	Ctx   parser.IOperationOuContext
 	Type  ttype.TigerType
 }
@@ -18,19 +19,15 @@ func (e *OperationOu) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *OperationOu) Display() string {
-	return " ou"
-}
-
 func (e *OperationOu) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("OperationOu")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("OperationOu")
+
 	left := e.Left.Draw(g)
 	g.CreateEdge("Left", node, left)
-
-	for i, right := range e.Right {
-		rightNode := right.Draw(g)
-		g.CreateEdge("Right"+string(i), node, rightNode)
-	}
+	right := e.Right.Draw(g)
+	g.CreateEdge("Right", node, right)
 
 	return node
 }
@@ -40,19 +37,20 @@ func (l *AstCreatorListener) OperationOuEnter(ctx parser.IOperationOuContext) {
 }
 
 func (l *AstCreatorListener) OperationOuExit(ctx parser.IOperationOuContext) {
-	operationOu := &OperationOu{
-		Ctx: ctx,
-	}
-
 	if ctx.GetChildCount() == 1 {
 		return
 	}
 
-	operationOu.Left = l.PopAst()
+	node := l.PopAst()
 
+	// Get the other exprEt
 	for i := 0; i < len(ctx.AllOperationEt())-1; i++ {
-		operationOu.Right = append(operationOu.Right, l.PopAst())
+		node = &OperationOu{
+			Ctx:  ctx,
+			Left:  node,
+			Right: l.PopAst(),
+		}
 	}
 
-	l.PushAst(operationOu)
+	l.PushAst(node)
 }

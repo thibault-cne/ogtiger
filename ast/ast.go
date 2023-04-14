@@ -2,7 +2,6 @@ package ast
 
 import (
 	"bytes"
-	"fmt"
 	"log"
 	"ogtiger/parser"
 	"ogtiger/ttype"
@@ -186,8 +185,6 @@ func (s *AstCreatorListener) ExitEveryRule(ctx antlr.ParserRuleContext) {
 }
 
 func (s *AstCreatorListener) DisplayAST() {
-	fmt.Printf("\nAST\n")
-
 	g := graphviz.New()
 	graph, err := g.Graph()
 	if err != nil {
@@ -200,13 +197,9 @@ func (s *AstCreatorListener) DisplayAST() {
 	if err := g.Render(graph, "dot", &buf); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(buf.String())
 
-	fmt.Printf("\n")
-	prog := s.AstStack[0].(*Program)
-	first := prog.Expr.(*OperationAddition)
-	snd := first.Left.(*OperationAddition)
-	fmt.Printf("%#+v\n", first)
-	fmt.Printf("%#+v\n", snd)
-	fmt.Printf("%#+v\n", snd.Right)
+	// Write to file
+	if err := g.RenderFilename(graph, graphviz.PNG, "tests/graphviz/ast.png"); err != nil {
+		log.Fatal(err)
+	}
 }

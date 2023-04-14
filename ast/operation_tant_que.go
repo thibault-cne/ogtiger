@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -18,12 +19,10 @@ func (e *OperationTantQue) ReturnType() ttype.TigerType {
 	return e.Type
 }
 
-func (e *OperationTantQue) Display() string {
-	return " tantque"
-}
-
 func (e *OperationTantQue) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("OperationTantQue")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("OperationTantQue")
 
 	cond := e.Cond.Draw(g)
 	block := e.Block.Draw(g)
@@ -43,8 +42,8 @@ func (l *AstCreatorListener) OperationTantQueExit(ctx parser.IOperationTantqueCo
 		Ctx: ctx,
 	}
 
-	oT.Cond = l.PopAst()
 	oT.Block = l.PopAst()
+	oT.Cond = l.PopAst()
 
 	l.PushAst(oT)
 }

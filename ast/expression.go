@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 	"ogtiger/ttype"
 
@@ -23,7 +24,10 @@ func (e *Expression) Display() string {
 }
 
 func (e *Expression) Draw(g *cgraph.Graph) *cgraph.Node {
-	node, _ := g.CreateNode("Expression")
+	nodeId := fmt.Sprintf("N%p", e)
+	node, _ := g.CreateNode(nodeId)
+	node.SetLabel("Expression")
+
 	left := e.Left.Draw(g)
 	g.CreateEdge("Left", node, left)
 
@@ -38,16 +42,16 @@ func (l *AstCreatorListener) ExprEnter(ctx parser.IExpressionContext) {
 }
 
 func (l *AstCreatorListener) ExprExit(ctx parser.IExpressionContext) {
-	expr := &Expression{
-		Ctx: ctx,
-	}
-
 	if ctx.GetChildCount() == 1 {
 		return
 	}
 
-	expr.Left = l.PopAst()
+	expr := &Expression{
+		Ctx: ctx,
+	}
+
 	expr.Right = l.PopAst()
+	expr.Left = l.PopAst()
 
 	l.PushAst(expr)
 }
