@@ -1,4 +1,6 @@
 let
+    type arrayOfInt = array of int
+
     var x := 4
     var y := 5
 

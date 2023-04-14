@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
@@ -52,7 +53,11 @@ func (l *AstCreatorListener) DeclarationTypeClassiqueExit(ctx parser.Declaration
 		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, &ctx, declType.Identifiant.(*Identifiant).Id)
 	}
 
-	l.Slt.CreateSymbol(declType.Identifiant.(*Identifiant).Id, declType.Identifiant.ReturnType())
+	t := &slt.Symbol{
+		Name: declType.Identifiant.(*Identifiant).Id,
+		Type: declType.TType.ReturnType(),
+	}
+	l.Slt.AddSymbol(declType.Identifiant.(*Identifiant).Id, t)
 
 	l.PushAst(declType)
 }

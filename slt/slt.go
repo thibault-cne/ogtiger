@@ -145,9 +145,13 @@ func (s *SymbolTable) Display() {
 	fmt.Printf("%sScope %d (Region %d)\n", indent, s.Scope, s.Region)
 
 	for k, v := range s.Table {
-		if v.Type.ID != ttype.Function && v.Offset != 0 {
+		if v.Type.ID != ttype.Function {
 			vars = true
-			fmt.Printf("%s  %s: %d (offset %d)\n", indent, k, v.Type.ID, v.Offset)
+			if v.Offset == 0 {
+				fmt.Printf("%s  %s: %d (type)\n", indent, k, v.Type.ID)
+			} else {
+				fmt.Printf("%s  %s: %d (offset %d)\n", indent, k, v.Type.ID, v.Offset)
+			}
 		}
 	}
 

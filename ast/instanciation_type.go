@@ -50,18 +50,17 @@ func (l *AstCreatorListener) InstanciationTypeEnter(ctx parser.InstanciationType
 func (l *AstCreatorListener) InstanciationTypeExit(ctx parser.InstanciationTypeContext) {
 	instanciationType := &InstanciationType{Ctx: ctx}
 
-	// Get the identifiants count
-	identifiantsCount := len(ctx.AllIdentifiant())
+	fmt.Printf("\n\n%d\n\n", len(ctx.AllExpression()))
 
 	// Get the identifiants and the expressions
-	for i := 0; i < identifiantsCount-1; i++ {
-		// Pop the last element of the stack
-		// Add it to the identifiants
-		instanciationType.Identifiants = append([]Ast{ l.PopAst() }, instanciationType.Identifiants...)
-
+	for i := 0; i < len(ctx.AllExpression()); i++ {
 		// Pop the last element of the stack
 		// Add it to the expressions
 		instanciationType.Expressions = append([]Ast{ l.PopAst() }, instanciationType.Expressions...)
+
+		// Pop the last element of the stack
+		// Add it to the identifiants
+		instanciationType.Identifiants = append([]Ast{ l.PopAst() }, instanciationType.Identifiants...)
 	}
 
 	// Get the identifiant

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
@@ -72,7 +73,11 @@ func (l *AstCreatorListener) DeclarationRecordTypeExit(ctx parser.DeclarationRec
 		})
 	}
 
-	l.Slt.CreateSymbol(declRecordType.Identifiant.(*Identifiant).Id, ttype.NewRecordType(typeFields))
+	t := &slt.Symbol{
+		Name: declRecordType.Identifiant.(*Identifiant).Id,
+		Type: ttype.NewRecordType(typeFields),
+	}
+	l.Slt.AddSymbol(declRecordType.Identifiant.(*Identifiant).Id, t)	
 
 	l.PushAst(declRecordType)
 }
