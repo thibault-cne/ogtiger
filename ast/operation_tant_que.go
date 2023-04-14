@@ -34,7 +34,8 @@ func (e *OperationTantQue) Draw(g *cgraph.Graph) *cgraph.Node {
 }
 
 func (l *AstCreatorListener) OperationTantQueEnter(ctx parser.IOperationTantqueContext) {
-	// l.AstStack = append(l.AstStack, &ExprOu{})
+	// Create a new region
+	l.Slt.CreateRegion()
 }
 
 func (l *AstCreatorListener) OperationTantQueExit(ctx parser.IOperationTantqueContext) {
@@ -44,6 +45,9 @@ func (l *AstCreatorListener) OperationTantQueExit(ctx parser.IOperationTantqueCo
 
 	oT.Block = l.PopAst()
 	oT.Cond = l.PopAst()
+
+	// Leave the region
+	l.Slt = l.Slt.Parent
 
 	l.PushAst(oT)
 }

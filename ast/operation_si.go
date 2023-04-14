@@ -40,7 +40,8 @@ func (e *OperationSi) Draw(g *cgraph.Graph) *cgraph.Node {
 }
 
 func (l *AstCreatorListener) OperationSiEnter(ctx parser.IOperationSiContext) {
-	// l.AstStack = append(l.AstStack, &ExprOu{})
+	// Creata a new region
+	l.Slt.CreateRegion()
 }
 
 func (l *AstCreatorListener) OperationSiExit(ctx parser.IOperationSiContext) {
@@ -54,6 +55,9 @@ func (l *AstCreatorListener) OperationSiExit(ctx parser.IOperationSiContext) {
 
 	OperationSi.Then = l.PopAst()
 	OperationSi.Cond = l.PopAst()
+
+	// Leave the region
+	l.Slt = l.Slt.Parent
 
 	l.PushAst(OperationSi)
 }

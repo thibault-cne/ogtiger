@@ -1,1 +1,9 @@
-(4+4; 3+4; 4+5)
+let
+    var x := 4
+    var y := 5
+
+    function f(x: int) = 
+        x + 4
+in
+    f(x)
+end

@@ -50,9 +50,11 @@ func (l *AstCreatorListener) DeclarationValeurExit(ctx parser.IDeclarationValeur
 	}
 
 	declarationValeur.Expr = l.PopAst()
+	declarationValeur.Type = declarationValeur.Expr.ReturnType()
 
 	if len(ctx.AllIdentifiant()) > 1 {
 		declarationValeur.VType = l.PopAst()
+		declarationValeur.Type = declarationValeur.VType.ReturnType()
 
 		// Verify that the type exists
 		if _, err := l.Slt.GetSymbol(declarationValeur.VType.(*Identifiant).Id); err != nil {

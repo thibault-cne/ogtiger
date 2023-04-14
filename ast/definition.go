@@ -38,7 +38,8 @@ func (e *Definition) Draw(g *cgraph.Graph) *cgraph.Node {
 }
 
 func (l *AstCreatorListener) DefinitionEnter(ctx parser.IDefinitionContext) {
-	// l.AstStack = append(l.AstStack, &Expr{})
+	// Create a TDS for the definition
+	l.Slt = l.Slt.CreateRegion()
 }
 
 func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
@@ -51,10 +52,21 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 		expr.Expressions = append([]Ast{ l.PopAst() }, expr.Expressions...)
 	}
 
+
 	for range ctx.AllDeclaration() {
 		// Prepend the declarations to the list
-		expr.Declarations = append([]Ast{ l.PopAst() }, expr.Declarations...)
+		d := l.PopAst()
+		expr.Declarations = append([]Ast{ d }, expr.Declarations...)
+
+		// Add the declaration to the list of symbols
+		switch d := d.(type) {
+		case *DeclarationValeur:
+			l.Slt.CreateSymbol(d.Id.(*Identifiant).Id, d.ReturnType())
+		}
 	}
+
+	// Pop the TDS
+	l.Slt = l.Slt.Parent
 
 	l.PushAst(expr)
 }

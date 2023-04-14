@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
 	"github.com/goccy/go-graphviz/cgraph"
@@ -47,7 +48,8 @@ func (e *DeclarationFontion) Draw(g *cgraph.Graph) *cgraph.Node {
 }
 
 func (l *AstCreatorListener) DeclarationFontionEnter(ctx parser.IDeclarationFonctionContext) {
-	// Nothing to do
+	// Create a TDS for the function
+	l.Slt = l.Slt.CreateRegion()
 }
 
 func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonctionContext) {
@@ -64,10 +66,11 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 	args := []*ttype.FunctionParameter{}
 	for i := 0; i < len(ctx.AllDeclarationChamp()); i++ {
 		// Prepend the arg
-		declarationFontion.Args = append([]Ast{l.PopAst()}, declarationFontion.Args...)
+		a := l.PopAst()
+		declarationFontion.Args = append([]Ast{ a }, declarationFontion.Args...)
 		args = append(args, &ttype.FunctionParameter{
-			Name: declarationFontion.Args[i].(*DeclarationChamp).Left.(*Identifiant).Id,
-			Type: declarationFontion.Args[i].(*DeclarationChamp).Right.(*Identifiant).ReturnType(),
+			Name: a.(*DeclarationChamp).Left.(*Identifiant).Id,
+			Type: a.(*DeclarationChamp).Right.(*Identifiant).ReturnType(),
 		})
 	}
 
@@ -77,6 +80,33 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 	if _, err := l.Slt.GetSymbol(declarationFontion.Id.(*Identifiant).Id); err == nil {
 		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, ctx, declarationFontion.Id.(*Identifiant).Id)
 	}
+
+	// Add the parameters to the TDS
+	for i, arg := range args {
+		a := &slt.Symbol{
+			Name: arg.Name,
+			Type: arg.Type,
+			Offset: i * 4 + 12,
+		}
+
+		l.Slt.AddSymbol(arg.Name, a)
+	}
+
+	f := &slt.Symbol{
+		Name: declarationFontion.Id.(*Identifiant).Id,
+		Type: &ttype.TigerType{
+			ID: ttype.Function,
+			Parameters: args,
+			ReturnType: declarationFontion.ReturnType(),
+		},
+		Offset: 0,
+		SymbolTable: l.Slt,
+	}
+
+	l.Slt = l.Slt.Parent
+
+	// Add the function to the TDS
+	l.Slt.AddSymbol(declarationFontion.Id.(*Identifiant).Id, f)
 
 	l.PushAst(declarationFontion)
 }
