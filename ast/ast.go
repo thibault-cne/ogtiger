@@ -18,7 +18,7 @@ type AstCreatorListener struct {
 
 type Ast interface {
 	Display() string
-	Draw(prefix string, g *cgraph.Graph)
+	Draw(g *cgraph.Graph) *cgraph.Node
 }
 
 func (ast *AstCreatorListener) PopAst() Ast {
@@ -193,27 +193,11 @@ func (s *AstCreatorListener) DisplayAST() {
 		log.Fatal(err)
 	}
 
-	display(s.AstStack[0], "", true, graph)
+	s.AstStack[0].Draw(graph)
 
 	var buf bytes.Buffer
 	if err := g.Render(graph, "dot", &buf); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println(buf.String())
-}
-
-func display(a Ast, prefix string, isLast bool, g *cgraph.Graph) {
-	if a == nil {
-		return
-	}
-
-	if isLast {
-		fmt.Printf("%s└───%s\n", prefix, a.Display())
-		prefix += "    "
-	} else {
-		fmt.Printf("%s├───%s\n", prefix, a.Display())
-		prefix += "    "
-	}
-
-	a.Draw(prefix, g)
 }

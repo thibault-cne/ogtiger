@@ -16,8 +16,15 @@ func (e *Expression) Display() string {
 	return " expression"
 }
 
-func (e *Expression) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *Expression) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("Expression")
+	left := e.Left.Draw(g)
+	g.CreateEdge("Left", node, left)
+
+	right := e.Right.Draw(g)
+	g.CreateEdge("Right", node, right)
+
+	return node
 }
 
 func (l *AstCreatorListener) ExprEnter(ctx parser.IExpressionContext) {

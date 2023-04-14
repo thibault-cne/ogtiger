@@ -18,8 +18,21 @@ func (e *OperationBoucle) Display() string {
 	return " pour"
 }
 
-func (e *OperationBoucle) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *OperationBoucle) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("OperationBoucle")
+	start := e.Start.Draw(g)
+	g.CreateEdge("Start", node, start)
+
+	startVal := e.StartVal.Draw(g)
+	g.CreateEdge("StartVal", node, startVal)
+
+	endVal := e.EndVal.Draw(g)
+	g.CreateEdge("EndVal", node, endVal)
+
+	block := e.Block.Draw(g)
+	g.CreateEdge("Block", node, block)
+
+	return node
 }
 
 func (l *AstCreatorListener) OperationBoucleEnter(ctx parser.IOperationBoucleContext) {

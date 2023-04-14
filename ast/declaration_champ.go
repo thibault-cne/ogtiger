@@ -16,8 +16,15 @@ func (e *DeclarationChamp) Display() string {
 	return " declarationChamp"
 }
 
-func (e *DeclarationChamp) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *DeclarationChamp) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("DeclarationChamp")
+	left := e.Left.Draw(g)
+	g.CreateEdge("Left", node, left)
+
+	right := e.Rigth.Draw(g)
+	g.CreateEdge("Rigth", node, right)
+
+	return node
 }
 
 func (l *AstCreatorListener) DeclarationChampEnter(ctx parser.IDeclarationChampContext) {

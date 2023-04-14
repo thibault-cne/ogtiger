@@ -17,8 +17,21 @@ func (l *ListAcces) Display() string {
 	return " listAcces"
 }
 
-func (e *ListAcces) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *ListAcces) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("ListAcces")
+
+	id := e.Identifiant.Draw(g)
+
+	edge, _ := g.CreateEdge("", node, id)
+	edge.SetLabel("Identifiant")
+
+	for _, accesChamp := range e.AccesChamps {
+		accesChampNode := accesChamp.Draw(g)
+		edge, _ = g.CreateEdge("", node, accesChampNode)
+		edge.SetLabel("AccesChamp")
+	}
+
+	return node
 }
 
 func (l *AstCreatorListener) ListAccesEnter(ctx parser.ListeAccesContext) {

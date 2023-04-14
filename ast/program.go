@@ -15,8 +15,12 @@ func (p *Program) Display() string {
 	return " program"
 }
 
-func (e *Program) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *Program) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("Program")
+	expr := e.Expr.Draw(g)
+	g.CreateEdge("Expr", node, expr)
+
+	return node
 }
 
 func (l *AstCreatorListener) ProgramEnter(ctx parser.IProgramContext) {

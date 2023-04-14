@@ -16,8 +16,16 @@ func (e *OperationTantQue) Display() string {
 	return " tantque"
 }
 
-func (e *OperationTantQue) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *OperationTantQue) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("OperationTantQue")
+
+	cond := e.Cond.Draw(g)
+	block := e.Block.Draw(g)
+
+	g.CreateEdge("Cond", node, cond)
+	g.CreateEdge("Block", node, block)
+
+	return node
 }
 
 func (l *AstCreatorListener) OperationTantQueEnter(ctx parser.IOperationTantqueContext) {

@@ -16,8 +16,11 @@ func (e *Identifiant) Display() string {
 	return fmt.Sprintf(" identifiant %s", e.Id)
 }
 
-func (e *Identifiant) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *Identifiant) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("Identifiant")
+	node.SetLabel(e.Id)
+
+	return node
 }
 
 func (l *AstCreatorListener) IdentifiantEnter(ctx parser.IIdentifiantContext) {

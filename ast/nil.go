@@ -14,8 +14,10 @@ func (e *Nil) Display() string {
 	return " nil"
 }
 
-func (e *Nil) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *Nil) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("Nil")
+
+	return node
 }
 
 func (l *AstCreatorListener) NilEnter(ctx parser.NilContext) {

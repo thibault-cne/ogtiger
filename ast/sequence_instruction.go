@@ -15,8 +15,14 @@ func (e *SequenceInstruction) Display() string {
 	return " sequence"
 }
 
-func (e *SequenceInstruction) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *SequenceInstruction) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("SequenceInstruction")
+	for _, instruction := range e.Instructions {
+		instructionNode := instruction.Draw(g)
+		g.CreateEdge("Instruction", node, instructionNode)
+	}
+
+	return node
 }
 
 func (l *AstCreatorListener) SequenceInstructionEnter(ctx parser.ISequenceInstructionContext) {

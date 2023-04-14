@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"ogtiger/parser"
 
 	"github.com/goccy/go-graphviz/cgraph"
@@ -16,8 +17,17 @@ func (a *AppelFonction) Display() string {
 	return " appel"
 }
 
-func (a *AppelFonction) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (a *AppelFonction) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("AppelFonction")
+	id := a.Identifiant.Draw(g)
+	g.CreateEdge("Id", node, id)
+
+	for i, arg := range a.Args {
+		argNode := arg.Draw(g)
+		g.CreateEdge(fmt.Sprintf("arg %d", i), node, argNode)
+	}
+
+	return node
 }
 
 func (l *AstCreatorListener) AppelFonctionEnter(ctx parser.AppelFonctionContext) {

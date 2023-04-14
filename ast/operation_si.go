@@ -17,8 +17,20 @@ func (e *OperationSi) Display() string {
 	return " si"
 }
 
-func (e *OperationSi) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *OperationSi) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("OperationSi")
+	cond := e.Cond.Draw(g)
+	g.CreateEdge("Cond", node, cond)
+
+	then := e.Then.Draw(g)
+	g.CreateEdge("Then", node, then)
+
+	if e.Else != nil {
+		Else := e.Else.Draw(g)
+		g.CreateEdge("Else", node, Else)
+	}
+
+	return node
 }
 
 func (l *AstCreatorListener) OperationSiEnter(ctx parser.IOperationSiContext) {

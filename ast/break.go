@@ -14,8 +14,10 @@ func (e *Break) Display() string {
 	return " break"
 }
 
-func (e *Break) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *Break) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("Break")
+
+	return node
 }
 
 func (l *AstCreatorListener) BreakEnter(ctx parser.BreakContext) {

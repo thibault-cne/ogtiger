@@ -17,8 +17,21 @@ func (i *InstanciationType) Display() string {
 	return " instanciationType"
 }
 
-func (e *InstanciationType) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *InstanciationType) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("InstanciationType")
+
+	identifiant := e.Identifiant.Draw(g)
+	g.CreateEdge("Identifiant", node, identifiant)
+
+	for i := 0; i < len(e.Identifiants); i++ {
+		identifiant := e.Identifiants[i].Draw(g)
+		g.CreateEdge("Identifiant", node, identifiant)
+
+		expression := e.Expressions[i].Draw(g)
+		g.CreateEdge("Expression", node, expression)
+	}
+
+	return node
 }
 
 func (l *AstCreatorListener) InstanciationTypeEnter(ctx parser.InstanciationTypeContext) {

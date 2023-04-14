@@ -16,8 +16,25 @@ func (e *Definition) Display() string {
 	return " letin"
 }
 
-func (e *Definition) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *Definition) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("Let in")
+	def, _ := g.CreateNode("Def")
+	expr, _ := g.CreateNode("Expr")
+
+	for _, declaration := range e.Declarations {
+		declarationNode := declaration.Draw(g)
+		g.CreateEdge("", def, declarationNode)
+	}
+
+	for _, expression := range e.Expressions {
+		expressionNode := expression.Draw(g)
+		g.CreateEdge("", expr, expressionNode)
+	}
+
+	g.CreateEdge("Def", node, def)
+	g.CreateEdge("Expr", node, expr)
+
+	return node
 }
 
 func (l *AstCreatorListener) DefinitionEnter(ctx parser.IDefinitionContext) {

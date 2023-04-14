@@ -15,8 +15,11 @@ func (e *Integer) Display() string {
 	return " int"
 }
 
-func (e *Integer) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *Integer) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("Integer")
+	node.SetLabel(e.Valeur)
+
+	return node
 }
 
 func (l *AstCreatorListener) IntegerEnter(ctx parser.EntierContext) {

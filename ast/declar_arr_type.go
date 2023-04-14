@@ -16,8 +16,15 @@ func (e *DeclarationArrayType) Display() string {
 	return " array_type"
 }
 
-func (e *DeclarationArrayType) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *DeclarationArrayType) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("DeclarationArrayType")
+	id := e.Identifiant.Draw(g)
+	g.CreateEdge("Id", node, id)
+
+	typeNode := e.Type.Draw(g)
+	g.CreateEdge("Type", node, typeNode)
+
+	return node
 }
 
 func (l *AstCreatorListener) DeclarationArrayTypeEnter(ctx parser.DeclarationArrayTypeContext) {

@@ -16,8 +16,17 @@ func (e *OperationOu) Display() string {
 	return " ou"
 }
 
-func (e *OperationOu) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *OperationOu) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("OperationOu")
+	left := e.Left.Draw(g)
+	g.CreateEdge("Left", node, left)
+
+	for i, right := range e.Right {
+		rightNode := right.Draw(g)
+		g.CreateEdge("Right"+string(i), node, rightNode)
+	}
+
+	return node
 }
 
 func (l *AstCreatorListener) OperationOuEnter(ctx parser.IOperationOuContext) {

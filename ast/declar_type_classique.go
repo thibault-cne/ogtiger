@@ -16,8 +16,15 @@ func (e *DeclarationTypeClassique) Display() string {
 	return " alias"
 }
 
-func (e *DeclarationTypeClassique) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *DeclarationTypeClassique) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("DeclarationTypeClassique")
+	id := e.Identifiant.Draw(g)
+	g.CreateEdge("Id", node, id)
+
+	typeNode := e.Type.Draw(g)
+	g.CreateEdge("Type", node, typeNode)
+
+	return node
 }
 
 func (l *AstCreatorListener) DeclarationTypeClassiqueEnter(ctx parser.DeclarationTypeClassiqueContext) {

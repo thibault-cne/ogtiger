@@ -22,8 +22,17 @@ func (e *OperationAddition) Display() string {
 	return " addition"
 }
 
-func (e *OperationAddition) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *OperationAddition) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("OperationAddition")
+	left := e.Left.Draw(g)
+	g.CreateEdge("Left", node, left)
+
+	for _, right := range e.Right {
+		rightNode := right.Right.Draw(g)
+		g.CreateEdge("Right", node, rightNode)
+	}
+
+	return node
 }
 
 func (l *AstCreatorListener) OperationAdditionEnter(ctx parser.IOperationAdditionContext) {

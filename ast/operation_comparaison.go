@@ -22,8 +22,17 @@ func (e *OperationComparaison) Display() string {
 	return " comparaison"
 }
 
-func (e *OperationComparaison) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *OperationComparaison) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("OperationComparaison")
+	left := e.Left.Draw(g)
+	g.CreateEdge("Left", node, left)
+
+	for _, right := range e.Right {
+		rightNode := right.Right.Draw(g)
+		g.CreateEdge("Right", node, rightNode)
+	}
+
+	return node
 }
 
 func (l *AstCreatorListener) OperationComparaisonEnter(ctx parser.IOperationComparaisonContext) {

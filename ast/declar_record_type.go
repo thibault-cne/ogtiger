@@ -16,8 +16,15 @@ func (e *DeclarationRecordType) Display() string {
 	return " record_type"
 }
 
-func (e *DeclarationRecordType) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *DeclarationRecordType) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("DeclarationRecordType")
+	id := e.Identifiant.Draw(g)
+	g.CreateEdge("Id", node, id)
+
+	typeNode := e.Type.Draw(g)
+	g.CreateEdge("Type", node, typeNode)
+
+	return node
 }
 
 func (l *AstCreatorListener) DeclarationRecordTypeEnter(ctx parser.DeclarationRecordTypeContext) {

@@ -18,8 +18,25 @@ func (e *DeclarationFontion) Display() string {
 	return " declarationFontion"
 }
 
-func (e *DeclarationFontion) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *DeclarationFontion) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("DeclarationFontion")
+	id := e.Id.Draw(g)
+	g.CreateEdge("Id", node, id)
+
+	if e.Type != nil {
+		typeNode := e.Type.Draw(g)
+		g.CreateEdge("Type", node, typeNode)
+	}
+
+	for _, arg := range e.Args {
+		argNode := arg.Draw(g)
+		g.CreateEdge("Arg", node, argNode)
+	}
+
+	exprNode := e.Expr.Draw(g)
+	g.CreateEdge("Expr", node, exprNode)
+
+	return node
 }
 
 func (l *AstCreatorListener) DeclarationFontionEnter(ctx parser.IDeclarationFonctionContext) {

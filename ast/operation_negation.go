@@ -15,8 +15,12 @@ func (e *OperationNegation) Display() string {
 	return " negation"
 }
 
-func (e *OperationNegation) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *OperationNegation) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("OperationNegation")
+	expr := e.Expr.Draw(g)
+	g.CreateEdge("Expr", node, expr)
+
+	return node
 }
 
 func (l *AstCreatorListener) OperationNegationEnter(ctx parser.IOperationNegationContext) {

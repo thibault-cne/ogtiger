@@ -16,8 +16,11 @@ func (e *ChaineChr) Display() string {
 	return " string"
 }
 
-func (e *ChaineChr) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *ChaineChr) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("ChaineChr")
+	node.SetLabel(e.Valeur)
+
+	return node
 }
 
 func (l *AstCreatorListener) ChaineChrEnter(ctx parser.ChaineChrContext) {

@@ -17,8 +17,20 @@ func (e *DeclarationValeur) Display() string {
 	return " declarationValeur"
 }
 
-func (e *DeclarationValeur) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *DeclarationValeur) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("DeclarationValeur")
+	id := e.Id.Draw(g)
+	g.CreateEdge("Id", node, id)
+
+	if e.Type != nil {
+		typeNode := e.Type.Draw(g)
+		g.CreateEdge("Type", node, typeNode)
+	}
+
+	expr := e.Expr.Draw(g)
+	g.CreateEdge("Expr", node, expr)
+
+	return node
 }
 
 func (l *AstCreatorListener) DeclarationValeurEnter(ctx parser.IDeclarationValeurContext) {

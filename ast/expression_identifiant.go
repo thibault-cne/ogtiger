@@ -12,8 +12,10 @@ func (e *ExpressionIdentifiant) Display() string {
 	return " expressionValeur"
 }
 
-func (e *ExpressionIdentifiant) Draw(prefix string, g *cgraph.Graph) {
-	// TODO: Draw the AST
+func (e *ExpressionIdentifiant) Draw(g *cgraph.Graph) *cgraph.Node {
+	node, _ := g.CreateNode("ExpressionIdentifiant")
+
+	return node
 }
 
 func (l *AstCreatorListener) ExpressionIdentifiantEnter(ctx parser.ExpressionIdentifiantContext) {
