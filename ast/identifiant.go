@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"ogtiger/parser"
 
-	"github.com/goccy/go-graphviz"
+	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type Identifiant struct {
@@ -16,7 +16,7 @@ func (e *Identifiant) Display() string {
 	return fmt.Sprintf(" identifiant %s", e.Id)
 }
 
-func (e *Identifiant) Draw(prefix string, g *graphviz.Graphviz) {
+func (e *Identifiant) Draw(prefix string, g *cgraph.Graph) {
 	// TODO: Draw the AST
 }
 

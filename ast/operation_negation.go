@@ -3,7 +3,7 @@ package ast
 import (
 	"ogtiger/parser"
 
-	"github.com/goccy/go-graphviz"
+	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type OperationNegation struct {
@@ -15,7 +15,7 @@ func (e *OperationNegation) Display() string {
 	return " negation"
 }
 
-func (e *OperationNegation) Draw(prefix string, g *graphviz.Graphviz) {
+func (e *OperationNegation) Draw(prefix string, g *cgraph.Graph) {
 	// TODO: Draw the AST
 }
 

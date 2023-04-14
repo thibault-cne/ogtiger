@@ -3,7 +3,7 @@ package ast
 import (
 	"ogtiger/parser"
 
-	"github.com/goccy/go-graphviz"
+	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type DeclarationValeur struct {
@@ -17,7 +17,7 @@ func (e *DeclarationValeur) Display() string {
 	return " declarationValeur"
 }
 
-func (e *DeclarationValeur) Draw(prefix string, g *graphviz.Graphviz) {
+func (e *DeclarationValeur) Draw(prefix string, g *cgraph.Graph) {
 	// TODO: Draw the AST
 }
 

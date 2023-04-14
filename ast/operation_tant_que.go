@@ -3,7 +3,7 @@ package ast
 import (
 	"ogtiger/parser"
 
-	"github.com/goccy/go-graphviz"
+	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type OperationTantQue struct {
@@ -16,7 +16,7 @@ func (e *OperationTantQue) Display() string {
 	return " tantque"
 }
 
-func (e *OperationTantQue) Draw(prefix string, g *graphviz.Graphviz) {
+func (e *OperationTantQue) Draw(prefix string, g *cgraph.Graph) {
 	// TODO: Draw the AST
 }
 

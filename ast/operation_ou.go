@@ -3,7 +3,7 @@ package ast
 import (
 	"ogtiger/parser"
 
-	"github.com/goccy/go-graphviz"
+	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type OperationOu struct {
@@ -16,7 +16,7 @@ func (e *OperationOu) Display() string {
 	return " ou"
 }
 
-func (e *OperationOu) Draw(prefix string, g *graphviz.Graphviz) {
+func (e *OperationOu) Draw(prefix string, g *cgraph.Graph) {
 	// TODO: Draw the AST
 }
 

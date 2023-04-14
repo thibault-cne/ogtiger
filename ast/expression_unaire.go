@@ -3,7 +3,7 @@ package ast
 import (
 	"ogtiger/parser"
 
-	"github.com/goccy/go-graphviz"
+	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type ExpressionUnaire struct {
@@ -15,7 +15,7 @@ func (e *ExpressionUnaire) Display() string {
 	return " expressionUnaire"
 }
 
-func (e *ExpressionUnaire) Draw(prefix string, g *graphviz.Graphviz) {
+func (e *ExpressionUnaire) Draw(prefix string, g *cgraph.Graph) {
 	// TODO: Draw the AST
 }
 

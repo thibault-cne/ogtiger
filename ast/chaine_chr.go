@@ -4,7 +4,7 @@ import (
 	"ogtiger/parser"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
-	"github.com/goccy/go-graphviz"
+	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type ChaineChr struct {
@@ -16,7 +16,7 @@ func (e *ChaineChr) Display() string {
 	return " string"
 }
 
-func (e *ChaineChr) Draw(prefix string, g *graphviz.Graphviz) {
+func (e *ChaineChr) Draw(prefix string, g *cgraph.Graph) {
 	// TODO: Draw the AST
 }
 

@@ -3,7 +3,7 @@ package ast
 import (
 	"ogtiger/parser"
 
-	"github.com/goccy/go-graphviz"
+	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type OperationBoucle struct {
@@ -18,7 +18,7 @@ func (e *OperationBoucle) Display() string {
 	return " pour"
 }
 
-func (e *OperationBoucle) Draw(prefix string, g *graphviz.Graphviz) {
+func (e *OperationBoucle) Draw(prefix string, g *cgraph.Graph) {
 	// TODO: Draw the AST
 }
 

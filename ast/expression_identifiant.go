@@ -3,7 +3,7 @@ package ast
 import (
 	"ogtiger/parser"
 
-	"github.com/goccy/go-graphviz"
+	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type ExpressionIdentifiant struct{}
@@ -12,7 +12,7 @@ func (e *ExpressionIdentifiant) Display() string {
 	return " expressionValeur"
 }
 
-func (e *ExpressionIdentifiant) Draw(prefix string, g *graphviz.Graphviz) {
+func (e *ExpressionIdentifiant) Draw(prefix string, g *cgraph.Graph) {
 	// TODO: Draw the AST
 }
 

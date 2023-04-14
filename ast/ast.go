@@ -8,6 +8,7 @@ import (
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz"
+	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type AstCreatorListener struct {
@@ -17,7 +18,7 @@ type AstCreatorListener struct {
 
 type Ast interface {
 	Display() string
-	Draw(prefix string, g *graphviz.Graphviz)
+	Draw(prefix string, g *cgraph.Graph)
 }
 
 func (ast *AstCreatorListener) PopAst() Ast {
@@ -192,7 +193,7 @@ func (s *AstCreatorListener) DisplayAST() {
 		log.Fatal(err)
 	}
 
-	display(s.AstStack[0], "", true, g)
+	display(s.AstStack[0], "", true, graph)
 
 	var buf bytes.Buffer
 	if err := g.Render(graph, "dot", &buf); err != nil {
@@ -201,7 +202,7 @@ func (s *AstCreatorListener) DisplayAST() {
 	fmt.Println(buf.String())
 }
 
-func display(a Ast, prefix string, isLast bool, g *graphviz.Graphviz) {
+func display(a Ast, prefix string, isLast bool, g *cgraph.Graph) {
 	if a == nil {
 		return
 	}
