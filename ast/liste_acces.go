@@ -44,7 +44,9 @@ func (l *AstCreatorListener) ListAccesEnter(ctx parser.ListeAccesContext) {
 func (l *AstCreatorListener) ListAccesExit(ctx parser.ListeAccesContext) {
 	count, maxCount := 1, ctx.GetChildCount()
 
-	listAcces := &ListAcces{Ctx: ctx}
+	listAcces := &ListAcces{
+		Ctx: ctx,
+	}
 
 	// Get the accesChamps
 	for count < maxCount {
@@ -56,14 +58,10 @@ func (l *AstCreatorListener) ListAccesExit(ctx parser.ListeAccesContext) {
 			count += 2
 		}
 
-		listAcces.AccesChamps = append(listAcces.AccesChamps, l.PopAst())
+		// Prepare the accesChamp
+		listAcces.AccesChamps = append([]Ast{ l.PopAst() }, listAcces.AccesChamps...)
 
 		count += 1
-	}
-
-	// Reverse the list
-	for i, j := 0, len(listAcces.AccesChamps)-1; i < j; i, j = i+1, j-1 {
-		listAcces.AccesChamps[i], listAcces.AccesChamps[j] = listAcces.AccesChamps[j], listAcces.AccesChamps[i]
 	}
 
 	// Get the identifiant

@@ -57,17 +57,11 @@ func (l *AstCreatorListener) InstanciationTypeExit(ctx parser.InstanciationTypeC
 	for i := 0; i < identifiantsCount - 1; i++ {
 		// Pop the last element of the stack
 		// Add it to the identifiants
-		instanciationType.Identifiants = append(instanciationType.Identifiants, l.PopAst())
+		instanciationType.Identifiants = append([]Ast{ l.PopAst() }, instanciationType.Identifiants...)
 
 		// Pop the last element of the stack
 		// Add it to the expressions
-		instanciationType.Expressions = append(instanciationType.Expressions, l.PopAst())
-	}
-
-	// Reverse the identifiants and the expressions
-	for i := 0; i < identifiantsCount/2; i++ {
-		instanciationType.Identifiants[i], instanciationType.Identifiants[identifiantsCount-i-1] = instanciationType.Identifiants[identifiantsCount-i-1], instanciationType.Identifiants[i]
-		instanciationType.Expressions[i], instanciationType.Expressions[identifiantsCount-i-1] = instanciationType.Expressions[identifiantsCount-i-1], instanciationType.Expressions[i]
+		instanciationType.Expressions = append([]Ast{ l.PopAst() }, instanciationType.Expressions...)
 	}
 
 	// Get the identifiant

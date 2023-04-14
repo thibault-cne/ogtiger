@@ -61,12 +61,8 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 
 	// Pop all args
 	for i := 0; i < len(ctx.AllDeclarationChamp()); i++ {
-		declarationFontion.Args = append(declarationFontion.Args, l.PopAst())
-	}
-
-	// Reverse the args
-	for i := 0; i < len(declarationFontion.Args)/2; i++ {
-		declarationFontion.Args[i], declarationFontion.Args[len(declarationFontion.Args)-1-i] = declarationFontion.Args[len(declarationFontion.Args)-1-i], declarationFontion.Args[i]
+		// Prepend the arg
+		declarationFontion.Args = append([]Ast{ l.PopAst() }, declarationFontion.Args...)
 	}
 
 	declarationFontion.Id = l.PopAst()

@@ -43,19 +43,7 @@ func (l *AstCreatorListener) SequenceInstructionExit(ctx parser.ISequenceInstruc
 
 	// Get minus and plus and term number
 	for i := 1; i < ctx.GetChildCount(); i += 2 {
-		opSeq.Instructions = append(opSeq.Instructions, l.PopAst())
-	}
-
-	// We have only one instruction, we don't need a sequence
-	if len(opSeq.Instructions) == 1 {
-		l.PushAst(opSeq.Instructions[0])
-		return
-	}
-
-	// Reverse the slice
-	for i := len(opSeq.Instructions)/2 - 1; i >= 0; i-- {
-		opp := len(opSeq.Instructions) - 1 - i
-		opSeq.Instructions[i], opSeq.Instructions[opp] = opSeq.Instructions[opp], opSeq.Instructions[i]
+		opSeq.Instructions = append([]Ast{ l.PopAst() }, opSeq.Instructions...)
 	}
 
 	l.PushAst(opSeq)

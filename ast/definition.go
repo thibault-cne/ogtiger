@@ -47,21 +47,13 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 	}
 
 	for range ctx.AllExpression() {
-		expr.Expressions = append(expr.Expressions, l.PopAst())
-	}
-
-	// Reverse the order of the expressions
-	for i, j := 0, len(expr.Expressions)-1; i < j; i, j = i+1, j-1 {
-		expr.Expressions[i], expr.Expressions[j] = expr.Expressions[j], expr.Expressions[i]
+		// Prepend the expressions to the list
+		expr.Expressions = append([]Ast{ l.PopAst() }, expr.Expressions...)
 	}
 
 	for range ctx.AllDeclaration() {
-		expr.Declarations = append(expr.Declarations, l.PopAst())
-	}
-
-	// Reverse the order of the declarations
-	for i, j := 0, len(expr.Declarations)-1; i < j; i, j = i+1, j-1 {
-		expr.Declarations[i], expr.Declarations[j] = expr.Declarations[j], expr.Declarations[i]
+		// Prepend the declarations to the list
+		expr.Declarations = append([]Ast{ l.PopAst() }, expr.Declarations...)
 	}
 
 	l.PushAst(expr)
