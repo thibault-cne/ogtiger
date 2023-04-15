@@ -2,7 +2,9 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
@@ -16,11 +18,21 @@ type OperationMultiplication struct {
 	Type  *ttype.TigerType
 }
 
+func (e *OperationMultiplication) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return e.Ctx
+}
+
 type OperationDivision struct {
 	Left  Ast
 	Right Ast
 	Ctx   parser.IOperationMultiplicationContext
 	Type  *ttype.TigerType
+}
+
+func (e *OperationDivision) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return e.Ctx
 }
 
 func (e *OperationMultiplication) ReturnType() *ttype.TigerType {
@@ -86,7 +98,7 @@ func (l *AstCreatorListener) OperationMultiplicationExit(ctx parser.IOperationMu
 				Ctx:   ctx,
 				Left:  node,
 				Right: elements[len(elements)-1],
-				Type: ttype.NewTigerType(ttype.Int),
+				Type:  ttype.NewTigerType(ttype.Int),
 			}
 			node = temp
 		case "/":
@@ -94,7 +106,7 @@ func (l *AstCreatorListener) OperationMultiplicationExit(ctx parser.IOperationMu
 				Ctx:   ctx,
 				Left:  node,
 				Right: elements[len(elements)-1],
-				Type: ttype.NewTigerType(ttype.Int),
+				Type:  ttype.NewTigerType(ttype.Int),
 			}
 			node = temp
 		}

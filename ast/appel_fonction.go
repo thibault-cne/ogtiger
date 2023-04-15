@@ -2,9 +2,12 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
@@ -13,6 +16,11 @@ type AppelFonction struct {
 	Args        []Ast
 	Ctx         parser.AppelFonctionContext
 	Type        *ttype.TigerType
+}
+
+func (e *AppelFonction) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return &e.Ctx
 }
 
 func (e *AppelFonction) ReturnType() *ttype.TigerType {
@@ -54,7 +62,7 @@ func (l *AstCreatorListener) AppelFonctionExit(ctx parser.AppelFonctionContext) 
 	for i := 0; i < len(ctx.AllExpression()); i++ {
 		// Pop the last element of the stack
 		// Prepend it to the args
-		appelFonction.Args = append([]Ast{ l.PopAst() }, appelFonction.Args...)
+		appelFonction.Args = append([]Ast{l.PopAst()}, appelFonction.Args...)
 	}
 
 	// Get the identifiant

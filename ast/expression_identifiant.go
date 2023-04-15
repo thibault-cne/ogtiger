@@ -2,12 +2,20 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type ExpressionIdentifiant struct{}
+
+func (e *ExpressionIdentifiant) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return nil
+}
 
 func (e *ExpressionIdentifiant) Display() string {
 	return " expressionValeur"

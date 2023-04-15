@@ -7,6 +7,7 @@ import (
 	"ogtiger/slt"
 	"ogtiger/ttype"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
@@ -15,6 +16,11 @@ type DeclarationRecordType struct {
 	Champs      []Ast
 	Ctx         parser.DeclarationRecordTypeContext
 	Type        *ttype.TigerType
+}
+
+func (e *DeclarationRecordType) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return &e.Ctx
 }
 
 func (e *DeclarationRecordType) ReturnType() *ttype.TigerType {

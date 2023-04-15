@@ -2,9 +2,12 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
@@ -14,6 +17,11 @@ type OperationSi struct {
 	Else Ast
 	Ctx  parser.IOperationSiContext
 	Type *ttype.TigerType
+}
+
+func (e *OperationSi) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return e.Ctx
 }
 
 func (e *OperationSi) ReturnType() *ttype.TigerType {
@@ -46,7 +54,7 @@ func (l *AstCreatorListener) OperationSiEnter(ctx parser.IOperationSiContext) {
 
 func (l *AstCreatorListener) OperationSiExit(ctx parser.IOperationSiContext) {
 	OperationSi := &OperationSi{
-		Ctx: ctx,
+		Ctx:  ctx,
 		Type: ttype.NewTigerType(ttype.NoReturn),
 	}
 

@@ -2,7 +2,9 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
@@ -15,6 +17,11 @@ type OperationComparaison struct {
 	Right Ast
 	Ctx   parser.IOperationComparaisonContext
 	Type  *ttype.TigerType
+}
+
+func (e *OperationComparaison) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return e.Ctx
 }
 
 func (e *OperationComparaison) ReturnType() *ttype.TigerType {

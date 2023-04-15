@@ -2,7 +2,9 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
@@ -13,7 +15,12 @@ type ListAcces struct {
 	Identifiant Ast
 	AccesChamps []Ast
 	Ctx         parser.ListeAccesContext
-	Type 	  	*ttype.TigerType
+	Type        *ttype.TigerType
+}
+
+func (e *ListAcces) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return &e.Ctx
 }
 
 func (e *ListAcces) ReturnType() *ttype.TigerType {
@@ -61,7 +68,7 @@ func (l *AstCreatorListener) ListAccesExit(ctx parser.ListeAccesContext) {
 		}
 
 		// Prepare the accesChamp
-		listAcces.AccesChamps = append([]Ast{ l.PopAst() }, listAcces.AccesChamps...)
+		listAcces.AccesChamps = append([]Ast{l.PopAst()}, listAcces.AccesChamps...)
 
 		count += 1
 	}

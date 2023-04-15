@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
@@ -15,6 +17,11 @@ type DeclarationValeur struct {
 	Expr  Ast
 	Ctx   parser.IDeclarationValeurContext
 	Type  *ttype.TigerType
+}
+
+func (e *DeclarationValeur) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return e.Ctx
 }
 
 func (e *DeclarationValeur) ReturnType() *ttype.TigerType {
@@ -64,7 +71,7 @@ func (l *AstCreatorListener) DeclarationValeurExit(ctx parser.IDeclarationValeur
 
 	declarationValeur.Id = l.PopAst()
 	if _, err := l.Slt.GetSymbolInScoope(declarationValeur.Id.(*Identifiant).Id); err == nil {
-	 	l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, ctx, declarationValeur.Id.(*Identifiant).Id)
+		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, ctx, declarationValeur.Id.(*Identifiant).Id)
 	}
 
 	l.PushAst(declarationValeur)

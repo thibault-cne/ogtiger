@@ -20,7 +20,7 @@ func (l *emptyErrorListener) SyntaxError(recognizer antlr.Recognizer, offendingS
 }
 
 var failed = false
-var log = logger.NewStepLogger(2)
+var log = logger.NewStepLogger(3)
 
 // Parse the input expression and build the AST
 func parse(input string, options *options.Options) {
@@ -57,6 +57,18 @@ func parse(input string, options *options.Options) {
 	}
 
 	log.Log("Parsing complete")
+	log.Step()
+
+	// Create a parser from the token stream
+	log.Log("Going through Semantic Controls")
+
+	listener.AstStack[0].VisitSemControl(listener.Slt, log)
+
+	if failed {
+		return
+	}
+
+	log.Log("Semantic Controls complete")
 	log.Step()
 
 	if options.AST != "" {

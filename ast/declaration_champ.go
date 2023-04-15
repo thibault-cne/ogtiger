@@ -2,9 +2,12 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
@@ -13,6 +16,11 @@ type DeclarationChamp struct {
 	Right Ast
 	Ctx   parser.IDeclarationChampContext
 	Type  *ttype.TigerType
+}
+
+func (e *DeclarationChamp) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return e.Ctx
 }
 
 func (e *DeclarationChamp) ReturnType() *ttype.TigerType {

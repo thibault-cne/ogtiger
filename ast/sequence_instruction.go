@@ -2,9 +2,12 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
@@ -12,6 +15,11 @@ type SequenceInstruction struct {
 	Instructions []Ast
 	Ctx          parser.ISequenceInstructionContext
 	Type         *ttype.TigerType
+}
+
+func (e *SequenceInstruction) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return e.Ctx
 }
 
 func (e *SequenceInstruction) ReturnType() *ttype.TigerType {
@@ -43,7 +51,7 @@ func (l *AstCreatorListener) SequenceInstructionExit(ctx parser.ISequenceInstruc
 
 	// Get minus and plus and term number
 	for i := 1; i < ctx.GetChildCount(); i += 2 {
-		opSeq.Instructions = append([]Ast{ l.PopAst() }, opSeq.Instructions...)
+		opSeq.Instructions = append([]Ast{l.PopAst()}, opSeq.Instructions...)
 	}
 
 	// Set the type of the expression

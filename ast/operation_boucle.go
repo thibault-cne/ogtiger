@@ -2,9 +2,12 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
@@ -15,6 +18,11 @@ type OperationBoucle struct {
 	Block    Ast
 	Ctx      parser.IOperationBoucleContext
 	Type     *ttype.TigerType
+}
+
+func (e *OperationBoucle) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return e.Ctx
 }
 
 func (e *OperationBoucle) ReturnType() *ttype.TigerType {
@@ -52,7 +60,7 @@ func (l *AstCreatorListener) OperationBoucleEnter(ctx parser.IOperationBoucleCon
 
 func (l *AstCreatorListener) OperationBoucleExit(ctx parser.IOperationBoucleContext) {
 	oB := &OperationBoucle{
-		Ctx: ctx,
+		Ctx:  ctx,
 		Type: ttype.NewTigerType(ttype.NoReturn),
 	}
 

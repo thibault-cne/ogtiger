@@ -2,9 +2,12 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
@@ -12,6 +15,11 @@ type Integer struct {
 	Valeur string
 	Ctx    parser.EntierContext
 	Type   *ttype.TigerType
+}
+
+func (e *Integer) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return &e.Ctx
 }
 
 func (e *Integer) ReturnType() *ttype.TigerType {

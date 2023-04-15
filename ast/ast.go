@@ -37,6 +37,7 @@ func NewAstCreatorListener(L *logger.StepLogger) *AstCreatorListener {
 type Ast interface {
 	Draw(g *cgraph.Graph) *cgraph.Node
 	ReturnType() *ttype.TigerType
+	VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext
 }
 
 func (ast *AstCreatorListener) PopAst() Ast {

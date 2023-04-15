@@ -7,6 +7,7 @@ import (
 	"ogtiger/slt"
 	"ogtiger/ttype"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
@@ -17,6 +18,11 @@ type DeclarationFontion struct {
 	Expr  Ast
 	Ctx   parser.IDeclarationFonctionContext
 	Type  *ttype.TigerType
+}
+
+func (e *DeclarationFontion) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return e.Ctx
 }
 
 func (e *DeclarationFontion) ReturnType() *ttype.TigerType {
@@ -67,7 +73,7 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 	for i := 0; i < len(ctx.AllDeclarationChamp()); i++ {
 		// Prepend the arg
 		a := l.PopAst()
-		declarationFontion.Args = append([]Ast{ a }, declarationFontion.Args...)
+		declarationFontion.Args = append([]Ast{a}, declarationFontion.Args...)
 		args = append(args, &ttype.FunctionParameter{
 			Name: a.(*DeclarationChamp).Left.(*Identifiant).Id,
 			Type: a.(*DeclarationChamp).Right.(*Identifiant).ReturnType(),
@@ -97,9 +103,9 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 	// Add the parameters to the TDS
 	for i, arg := range args {
 		a := &slt.Symbol{
-			Name: arg.Name,
-			Type: arg.Type,
-			Offset: (len(args) - i - 1) * 4 + 12,
+			Name:   arg.Name,
+			Type:   arg.Type,
+			Offset: (len(args)-i-1)*4 + 12,
 		}
 
 		l.Slt.AddSymbol(arg.Name, a)
@@ -108,11 +114,11 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 	f := &slt.Symbol{
 		Name: declarationFontion.Id.(*Identifiant).Id,
 		Type: &ttype.TigerType{
-			ID: ttype.Function,
+			ID:         ttype.Function,
 			Parameters: args,
 			ReturnType: declarationFontion.ReturnType(),
 		},
-		Offset: 0,
+		Offset:      0,
 		SymbolTable: l.Slt,
 	}
 

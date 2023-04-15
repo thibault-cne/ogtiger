@@ -2,9 +2,12 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
@@ -12,6 +15,11 @@ type Program struct {
 	Expr Ast
 	Ctx  parser.IProgramContext
 	Type *ttype.TigerType
+}
+
+func (e *Program) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return e.Ctx
 }
 
 func (e *Program) ReturnType() *ttype.TigerType {
@@ -35,7 +43,7 @@ func (l *AstCreatorListener) ProgramEnter(ctx parser.IProgramContext) {
 
 func (l *AstCreatorListener) ProgramExit(ctx parser.IProgramContext) {
 	prog := &Program{
-		Ctx: ctx,
+		Ctx:  ctx,
 		Type: ttype.NewTigerType(ttype.NoReturn),
 	}
 

@@ -2,15 +2,23 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
 type Break struct {
 	Ctx  parser.BreakContext
 	Type *ttype.TigerType
+}
+
+func (e *Break) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return &e.Ctx
 }
 
 func (e *Break) ReturnType() *ttype.TigerType {

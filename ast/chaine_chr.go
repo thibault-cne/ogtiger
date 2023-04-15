@@ -2,7 +2,9 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
@@ -13,6 +15,11 @@ type ChaineChr struct {
 	Valeur string
 	Ctx    parser.ChaineChrContext
 	Type   *ttype.TigerType
+}
+
+func (e *ChaineChr) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return &e.Ctx
 }
 
 func (e *ChaineChr) ReturnType() *ttype.TigerType {

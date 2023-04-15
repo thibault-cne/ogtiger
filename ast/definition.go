@@ -2,9 +2,12 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/logger"
 	"ogtiger/parser"
+	"ogtiger/slt"
 	"ogtiger/ttype"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
@@ -13,6 +16,11 @@ type Definition struct {
 	Expressions  []Ast
 	Ctx          parser.IDefinitionContext
 	Type         *ttype.TigerType
+}
+
+func (e *Definition) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+	// TODO: Fill this
+	return e.Ctx
 }
 
 func (e *Definition) ReturnType() *ttype.TigerType {
@@ -49,7 +57,7 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 
 	for range ctx.AllExpression() {
 		// Prepend the expressions to the list
-		expr.Expressions = append([]Ast{ l.PopAst() }, expr.Expressions...)
+		expr.Expressions = append([]Ast{l.PopAst()}, expr.Expressions...)
 	}
 
 	expr.Type = expr.Expressions[len(expr.Expressions)-1].ReturnType()
@@ -57,7 +65,7 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 	for range ctx.AllDeclaration() {
 		// Prepend the declarations to the list
 		d := l.PopAst()
-		expr.Declarations = append([]Ast{ d }, expr.Declarations...)
+		expr.Declarations = append([]Ast{d}, expr.Declarations...)
 
 		// Add the declaration to the list of symbols
 		switch d := d.(type) {
