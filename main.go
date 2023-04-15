@@ -60,7 +60,7 @@ func parse(input string) {
 	log.Step()
 
 	listener.DisplayAST()
-	listener.Slt.Display()
+	listener.Slt.DisplaySLT()
 }
 
 func main() {

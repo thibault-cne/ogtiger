@@ -2,21 +2,26 @@ package slt
 
 import (
 	"fmt"
+	"io/ioutil"
 	"ogtiger/ttype"
+	"os"
+	"strings"
+
+	"github.com/emicklei/dot"
 )
 
 var REGION_CPT = 0
 
 type SymbolTable struct {
-	Table  		map[string]*Symbol
-	Region 		int
-	Scope  		int
-	
-	Parent 		*SymbolTable
-	Children  	[]*SymbolTable
+	Table  map[string]*Symbol
+	Region int
+	Scope  int
+
+	Parent   *SymbolTable
+	Children []*SymbolTable
 
 	// Offset to handle the stack
-	Offset 		int
+	Offset int
 }
 
 func NewSymbolTable() *SymbolTable {
@@ -76,8 +81,8 @@ func (s *SymbolTable) CreateRegion() *SymbolTable {
 		Scope:  s.Scope + 1,
 
 		Offset: -4,
-		
-		Parent: s,
+
+		Parent:   s,
 		Children: make([]*SymbolTable, 0),
 	}
 
@@ -89,8 +94,8 @@ func (s *SymbolTable) CreateRegion() *SymbolTable {
 
 func (s *SymbolTable) CreateSymbol(name string, t *ttype.TigerType) {
 	s.Table[name] = &Symbol{
-		Name: name,
-		Type: t,
+		Name:   name,
+		Type:   t,
 		Offset: s.Offset,
 	}
 
@@ -155,9 +160,8 @@ func (s *SymbolTable) Display() {
 		}
 	}
 
-
 	if vars {
-		fmt.Println() 
+		fmt.Println()
 	}
 
 	for k, v := range s.Table {
@@ -174,4 +178,108 @@ func (s *SymbolTable) Display() {
 			child.Display()
 		}
 	}
+}
+
+func (s *SymbolTable) Draw(g *dot.Graph, edges *string) dot.Node {
+	indent := ""
+	visitedRegions := make(map[int]bool)
+
+	for i := 0; i < s.Scope; i++ {
+		indent += "  "
+	}
+
+	// label should be "Scope 0 (Region 0)|{name|type|offset}|{name|type|offset}"
+	label := fmt.Sprintf("{<base> Scope %d (Region %d)}", s.Scope, s.Region)
+	label += "|{name|type|offset}"
+
+	for k, v := range s.Table {
+		if v.Type.ID != ttype.Function {
+			t := strings.ReplaceAll(v.Type.String(), "{", "(")
+			t = strings.ReplaceAll(t, "}", ")")
+			label += fmt.Sprintf("|{%s|%s|%d}", k, t, v.Offset)
+		}
+	}
+
+	if len(s.Table) > 0 {
+		label += "|"
+	}
+
+	var nodeLabel []string
+	var nodes []dot.Node
+
+	for k, v := range s.Table {
+		if v.Type.ID == ttype.Function {
+			t := strings.ReplaceAll(v.Type.String(), "{", "(")
+			t = strings.ReplaceAll(t, "}", ")")
+			label += fmt.Sprintf("|{%s|%s|<%s> 0}", k, t, k)
+			to := v.SymbolTable.Draw(g, edges)
+			visitedRegions[v.SymbolTable.Region] = true
+			nodes = append(nodes, to)
+			nodeLabel = append(nodeLabel, k)
+		}
+	}
+
+	for i, child := range s.Children {
+		if _, ok := visitedRegions[child.Region]; !ok {
+			label += fmt.Sprintf("|{<slt_%d> Enfant %d}", i, i)
+			to := child.Draw(g, edges)
+			visitedRegions[child.Region] = true
+			nodes = append(nodes, to)
+			nodeLabel = append(nodeLabel, fmt.Sprintf("slt_%d", i))
+		}
+	}
+
+	node := g.Node(fmt.Sprintf("region_%d", s.Region))
+	node.Label(label)
+
+	for i, f := range nodes {
+		g.EdgeWithPorts(node, f, nodeLabel[i], "base")
+	}
+
+	return node
+}
+
+func (s *SymbolTable) DisplaySLT() {
+	graph := dot.NewGraph(dot.GraphTypeOption{Name: "SLT"})
+
+	graph.Attr("rankdir", "LR")
+
+	var edges string
+	s.Draw(graph, &edges)
+
+	// Put the graph in a DOT file.
+	f, err := os.Create("tests/graphviz/slt.dot")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	graph.Write(f)
+
+	// Reopen the file to read
+	f, err = os.Open("tests/graphviz/slt.dot")
+	if err != nil {
+		panic(err)
+	}
+
+	// Read all
+	data, err := ioutil.ReadAll(f)
+	if err != nil {
+		panic(err)
+	}
+
+	// Lines
+	lines := strings.Split(string(data), "\n")
+
+	// Replace first line to "digraph SLT {"
+	lines[0] = "digraph SLT {"
+
+	// Add a line between 1 and 2
+	lines = append(lines[:1], append([]string{"  node [shape=record];"}, lines[1:]...)...)
+
+	// Add edges right before the last line
+	lines = append(lines[:len(lines)-2], append([]string{edges}, lines[len(lines)-2:]...)...)
+
+	// Save the file
+	err = ioutil.WriteFile("tests/graphviz/slt.dot", []byte(strings.Join(lines, "\n")), 0644)
 }
