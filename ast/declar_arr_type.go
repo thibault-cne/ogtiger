@@ -55,9 +55,12 @@ func (l *AstCreatorListener) DeclarationArrayTypeExit(ctx parser.DeclarationArra
 
 	t := &slt.Symbol{
 		Name: declArrType.Identifiant.(*Identifiant).Id,
-		Type: declArrType.AType.ReturnType(),
+		Type: ttype.NewArrayType(declArrType.AType.ReturnType()),
 	}
 	l.Slt.AddSymbol(declArrType.Identifiant.(*Identifiant).Id, t)
+
+	// Add the type to the node
+	declArrType.Type = t.Type
 
 	l.PushAst(declArrType)
 }

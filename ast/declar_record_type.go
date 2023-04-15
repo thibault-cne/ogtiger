@@ -38,6 +38,8 @@ func (e *DeclarationRecordType) Draw(g *cgraph.Graph) *cgraph.Node {
 		g.CreateEdge("Champ", cnode, typeNode)
 	}
 
+	g.CreateEdge("Champs", node, cnode)
+
 	return node
 }
 
@@ -77,7 +79,10 @@ func (l *AstCreatorListener) DeclarationRecordTypeExit(ctx parser.DeclarationRec
 		Name: declRecordType.Identifiant.(*Identifiant).Id,
 		Type: ttype.NewRecordType(typeFields),
 	}
-	l.Slt.AddSymbol(declRecordType.Identifiant.(*Identifiant).Id, t)	
+	l.Slt.AddSymbol(declRecordType.Identifiant.(*Identifiant).Id, t)
+
+	// Add the type to the node
+	declRecordType.Type = t.Type
 
 	l.PushAst(declRecordType)
 }

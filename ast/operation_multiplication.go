@@ -76,6 +76,8 @@ func (l *AstCreatorListener) OperationMultiplicationExit(ctx parser.IOperationMu
 	node := elements[len(elements)-1]
 	elements = elements[:len(elements)-1]
 
+	// TODO: Check if the type is correct
+
 	// Get minus and plus and term number
 	for i := 0; 2*i < (ctx.GetChildCount() - 1); i++ {
 		switch ctx.GetChild(2*i + 1).(*antlr.TerminalNodeImpl).GetText() {
@@ -84,6 +86,7 @@ func (l *AstCreatorListener) OperationMultiplicationExit(ctx parser.IOperationMu
 				Ctx:   ctx,
 				Left:  node,
 				Right: elements[len(elements)-1],
+				Type: ttype.NewTigerType(ttype.Int),
 			}
 			node = temp
 		case "/":
@@ -91,6 +94,7 @@ func (l *AstCreatorListener) OperationMultiplicationExit(ctx parser.IOperationMu
 				Ctx:   ctx,
 				Left:  node,
 				Right: elements[len(elements)-1],
+				Type: ttype.NewTigerType(ttype.Int),
 			}
 			node = temp
 		}

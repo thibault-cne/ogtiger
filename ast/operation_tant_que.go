@@ -35,7 +35,7 @@ func (e *OperationTantQue) Draw(g *cgraph.Graph) *cgraph.Node {
 
 func (l *AstCreatorListener) OperationTantQueEnter(ctx parser.IOperationTantqueContext) {
 	// Create a new region
-	l.Slt.CreateRegion()
+	l.Slt = l.Slt.CreateRegion()
 }
 
 func (l *AstCreatorListener) OperationTantQueExit(ctx parser.IOperationTantqueContext) {

@@ -51,7 +51,7 @@ func (l *AstCreatorListener) AppelFonctionExit(ctx parser.AppelFonctionContext) 
 	}
 
 	// Get the args
-	for i := 2; i < ctx.GetChildCount()-1; i += 2 {
+	for i := 0; i < len(ctx.AllExpression()); i++ {
 		// Pop the last element of the stack
 		// Prepend it to the args
 		appelFonction.Args = append([]Ast{ l.PopAst() }, appelFonction.Args...)

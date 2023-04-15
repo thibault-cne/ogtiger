@@ -63,12 +63,8 @@ func (l *AstCreatorListener) DeclarationValeurExit(ctx parser.IDeclarationValeur
 	}
 
 	declarationValeur.Id = l.PopAst()
-	fmt.Printf("\n\n%#+v\n\n", declarationValeur.Id)
-	fmt.Printf("\n\n%#+v\n\n", declarationValeur.Expr)
-	fmt.Printf("\n\n%#+v\n\n", l.AstStack[len(l.AstStack)-2])
-	fmt.Printf("\n\n%#+v\n\n", declarationValeur.VType)
 	if _, err := l.Slt.GetSymbolInScoope(declarationValeur.Id.(*Identifiant).Id); err == nil {
-		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, ctx, declarationValeur.Id.(*Identifiant).Id)
+	 	l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, ctx, declarationValeur.Id.(*Identifiant).Id)
 	}
 
 	l.PushAst(declarationValeur)

@@ -3,6 +3,7 @@ package ast
 import (
 	"fmt"
 	"ogtiger/parser"
+	"ogtiger/ttype"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
@@ -12,10 +13,11 @@ type ListAcces struct {
 	Identifiant Ast
 	AccesChamps []Ast
 	Ctx         parser.ListeAccesContext
+	Type 	  	*ttype.TigerType
 }
 
-func (l *ListAcces) Display() string {
-	return " listAcces"
+func (e *ListAcces) ReturnType() *ttype.TigerType {
+	return e.Identifiant.ReturnType()
 }
 
 func (e *ListAcces) Draw(g *cgraph.Graph) *cgraph.Node {
@@ -66,4 +68,7 @@ func (l *AstCreatorListener) ListAccesExit(ctx parser.ListeAccesContext) {
 
 	// Get the identifiant
 	listAcces.Identifiant = l.PopAst()
+
+	// Push the listAcces
+	l.PushAst(listAcces)
 }

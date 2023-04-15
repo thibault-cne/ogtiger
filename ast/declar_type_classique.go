@@ -59,5 +59,8 @@ func (l *AstCreatorListener) DeclarationTypeClassiqueExit(ctx parser.Declaration
 	}
 	l.Slt.AddSymbol(declType.Identifiant.(*Identifiant).Id, t)
 
+	// Add the new type to the node
+	declType.Type = t.Type
+
 	l.PushAst(declType)
 }

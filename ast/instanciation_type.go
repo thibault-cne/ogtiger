@@ -50,8 +50,6 @@ func (l *AstCreatorListener) InstanciationTypeEnter(ctx parser.InstanciationType
 func (l *AstCreatorListener) InstanciationTypeExit(ctx parser.InstanciationTypeContext) {
 	instanciationType := &InstanciationType{Ctx: ctx}
 
-	fmt.Printf("\n\n%d\n\n", len(ctx.AllExpression()))
-
 	// Get the identifiants and the expressions
 	for i := 0; i < len(ctx.AllExpression()); i++ {
 		// Pop the last element of the stack
@@ -65,6 +63,9 @@ func (l *AstCreatorListener) InstanciationTypeExit(ctx parser.InstanciationTypeC
 
 	// Get the identifiant
 	instanciationType.Identifiant = l.PopAst()
+
+	// Set the type
+	instanciationType.Type = instanciationType.Identifiant.ReturnType()
 
 	// Push the new element on the stack
 	l.PushAst(instanciationType)

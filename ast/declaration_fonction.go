@@ -56,10 +56,12 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 	declarationFontion := &DeclarationFontion{Ctx: ctx}
 
 	declarationFontion.Expr = l.PopAst()
+	declarationFontion.Type = declarationFontion.Expr.ReturnType()
 
 	// Pop the type if it exists
 	if len(ctx.AllIdentifiant()) > 1 {
 		declarationFontion.FType = l.PopAst()
+		declarationFontion.Type = declarationFontion.FType.ReturnType()
 	}
 
 	// Pop all args
@@ -86,7 +88,7 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 		a := &slt.Symbol{
 			Name: arg.Name,
 			Type: arg.Type,
-			Offset: i * 4 + 12,
+			Offset: (len(args) - i - 1) * 4 + 12,
 		}
 
 		l.Slt.AddSymbol(arg.Name, a)

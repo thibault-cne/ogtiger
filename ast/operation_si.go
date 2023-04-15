@@ -41,7 +41,7 @@ func (e *OperationSi) Draw(g *cgraph.Graph) *cgraph.Node {
 
 func (l *AstCreatorListener) OperationSiEnter(ctx parser.IOperationSiContext) {
 	// Creata a new region
-	l.Slt.CreateRegion()
+	l.Slt = l.Slt.CreateRegion()
 }
 
 func (l *AstCreatorListener) OperationSiExit(ctx parser.IOperationSiContext) {

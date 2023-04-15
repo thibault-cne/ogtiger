@@ -47,12 +47,13 @@ func (e *OperationBoucle) Draw(g *cgraph.Graph) *cgraph.Node {
 
 func (l *AstCreatorListener) OperationBoucleEnter(ctx parser.IOperationBoucleContext) {
 	// Create a new TDS
-	l.Slt.CreateRegion()
+	l.Slt = l.Slt.CreateRegion()
 }
 
 func (l *AstCreatorListener) OperationBoucleExit(ctx parser.IOperationBoucleContext) {
 	oB := &OperationBoucle{
 		Ctx: ctx,
+		Type: ttype.NewTigerType(ttype.NoReturn),
 	}
 
 	oB.Block = l.PopAst()
@@ -62,8 +63,11 @@ func (l *AstCreatorListener) OperationBoucleExit(ctx parser.IOperationBoucleCont
 
 	// Add the new element to the TDS
 	id := oB.Start.(*Identifiant)
-	l.Slt.CreateSymbol(id.Id, id.ReturnType())
+	l.Slt.CreateSymbol(id.Id, ttype.NewTigerType(ttype.Int))
+
+	// Pop the TDS
+	l.Slt = l.Slt.Parent
 
 	// Push the new element on the stack
-	l.AstStack = append(l.AstStack, oB)
+	l.PushAst(oB)
 }
