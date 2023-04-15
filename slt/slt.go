@@ -239,7 +239,7 @@ func (s *SymbolTable) Draw(g *dot.Graph, edges *string) dot.Node {
 	return node
 }
 
-func (s *SymbolTable) DisplaySLT() {
+func (s *SymbolTable) DisplaySLT(file string) {
 	graph := dot.NewGraph(dot.GraphTypeOption{Name: "SLT"})
 
 	graph.Attr("rankdir", "LR")
@@ -248,7 +248,8 @@ func (s *SymbolTable) DisplaySLT() {
 	s.Draw(graph, &edges)
 
 	// Put the graph in a DOT file.
-	f, err := os.Create("tests/graphviz/slt.dot")
+	path := fmt.Sprintf("output/%s.dot", file)
+	f, err := os.Create(path)
 	if err != nil {
 		panic(err)
 	}
@@ -257,7 +258,7 @@ func (s *SymbolTable) DisplaySLT() {
 	graph.Write(f)
 
 	// Reopen the file to read
-	f, err = os.Open("tests/graphviz/slt.dot")
+	f, err = os.Open(path)
 	if err != nil {
 		panic(err)
 	}
@@ -281,5 +282,5 @@ func (s *SymbolTable) DisplaySLT() {
 	lines = append(lines[:len(lines)-2], append([]string{edges}, lines[len(lines)-2:]...)...)
 
 	// Save the file
-	err = ioutil.WriteFile("tests/graphviz/slt.dot", []byte(strings.Join(lines, "\n")), 0644)
+	ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }

@@ -2,6 +2,7 @@ package ast
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"ogtiger/logger"
 	"ogtiger/parser"
@@ -201,7 +202,7 @@ func (s *AstCreatorListener) ExitEveryRule(ctx antlr.ParserRuleContext) {
 	}
 }
 
-func (s *AstCreatorListener) DisplayAST() {
+func (s *AstCreatorListener) DisplayAST(filename string) {
 	g := graphviz.New()
 	graph, err := g.Graph()
 	if err != nil {
@@ -215,8 +216,9 @@ func (s *AstCreatorListener) DisplayAST() {
 		log.Fatal(err)
 	}
 
+	path := fmt.Sprintf("output/%s.png", filename)
 	// Write to file
-	if err := g.RenderFilename(graph, graphviz.PNG, "tests/graphviz/ast.png"); err != nil {
+	if err := g.RenderFilename(graph, graphviz.PNG, path); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -5,6 +5,7 @@ import "fmt"
 type Options struct {
 	AST  string
 	File string
+	Slt string
 
 	Steps int
 }
@@ -26,6 +27,9 @@ func Parse(osArgs []string) (*Options, error) {
 			options.Steps++
 		case &File:
 			options.File = flag.Value
+			options.Steps++
+		case &Slt:
+			options.Slt = flag.Value
 			options.Steps++
 		}
 	}

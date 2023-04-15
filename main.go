@@ -23,7 +23,7 @@ var failed = false
 var log = logger.NewStepLogger(2)
 
 // Parse the input expression and build the AST
-func parse(input string) {
+func parse(input string, options *options.Options) {
 	emptyErrorListener := &emptyErrorListener{}
 
 	// Create an input stream from the input string
@@ -59,8 +59,12 @@ func parse(input string) {
 	log.Log("Parsing complete")
 	log.Step()
 
-	listener.DisplayAST()
-	listener.Slt.DisplaySLT()
+	if options.AST != "" {
+		listener.DisplayAST(options.AST)
+	}
+	if options.Slt != "" {
+		listener.Slt.DisplaySLT(options.Slt)
+	}
 }
 
 func main() {
@@ -77,5 +81,8 @@ func main() {
 		return
 	}
 
-	parse(string(data))
+	// Create the output folder
+	os.Mkdir("output", 0731)
+
+	parse(string(data), options)
 }
