@@ -60,6 +60,9 @@ func (l *AstCreatorListener) AppelFonctionExit(ctx parser.AppelFonctionContext) 
 	// Get the identifiant
 	appelFonction.Identifiant = l.PopAst()
 
+	// Set the type
+	appelFonction.Type = appelFonction.Identifiant.ReturnType()
+
 	// Push the new element on the stack
 	l.PushAst(appelFonction)
 }

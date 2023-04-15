@@ -41,6 +41,7 @@ func (l *AstCreatorListener) OperationTantQueEnter(ctx parser.IOperationTantqueC
 func (l *AstCreatorListener) OperationTantQueExit(ctx parser.IOperationTantqueContext) {
 	oT := &OperationTantQue{
 		Ctx: ctx,
+		Type: ttype.NewTigerType(ttype.NoReturn),
 	}
 
 	oT.Block = l.PopAst()

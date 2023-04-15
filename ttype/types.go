@@ -1,5 +1,7 @@
 package ttype
 
+import "fmt"
+
 type TypeID int
 
 const (
@@ -124,4 +126,58 @@ func NewFunctionType(returnType *TigerType, parameters []*FunctionParameter) *Ti
 		Parameters: parameters,
 		ReturnType: returnType,
 	}
+}
+
+func (t *TigerType) GetRecordFieldType(name string) (*TigerType, error) {
+	for _, field := range t.Fields {
+		if field.Name == name {
+			return field.Type, nil
+		}
+	}
+
+	return nil, fmt.Errorf("record field %s not found", name)
+}
+
+func (t *TigerType) String() string {
+	if t == nil {
+		return ""
+	}
+
+	switch t.ID {
+	case Int:
+		return "int"
+	case String:
+		return "string"
+	case Record:
+		fields := make([]string, len(t.Fields))
+
+		for i, field := range t.Fields {
+			fields[i] = fmt.Sprintf("%s: %s", field.Name, field.Type.String())
+		}
+
+		field := ""
+
+		for i, f := range fields {
+			if i == len(fields)-1 {
+				field += f
+			} else {
+				field += f + ", "
+			}
+		}
+
+		return fmt.Sprintf("record {%s}", field)
+	case AnyRecord:
+		return "nil"
+	case Array:
+		arrType := t.ElementType.String()
+		return fmt.Sprintf("array of %s", arrType)
+	case Type:
+		return "type"
+	case Function:
+		return t.ReturnType.String()
+	case NoReturn:
+		return "void"
+	}
+
+	return "unknown"
 }

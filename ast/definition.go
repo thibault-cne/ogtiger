@@ -52,7 +52,7 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 		expr.Expressions = append([]Ast{ l.PopAst() }, expr.Expressions...)
 	}
 
-	expr.Type = expr.Expressions[0].ReturnType()
+	expr.Type = expr.Expressions[len(expr.Expressions)-1].ReturnType()
 
 	for range ctx.AllDeclaration() {
 		// Prepend the declarations to the list

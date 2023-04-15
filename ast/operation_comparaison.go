@@ -53,6 +53,7 @@ func (l *AstCreatorListener) OperationComparaisonExit(ctx parser.IOperationCompa
 
 	opCompar.Left = left
 	opCompar.Right = right
+	opCompar.Type = left.ReturnType()
 
 	// Get operator
 	opCompar.Op = ctx.GetChild(1).(*antlr.TerminalNodeImpl).GetText()

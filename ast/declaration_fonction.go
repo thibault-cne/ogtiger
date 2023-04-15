@@ -56,12 +56,10 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 	declarationFontion := &DeclarationFontion{Ctx: ctx}
 
 	declarationFontion.Expr = l.PopAst()
-	declarationFontion.Type = declarationFontion.Expr.ReturnType()
 
 	// Pop the type if it exists
 	if len(ctx.AllIdentifiant()) > 1 {
 		declarationFontion.FType = l.PopAst()
-		declarationFontion.Type = declarationFontion.FType.ReturnType()
 	}
 
 	// Pop all args
@@ -74,6 +72,19 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 			Name: a.(*DeclarationChamp).Left.(*Identifiant).Id,
 			Type: a.(*DeclarationChamp).Right.(*Identifiant).ReturnType(),
 		})
+	}
+
+	// Set the type of the function
+	if declarationFontion.FType == nil {
+		declarationFontion.Type = ttype.NewFunctionType(
+			declarationFontion.Expr.ReturnType(),
+			args,
+		)
+	} else {
+		declarationFontion.Type = ttype.NewFunctionType(
+			declarationFontion.FType.ReturnType(),
+			args,
+		)
 	}
 
 	declarationFontion.Id = l.PopAst()

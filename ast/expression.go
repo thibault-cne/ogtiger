@@ -48,6 +48,7 @@ func (l *AstCreatorListener) ExprExit(ctx parser.IExpressionContext) {
 
 	expr := &Expression{
 		Ctx: ctx,
+		Type: ttype.NewTigerType(ttype.NoReturn),
 	}
 
 	expr.Right = l.PopAst()

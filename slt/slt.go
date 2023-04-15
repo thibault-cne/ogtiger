@@ -148,9 +148,9 @@ func (s *SymbolTable) Display() {
 		if v.Type.ID != ttype.Function {
 			vars = true
 			if v.Offset == 0 {
-				fmt.Printf("%s  %s: %d (type)\n", indent, k, v.Type.ID)
+				fmt.Printf("%s  %s: %s (type)\n", indent, k, v.Type.String())
 			} else {
-				fmt.Printf("%s  %s: %d (offset %d)\n", indent, k, v.Type.ID, v.Offset)
+				fmt.Printf("%s  %s: %s (offset %d)\n", indent, k, v.Type.String(), v.Offset)
 			}
 		}
 	}
@@ -162,7 +162,7 @@ func (s *SymbolTable) Display() {
 
 	for k, v := range s.Table {
 		if v.Type.ID == ttype.Function {
-			fmt.Printf("%s  %s: %d\n", indent, k, v.Type.ID)
+			fmt.Printf("%sfunc %s: %s\n", indent, k, v.Type.String())
 			v.SymbolTable.Display()
 			visitedRegions[v.SymbolTable.Region] = true
 			fmt.Println()

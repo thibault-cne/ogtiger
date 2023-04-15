@@ -36,6 +36,7 @@ func (l *AstCreatorListener) ProgramEnter(ctx parser.IProgramContext) {
 func (l *AstCreatorListener) ProgramExit(ctx parser.IProgramContext) {
 	prog := &Program{
 		Ctx: ctx,
+		Type: ttype.NewTigerType(ttype.NoReturn),
 	}
 
 	prog.Expr = l.PopAst()

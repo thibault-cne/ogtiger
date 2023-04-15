@@ -49,6 +49,7 @@ func (l *AstCreatorListener) OperationOuExit(ctx parser.IOperationOuContext) {
 			Ctx:   ctx,
 			Left:  node,
 			Right: l.PopAst(),
+			Type: node.ReturnType(),
 		}
 	}
 

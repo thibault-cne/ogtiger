@@ -17,7 +17,7 @@ type ListAcces struct {
 }
 
 func (e *ListAcces) ReturnType() *ttype.TigerType {
-	return e.Identifiant.ReturnType()
+	return e.Type
 }
 
 func (e *ListAcces) Draw(g *cgraph.Graph) *cgraph.Node {

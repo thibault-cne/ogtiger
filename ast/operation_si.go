@@ -47,6 +47,7 @@ func (l *AstCreatorListener) OperationSiEnter(ctx parser.IOperationSiContext) {
 func (l *AstCreatorListener) OperationSiExit(ctx parser.IOperationSiContext) {
 	OperationSi := &OperationSi{
 		Ctx: ctx,
+		Type: ttype.NewTigerType(ttype.NoReturn),
 	}
 
 	if ctx.GetChildCount() == 6 {
@@ -59,5 +60,11 @@ func (l *AstCreatorListener) OperationSiExit(ctx parser.IOperationSiContext) {
 	// Leave the region
 	l.Slt = l.Slt.Parent
 
+	// Set the type of the operation
+	OperationSi.Type = OperationSi.Then.ReturnType()
+
+	// TODO: Check the type of the else
+
+	// Push the new element on the stack
 	l.PushAst(OperationSi)
 }

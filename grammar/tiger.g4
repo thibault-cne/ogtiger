@@ -52,7 +52,7 @@ expressionValeur
     identifiant #ExpressionIdentifiant
 |   identifiant '(' ( expression ( ',' expression )* )? ')' #AppelFonction
 |   identifiant (
-            '[' expression ']'('of' expressionUnaire | ('.' identifiant | '[' expression ']')*)
+            '[' expression ']'(('.' identifiant | '[' expression ']')*)
         |   '.' identifiant('.' identifiant | '[' expression ']')*
     ) #ListeAcces
 |   identifiant '{' ( identifiant '=' expression ( ',' identifiant '=' expression )* )? '}' #InstanciationType

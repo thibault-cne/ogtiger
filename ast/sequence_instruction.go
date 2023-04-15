@@ -46,5 +46,8 @@ func (l *AstCreatorListener) SequenceInstructionExit(ctx parser.ISequenceInstruc
 		opSeq.Instructions = append([]Ast{ l.PopAst() }, opSeq.Instructions...)
 	}
 
+	// Set the type of the expression
+	opSeq.Type = opSeq.Instructions[len(opSeq.Instructions)-1].ReturnType()
+
 	l.PushAst(opSeq)
 }
