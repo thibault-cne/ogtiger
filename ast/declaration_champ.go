@@ -19,7 +19,9 @@ type DeclarationChamp struct {
 }
 
 func (e *DeclarationChamp) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Left.VisitSemControl(slt, L)
+	e.Right.VisitSemControl(slt, L)
+
 	return e.Ctx
 }
 

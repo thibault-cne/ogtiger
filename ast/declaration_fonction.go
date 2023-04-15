@@ -17,11 +17,19 @@ type DeclarationFontion struct {
 	FType Ast
 	Expr  Ast
 	Ctx   parser.IDeclarationFonctionContext
+	Slt   *slt.SymbolTable
 	Type  *ttype.TigerType
 }
 
 func (e *DeclarationFontion) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Id.VisitSemControl(e.Slt, L)
+	for _, arg := range e.Args {
+		arg.VisitSemControl(e.Slt, L)
+	}
+	if e.FType != nil {
+		e.FType.VisitSemControl(e.Slt, L)
+	}
+	e.Expr.VisitSemControl(e.Slt, L)
 	return e.Ctx
 }
 
@@ -123,6 +131,7 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 	}
 
 	l.Slt = l.Slt.Parent
+	declarationFontion.Slt = l.Slt
 
 	// Add the function to the TDS
 	l.Slt.AddSymbol(declarationFontion.Id.(*Identifiant).Id, f)

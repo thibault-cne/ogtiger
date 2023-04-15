@@ -16,12 +16,16 @@ type OperationBoucle struct {
 	StartVal Ast
 	EndVal   Ast
 	Block    Ast
+	Slt      *slt.SymbolTable
 	Ctx      parser.IOperationBoucleContext
 	Type     *ttype.TigerType
 }
 
 func (e *OperationBoucle) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Start.VisitSemControl(e.Slt, L)
+	e.StartVal.VisitSemControl(e.Slt, L)
+	e.EndVal.VisitSemControl(e.Slt, L)
+	e.Block.VisitSemControl(e.Slt, L)
 	return e.Ctx
 }
 
@@ -75,6 +79,7 @@ func (l *AstCreatorListener) OperationBoucleExit(ctx parser.IOperationBoucleCont
 
 	// Pop the TDS
 	l.Slt = l.Slt.Parent
+	oB.Slt = l.Slt
 
 	// Push the new element on the stack
 	l.PushAst(oB)

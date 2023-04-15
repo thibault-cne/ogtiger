@@ -18,7 +18,6 @@ type Identifiant struct {
 }
 
 func (e *Identifiant) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
 	return e.Ctx
 }
 

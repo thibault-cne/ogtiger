@@ -18,7 +18,6 @@ type Integer struct {
 }
 
 func (e *Integer) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
 	return &e.Ctx
 }
 

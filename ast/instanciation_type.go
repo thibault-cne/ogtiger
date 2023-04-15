@@ -20,7 +20,13 @@ type InstanciationType struct {
 }
 
 func (e *InstanciationType) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Identifiant.VisitSemControl(slt, L)
+	for _, identifiant := range e.Identifiants {
+		identifiant.VisitSemControl(slt, L)
+	}
+	for _, expression := range e.Expressions {
+		expression.VisitSemControl(slt, L)
+	}
 	return &e.Ctx
 }
 

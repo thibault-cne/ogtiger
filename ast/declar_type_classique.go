@@ -19,7 +19,9 @@ type DeclarationTypeClassique struct {
 }
 
 func (e *DeclarationTypeClassique) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Identifiant.VisitSemControl(slt, L)
+	e.TType.VisitSemControl(slt, L)
+
 	return &e.Ctx
 }
 

@@ -17,7 +17,6 @@ type Break struct {
 }
 
 func (e *Break) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
 	return &e.Ctx
 }
 

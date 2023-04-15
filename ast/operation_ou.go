@@ -19,7 +19,7 @@ type OperationOu struct {
 }
 
 func (e *OperationOu) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Left.VisitSemControl(slt, L)
 	return e.Ctx
 }
 

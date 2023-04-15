@@ -18,7 +18,7 @@ type OperationNegation struct {
 }
 
 func (e *OperationNegation) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Expr.VisitSemControl(slt, L)
 	return e.Ctx
 }
 

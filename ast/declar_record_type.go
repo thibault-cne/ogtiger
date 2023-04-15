@@ -19,7 +19,12 @@ type DeclarationRecordType struct {
 }
 
 func (e *DeclarationRecordType) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Identifiant.VisitSemControl(slt, L)
+
+	for _, champ := range e.Champs {
+		champ.VisitSemControl(slt, L)
+	}
+
 	return &e.Ctx
 }
 

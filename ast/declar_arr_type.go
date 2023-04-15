@@ -19,7 +19,10 @@ type DeclarationArrayType struct {
 }
 
 func (e *DeclarationArrayType) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Identifiant.VisitSemControl(slt, L)
+
+	e.AType.VisitSemControl(slt, L)
+
 	return &e.Ctx
 }
 

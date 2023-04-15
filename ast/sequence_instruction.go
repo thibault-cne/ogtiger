@@ -18,7 +18,9 @@ type SequenceInstruction struct {
 }
 
 func (e *SequenceInstruction) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	for _, instruction := range e.Instructions {
+		instruction.VisitSemControl(slt, L)
+	}
 	return e.Ctx
 }
 

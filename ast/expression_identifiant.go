@@ -13,7 +13,6 @@ import (
 type ExpressionIdentifiant struct{}
 
 func (e *ExpressionIdentifiant) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
 	return nil
 }
 

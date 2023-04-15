@@ -20,7 +20,12 @@ type DeclarationValeur struct {
 }
 
 func (e *DeclarationValeur) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Id.VisitSemControl(slt, L)
+	if e.VType != nil {
+		e.VType.VisitSemControl(slt, L)
+	}
+	e.Expr.VisitSemControl(slt, L)
+
 	return e.Ctx
 }
 

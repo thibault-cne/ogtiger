@@ -19,7 +19,12 @@ type AppelFonction struct {
 }
 
 func (e *AppelFonction) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Identifiant.VisitSemControl(slt, L)
+
+	for _, arg := range e.Args {
+		arg.VisitSemControl(slt, L)
+	}
+
 	return &e.Ctx
 }
 

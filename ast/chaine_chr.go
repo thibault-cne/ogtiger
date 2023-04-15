@@ -18,7 +18,6 @@ type ChaineChr struct {
 }
 
 func (e *ChaineChr) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
 	return &e.Ctx
 }
 

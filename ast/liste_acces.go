@@ -19,7 +19,10 @@ type ListAcces struct {
 }
 
 func (e *ListAcces) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Identifiant.VisitSemControl(slt, L)
+	for _, accesChamp := range e.AccesChamps {
+		accesChamp.VisitSemControl(slt, L)
+	}
 	return &e.Ctx
 }
 

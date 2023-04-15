@@ -15,12 +15,18 @@ type OperationSi struct {
 	Cond Ast
 	Then Ast
 	Else Ast
+	Slt  *slt.SymbolTable
 	Ctx  parser.IOperationSiContext
 	Type *ttype.TigerType
 }
 
 func (e *OperationSi) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Cond.VisitSemControl(e.Slt, L)
+	e.Then.VisitSemControl(e.Slt, L)
+	if e.Else != nil {
+		e.Else.VisitSemControl(e.Slt, L)
+	}
+
 	return e.Ctx
 }
 
@@ -67,6 +73,7 @@ func (l *AstCreatorListener) OperationSiExit(ctx parser.IOperationSiContext) {
 
 	// Leave the region
 	l.Slt = l.Slt.Parent
+	OperationSi.Slt = l.Slt
 
 	// Set the type of the operation
 	OperationSi.Type = OperationSi.Then.ReturnType()

@@ -14,12 +14,14 @@ import (
 type OperationTantQue struct {
 	Cond  Ast
 	Block Ast
+	Slt   *slt.SymbolTable
 	Ctx   parser.IOperationTantqueContext
 	Type  *ttype.TigerType
 }
 
 func (e *OperationTantQue) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	e.Cond.VisitSemControl(e.Slt, L)
+	e.Block.VisitSemControl(e.Slt, L)
 	return e.Ctx
 }
 
@@ -57,6 +59,7 @@ func (l *AstCreatorListener) OperationTantQueExit(ctx parser.IOperationTantqueCo
 
 	// Leave the region
 	l.Slt = l.Slt.Parent
+	oT.Slt = l.Slt
 
 	l.PushAst(oT)
 }

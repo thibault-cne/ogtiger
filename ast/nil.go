@@ -17,7 +17,6 @@ type Nil struct {
 }
 
 func (e *Nil) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
 	return &e.Ctx
 }
 

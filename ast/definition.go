@@ -14,12 +14,20 @@ import (
 type Definition struct {
 	Declarations []Ast
 	Expressions  []Ast
+	Slt          *slt.SymbolTable
 	Ctx          parser.IDefinitionContext
 	Type         *ttype.TigerType
 }
 
 func (e *Definition) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	for _, declaration := range e.Declarations {
+		declaration.VisitSemControl(e.Slt, L)
+	}
+
+	for _, expression := range e.Expressions {
+		expression.VisitSemControl(e.Slt, L)
+	}
+
 	return e.Ctx
 }
 
@@ -76,6 +84,7 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 
 	// Pop the TDS
 	l.Slt = l.Slt.Parent
+	expr.Slt = l.Slt
 
 	l.PushAst(expr)
 }
