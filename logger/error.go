@@ -91,4 +91,5 @@ func (l *StepLogger) DisplaySemanticErrors() {
 	for _, e := range l.errors {
 		l.LogErrorAfterf("%s", e.Error())
 	}
+	fmt.Printf("\n")
 }

@@ -1,4 +1,4 @@
-grammar tiger;
+grammar calc;
 
 /*
  * Lexer rules

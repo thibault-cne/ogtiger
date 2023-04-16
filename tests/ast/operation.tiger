@@ -1,11 +1,8 @@
 let
-    type arrayOfInt = array of int
-
     var x := 4
-    var y := 5
 
     function f(x: int) = 
-        x + 4
+        x + 3
 in
-    f(x)
+    f(3, 4)
 end

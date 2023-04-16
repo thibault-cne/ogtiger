@@ -223,3 +223,7 @@ func (s *AstCreatorListener) DisplayAST(filename string) {
 		log.Fatal(err)
 	}
 }
+
+func (s *AstCreatorListener) GetProgram() *Program {
+	return s.AstStack[0].(*Program)
+}

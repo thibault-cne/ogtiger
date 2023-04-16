@@ -10,9 +10,12 @@ import (
 type SemError string
 
 const (
-	ErrorIdIsAlreadyDefinedInScope SemError = "identifier %v is already defined in this scope"
-	ErrorTypeIsNotDefined          SemError = "type %v is not defined"
-	ErrorFieldIsAlreadyDefined     SemError = "field %v is already defined"
+	ErrorIdIsAlreadyDefinedInScope 	SemError = "identifier %v is already defined in this scope"
+	ErrorTypeIsNotDefined          	SemError = "type %v is not defined"
+	ErrorFieldIsAlreadyDefined     	SemError = "field %v is already defined"
+	ErrorFunctionNotDefined			SemError = "Function %v is not defined"
+	ErrorWrongNumberOfArgs			SemError = "Wrong number of arguments for function %v. Expected %v arguments, got %v instead"
+	ErrorWrongTypeOfArgs			SemError = "Wrong type of arguments for function %v. Expected %v for argument %v, got %v instead"
 )
 
 type SemanticError struct {

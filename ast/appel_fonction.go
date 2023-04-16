@@ -19,10 +19,25 @@ type AppelFonction struct {
 }
 
 func (e *AppelFonction) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	e.Identifiant.VisitSemControl(slt, L)
+	idCtx := e.Identifiant.VisitSemControl(slt, L)
+	id := e.Identifiant.(*Identifiant).Id
+	f, err := slt.GetSymbol(id)
 
-	for _, arg := range e.Args {
-		arg.VisitSemControl(slt, L)
+	if err != nil || f.Type.ID != ttype.Function {
+		L.NewSemanticError(logger.ErrorFunctionNotDefined, idCtx, id)
+		return &e.Ctx
+	}
+
+	if len(e.Args) != len(f.Type.Parameters) {
+		L.NewSemanticError(logger.ErrorWrongNumberOfArgs, &e.Ctx, id, len(f.Type.Parameters), len(e.Args))
+	} else {
+		for i, arg := range e.Args {
+			argCtx := arg.VisitSemControl(slt, L)
+
+			if !arg.ReturnType().Equals(f.Type.Parameters[i].Type) {
+				L.NewSemanticError(logger.ErrorWrongTypeOfArgs, argCtx, id, f.Type.Parameters[i].Type, f.Type.Parameters[i].Name, arg.ReturnType())
+			}
+		}
 	}
 
 	return &e.Ctx

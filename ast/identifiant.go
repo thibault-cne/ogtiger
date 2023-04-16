@@ -43,11 +43,7 @@ func (l *AstCreatorListener) IdentifiantExit(ctx parser.IIdentifiantContext) {
 		Ctx: ctx,
 	}
 
-	t, err := l.Slt.GetSymbolType(ctx.GetText())
-
-	if err != nil {
-		// TODO: Handle error
-	}
+	t, _ := l.Slt.GetSymbolType(ctx.GetText())
 
 	identifiant.Type = t
 

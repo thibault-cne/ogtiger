@@ -83,8 +83,8 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 	}
 
 	// Pop the TDS
-	l.Slt = l.Slt.Parent
 	expr.Slt = l.Slt
+	l.Slt = l.Slt.Parent
 
 	l.PushAst(expr)
 }

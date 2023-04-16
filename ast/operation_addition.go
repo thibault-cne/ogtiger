@@ -41,7 +41,17 @@ type OperationSoustraction struct {
 }
 
 func (e *OperationSoustraction) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	leftCtx := e.Left.VisitSemControl(slt, L)
+	rightCtx := e.Right.VisitSemControl(slt, L)
+
+	if !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Left side of the substraction is not an integer", leftCtx)
+	}
+
+	if !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Right side of the substraction is not an integer", rightCtx)
+	}
+
 	return e.Ctx
 }
 
@@ -97,8 +107,6 @@ func (l *AstCreatorListener) OperationAdditionExit(ctx parser.IOperationAddition
 
 	node := elements[len(elements)-1]
 	elements = elements[:len(elements)-1]
-
-	// TODO: Check if the type is correct
 
 	// Get minus and plus and term number
 	for i := 0; 2*i < (ctx.GetChildCount() - 1); i++ {
