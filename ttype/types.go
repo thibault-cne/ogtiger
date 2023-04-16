@@ -40,6 +40,9 @@ type TigerType struct {
 }
 
 func (t *TigerType) Equals(other *TigerType) bool {
+	if t == nil || other == nil {
+		return false
+	}
 	if t.ID != other.ID {
 		return false
 	}

@@ -69,7 +69,8 @@ func parse(input string, options *options.Options) {
 	}
 
 	log.Log("Semantic Controls complete")
-	log.Step()
+
+	log.DisplaySemanticErrors()
 
 	if options.AST != "" {
 		listener.DisplayAST(options.AST)

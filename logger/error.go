@@ -30,7 +30,7 @@ func NewStepLogger(max int) *StepLogger {
 }
 
 func (l *StepLogger) NewSemanticError(err SemError, ctx antlr.ParserRuleContext, args ...interface{}) {
-	e := NewSemanticError(err, ctx, args)
+	e := NewSemanticError(err, ctx, args...)
 
 	l.errors = append(l.errors, e)
 }
@@ -84,5 +84,11 @@ func (l *StepLogger) LogErrorAfterf(format string, args ...interface{}) {
 		l.err = true
 	}
 	fmt.Printf("\n")
-	fmt.Printf("\033[1;31m%s\033[0m\n", fmt.Sprintf(format, args...))
+	fmt.Printf("\033[1;31m%s\033[0m", fmt.Sprintf(format, args...))
+}
+
+func (l *StepLogger) DisplaySemanticErrors() {
+	for _, e := range l.errors {
+		l.LogErrorAfterf("%s", e.Error())
+	}
 }

@@ -19,8 +19,17 @@ type OperationAddition struct {
 }
 
 func (e *OperationAddition) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	e.Left.VisitSemControl(slt, L)
-	e.Right.VisitSemControl(slt, L)
+	leftCtx := e.Left.VisitSemControl(slt, L)
+	rightCtx := e.Right.VisitSemControl(slt, L)
+
+	if !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Left side of the addition is not an integer", leftCtx)
+	}
+
+	if !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Right side of the addition is not an integer", rightCtx)
+	}
+
 	return e.Ctx
 }
 

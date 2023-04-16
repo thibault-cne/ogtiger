@@ -1,0 +1,6 @@
+let
+    var x := 3
+    var y := "caca"
+in
+    x + y
+end

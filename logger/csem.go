@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 )
@@ -20,6 +21,12 @@ type SemanticError struct {
 }
 
 func NewSemanticError(err SemError, ctx antlr.ParserRuleContext, args ...interface{}) *SemanticError {
+	if len(args) == 0 {
+		return &SemanticError{
+			Err: err,
+			Ctx: ctx,
+		}
+	}
 	return &SemanticError{
 		Err: SemError(fmt.Sprintf(string(err), args...)),
 		Ctx: ctx,
@@ -38,12 +45,14 @@ func (e SemanticError) Error() string {
 	// System.out.println("^");
 
 	var out string
-	out = fmt.Sprintf("[\033[31;1merror\033[0m] : %v at line %v column %v\n", e.Err, e.Ctx.GetStart().GetLine(), e.Ctx.GetStart().GetTokenSource().GetCharPositionInLine())
-	line := e.Ctx.GetStart().GetInputStream().GetTextFromTokens(e.Ctx.GetStart(), e.Ctx.GetStop())
-	out += fmt.Sprintf("   %v\n   ", line)
-	for i := 0; i < e.Ctx.GetStart().GetTokenSource().GetCharPositionInLine(); i++ {
+	out = fmt.Sprintf("[\033[31;1merror\033[0m] : %v at line %v column %v\n", e.Err, e.Ctx.GetStart().GetLine(), e.Ctx.GetStart().GetColumn())
+	program := e.Ctx.GetStart().GetInputStream()
+	line := strings.Split(fmt.Sprintf("%s", program), "\n")[e.Ctx.GetStart().GetLine()-1]
+	out += fmt.Sprintf("%v", line)
+	out += "\n"
+	for i := 0; i < e.Ctx.GetStart().GetColumn(); i++ {
 		out += " "
 	}
-	out += "^\n"
+	out += "^"
 	return out
 }
