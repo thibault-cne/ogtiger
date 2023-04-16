@@ -72,14 +72,7 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 
 	for range ctx.AllDeclaration() {
 		// Prepend the declarations to the list
-		d := l.PopAst()
-		expr.Declarations = append([]Ast{d}, expr.Declarations...)
-
-		// Add the declaration to the list of symbols
-		switch d := d.(type) {
-		case *DeclarationValeur:
-			l.Slt.CreateSymbol(d.Id.(*Identifiant).Id, d.ReturnType())
-		}
+		expr.Declarations = append([]Ast{ l.PopAst() }, expr.Declarations...)
 	}
 
 	// Pop the TDS

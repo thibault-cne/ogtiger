@@ -79,5 +79,7 @@ func (l *AstCreatorListener) DeclarationValeurExit(ctx parser.IDeclarationValeur
 		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, ctx, declarationValeur.Id.(*Identifiant).Id)
 	}
 
+	l.Slt.CreateSymbol(declarationValeur.Id.(*Identifiant).Id, declarationValeur.Type)
+
 	l.PushAst(declarationValeur)
 }

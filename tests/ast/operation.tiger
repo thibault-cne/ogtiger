@@ -1,8 +1,6 @@
 let
     var x := 4
-
-    function f(x: int) = 
-        x + 3
+    var y := "caca"
 in
-    f(3, 4)
+    x + y
 end
