@@ -19,7 +19,18 @@ type OperationMultiplication struct {
 }
 
 func (e *OperationMultiplication) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	// TODO: Fill this
+	leftCtx := e.Left.VisitSemControl(slt, L)
+	rightCtx := e.Right.VisitSemControl(slt, L)
+
+	if !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Left side of the multiplication is not an integer", leftCtx)
+	}
+
+	if !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Right side of the multiplication is not an integer", rightCtx)
+	}
+
+
 	return e.Ctx
 }
 
@@ -31,8 +42,17 @@ type OperationDivision struct {
 }
 
 func (e *OperationDivision) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	e.Left.VisitSemControl(slt, L)
-	e.Right.VisitSemControl(slt, L)
+	leftCtx := e.Left.VisitSemControl(slt, L)
+	rightCtx := e.Right.VisitSemControl(slt, L)
+
+	if !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Left side of the division is not an integer", leftCtx)
+	}
+
+	if !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Right side of the division is not an integer", rightCtx)
+	}
+
 	return e.Ctx
 }
 
