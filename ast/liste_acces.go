@@ -50,14 +50,18 @@ func (e *ListAcces) Draw(g *cgraph.Graph) *cgraph.Node {
 
 	id := e.Identifiant.Draw(g)
 
-	edge, _ := g.CreateEdge("", node, id)
-	edge.SetLabel("Identifiant")
+	g.CreateEdge("", node, id)
+
+	nodeId2 := fmt.Sprintf("N%p", e.AccesChamps)
+	node2, _ := g.CreateNode(nodeId2)
+	node2.SetLabel("AccesChamps")
 
 	for _, accesChamp := range e.AccesChamps {
 		accesChampNode := accesChamp.Draw(g)
-		edge, _ = g.CreateEdge("", node, accesChampNode)
-		edge.SetLabel("AccesChamp")
+		g.CreateEdge("", node2, accesChampNode)
 	}
+
+	g.CreateEdge("", node, node2)
 
 	return node
 }

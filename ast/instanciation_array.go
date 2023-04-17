@@ -62,6 +62,21 @@ func (l *AstCreatorListener) InstanciationArrayExit(ctx parser.InstanciationArra
 	instanciationArray.Size = l.PopAst()
 	instanciationArray.Id = l.PopAst()
 
+	// Check if the size is an integer
+	if !instanciationArray.Size.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		value, c := GetChildTextAndCtx(ctx.GetChild(2))
+
+		l.Logger.NewSemanticError(logger.ErrorArraySizeIsNotAnInteger, c, value)
+	}
+
+	if !instanciationArray.Id.ReturnType().ElementType.Equals(instanciationArray.DefaultValue.ReturnType()) {
+		typeName := instanciationArray.Id.(*Identifiant).Id
+		actualType := instanciationArray.DefaultValue.ReturnType()
+		expectedType := instanciationArray.Id.ReturnType().ElementType
+		
+		l.Logger.NewSemanticError(logger.ErrorWrongDefaultValueArray, &ctx, typeName, expectedType, actualType)
+	}
+
 	instanciationArray.Type = ttype.NewArrayType(instanciationArray.DefaultValue.ReturnType())
 
 	l.PushAst(instanciationArray)

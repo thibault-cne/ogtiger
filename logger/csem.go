@@ -19,6 +19,8 @@ const (
 	ErrorVarIsNotAnArray			SemError = "Variable %v is not an array"
 	ErrorFieldDoesNotExist			SemError = "Field %v does not exist in type %v"
 	ErrorArrayIndexIsNotAnInteger	SemError = "Array index %v is not an integer"
+	ErrorArraySizeIsNotAnInteger	SemError = "Array size %v is not an integer"
+	ErrorWrongDefaultValueArray		SemError = "Wrong default value for array of type %v. Expected %v, got %v instead"
 )
 
 type SemanticError struct {

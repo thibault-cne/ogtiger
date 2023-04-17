@@ -234,17 +234,74 @@ func (s *AstCreatorListener) GetProgram() *Program {
 
 func GetChildTextAndCtx(ctx antlr.Tree) (string, antlr.ParserRuleContext) {
 	switch c := ctx.(type) {
-	case *parser.ExpressionUnaireContext:
+	case parser.IProgramContext:
 		return c.GetText(), c
-	case *parser.ExpressionIdentifiantContext:
+	case parser.IExpressionContext:
 		return c.GetText(), c
-	case *parser.AppelFonctionContext:
+	case parser.IOperationOuContext:
 		return c.GetText(), c
-	case *parser.ExpressionContext:
+	case parser.IOperationEtContext:
 		return c.GetText(), c
-	case *parser.IdentifiantContext:
+	case parser.IOperationComparaisonContext:
 		return c.GetText(), c
-	default:
-		return "", nil
+	case parser.IOperationAdditionContext:
+		return c.GetText(), c
+	case parser.IOperationMultiplicationContext:
+		return c.GetText(), c
+	case parser.ISequenceInstructionContext:
+		return c.GetText(), c
+	case parser.IOperationNegationContext:
+		return c.GetText(), c
+	case parser.IExpressionValeurContext:
+		switch c := c.(type) {
+		case *parser.ExpressionIdentifiantContext:
+			return c.GetText(), c
+		case *parser.AppelFonctionContext:
+			return c.GetText(), c
+		case *parser.ListeAccesContext:
+			return c.GetText(), c
+		case *parser.InstanciationRecordContext:
+			return c.GetText(), c
+		case *parser.InstanciationArrayContext:
+			return c.GetText(), c
+		}
+	case parser.IOperationSiContext:
+		return c.GetText(), c
+	case parser.IOperationTantqueContext:
+		return c.GetText(), c
+	case parser.IOperationBoucleContext:
+		return c.GetText(), c
+	case parser.IDefinitionContext:
+		return c.GetText(), c
+	case parser.IDeclarationTypeContext:
+		switch c := c.(type) {
+		case *parser.DeclarationTypeClassiqueContext:
+			return c.GetText(), c
+		case *parser.DeclarationArrayTypeContext:
+			return c.GetText(), c
+		case *parser.DeclarationRecordTypeContext:
+			return c.GetText(), c
+		}
+	case parser.IDeclarationChampContext:
+		return c.GetText(), c
+	case parser.IDeclarationFonctionContext:
+		return c.GetText(), c
+	case parser.IDeclarationValeurContext:
+		return c.GetText(), c
+	case parser.IConstantesContext:
+		switch c := c.(type) {
+		case *parser.ChaineChrContext:
+			return c.GetText(), c
+		case *parser.EntierContext:
+			return c.GetText(), c
+		case *parser.NilContext:
+			return c.GetText(), c
+		case *parser.BreakContext:
+			return c.GetText(), c
+		}
+	case parser.IIdentifiantContext:
+		return c.GetText(), c
 	}
+
+	return "", nil
 }

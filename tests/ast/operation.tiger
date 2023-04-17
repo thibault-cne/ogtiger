@@ -7,6 +7,8 @@ let
     var z := x.caca
     var w := x[2]
     var a := abc[4] of 0
+    var d := abc[4] of "c"
+    var e := abc["c"] of 0
     var b := a["c"]
     var c := a[1]
 in
