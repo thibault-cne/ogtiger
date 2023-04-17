@@ -87,8 +87,10 @@ func (s *AstCreatorListener) EnterEveryRule(ctx antlr.ParserRuleContext) {
 			s.AppelFonctionEnter(*c)
 		case *parser.ListeAccesContext:
 			s.ListAccesEnter(*c)
-		case *parser.InstanciationTypeContext:
-			s.InstanciationTypeEnter(*c)
+		case *parser.InstanciationRecordContext:
+			s.InstanciationRecordEnter(*c)
+		case *parser.InstanciationArrayContext:
+			s.InstanciationArrayEnter(*c)
 		}
 	case parser.IOperationSiContext:
 		s.OperationSiEnter(c)
@@ -159,8 +161,10 @@ func (s *AstCreatorListener) ExitEveryRule(ctx antlr.ParserRuleContext) {
 			s.AppelFonctionExit(*c)
 		case *parser.ListeAccesContext:
 			s.ListAccesExit(*c)
-		case *parser.InstanciationTypeContext:
-			s.InstanciationTypeExit(*c)
+		case *parser.InstanciationRecordContext:
+			s.InstanciationRecordExit(*c)
+		case *parser.InstanciationArrayContext:
+			s.InstanciationArrayExit(*c)
 		}
 	case parser.IOperationSiContext:
 		s.OperationSiExit(c)
@@ -226,4 +230,21 @@ func (s *AstCreatorListener) DisplayAST(filename string) {
 
 func (s *AstCreatorListener) GetProgram() *Program {
 	return s.AstStack[0].(*Program)
+}
+
+func GetChildTextAndCtx(ctx antlr.Tree) (string, antlr.ParserRuleContext) {
+	switch c := ctx.(type) {
+	case *parser.ExpressionUnaireContext:
+		return c.GetText(), c
+	case *parser.ExpressionIdentifiantContext:
+		return c.GetText(), c
+	case *parser.AppelFonctionContext:
+		return c.GetText(), c
+	case *parser.ExpressionContext:
+		return c.GetText(), c
+	case *parser.IdentifiantContext:
+		return c.GetText(), c
+	default:
+		return "", nil
+	}
 }

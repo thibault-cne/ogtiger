@@ -11,15 +11,15 @@ import (
 	"github.com/goccy/go-graphviz/cgraph"
 )
 
-type InstanciationType struct {
+type InstanciationRecord struct {
 	Identifiant  Ast
 	Identifiants []Ast
 	Expressions  []Ast
-	Ctx          parser.InstanciationTypeContext
+	Ctx          parser.InstanciationRecordContext
 	Type         *ttype.TigerType
 }
 
-func (e *InstanciationType) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
+func (e *InstanciationRecord) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
 	e.Identifiant.VisitSemControl(slt, L)
 	for _, identifiant := range e.Identifiants {
 		identifiant.VisitSemControl(slt, L)
@@ -30,15 +30,15 @@ func (e *InstanciationType) VisitSemControl(slt *slt.SymbolTable, L *logger.Step
 	return &e.Ctx
 }
 
-func (e *InstanciationType) ReturnType() *ttype.TigerType {
+func (e *InstanciationRecord) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
-func (i *InstanciationType) Display() string {
+func (i *InstanciationRecord) Display() string {
 	return " instanciationType"
 }
 
-func (e *InstanciationType) Draw(g *cgraph.Graph) *cgraph.Node {
+func (e *InstanciationRecord) Draw(g *cgraph.Graph) *cgraph.Node {
 	nodeId := fmt.Sprintf("N%p", e)
 	node, _ := g.CreateNode(nodeId)
 	node.SetLabel("InstanciationType")
@@ -57,12 +57,12 @@ func (e *InstanciationType) Draw(g *cgraph.Graph) *cgraph.Node {
 	return node
 }
 
-func (l *AstCreatorListener) InstanciationTypeEnter(ctx parser.InstanciationTypeContext) {
+func (l *AstCreatorListener) InstanciationRecordEnter(ctx parser.InstanciationRecordContext) {
 	// Nothing to do
 }
 
-func (l *AstCreatorListener) InstanciationTypeExit(ctx parser.InstanciationTypeContext) {
-	instanciationType := &InstanciationType{Ctx: ctx}
+func (l *AstCreatorListener) InstanciationRecordExit(ctx parser.InstanciationRecordContext) {
+	instanciationType := &InstanciationRecord{Ctx: ctx}
 
 	// Get the identifiants and the expressions
 	for i := 0; i < len(ctx.AllExpression()); i++ {

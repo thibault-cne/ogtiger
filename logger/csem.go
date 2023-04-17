@@ -16,6 +16,9 @@ const (
 	ErrorFunctionNotDefined			SemError = "Function %v is not defined"
 	ErrorWrongNumberOfArgs			SemError = "Wrong number of arguments for function %v. Expected %v arguments, got %v instead"
 	ErrorWrongTypeOfArgs			SemError = "Wrong type of arguments for function %v. Expected %v for argument %v, got %v instead"
+	ErrorVarIsNotAnArray			SemError = "Variable %v is not an array"
+	ErrorFieldDoesNotExist			SemError = "Field %v does not exist in type %v"
+	ErrorArrayIndexIsNotAnInteger	SemError = "Array index %v is not an integer"
 )
 
 type SemanticError struct {
