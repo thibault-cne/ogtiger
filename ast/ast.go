@@ -37,6 +37,7 @@ func NewAstCreatorListener(L *logger.StepLogger) *AstCreatorListener {
 type Ast interface {
 	Draw(g *cgraph.Graph) *cgraph.Node
 	ReturnType() *ttype.TigerType
+	GetErrorCount() int
 	VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext
 }
 
@@ -300,6 +301,8 @@ func GetChildTextAndCtx(ctx antlr.Tree) (string, antlr.ParserRuleContext) {
 			return c.GetText(), c
 		}
 	case parser.IIdentifiantContext:
+		return c.GetText(), c
+	case parser.IExpressionUnaireContext:
 		return c.GetText(), c
 	}
 

@@ -15,6 +15,7 @@ type SequenceInstruction struct {
 	Instructions []Ast
 	Ctx          parser.ISequenceInstructionContext
 	Type         *ttype.TigerType
+	ErrorCount  int
 }
 
 func (e *SequenceInstruction) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -26,6 +27,10 @@ func (e *SequenceInstruction) VisitSemControl(slt *slt.SymbolTable, L *logger.St
 
 func (e *SequenceInstruction) ReturnType() *ttype.TigerType {
 	return e.Type
+}
+
+func (e *SequenceInstruction) GetErrorCount() int {
+	return e.ErrorCount
 }
 
 func (e *SequenceInstruction) Draw(g *cgraph.Graph) *cgraph.Node {

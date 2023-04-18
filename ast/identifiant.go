@@ -25,6 +25,10 @@ func (e *Identifiant) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
+func (e *Identifiant) GetErrorCount() int {
+	return 0
+}
+
 func (e *Identifiant) Draw(g *cgraph.Graph) *cgraph.Node {
 	id := fmt.Sprintf("N%p", e)
 	node, _ := g.CreateNode(id)

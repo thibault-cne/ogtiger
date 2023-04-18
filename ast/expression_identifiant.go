@@ -5,6 +5,7 @@ import (
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
+	"ogtiger/ttype"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/goccy/go-graphviz/cgraph"
@@ -16,8 +17,12 @@ func (e *ExpressionIdentifiant) VisitSemControl(slt *slt.SymbolTable, L *logger.
 	return nil
 }
 
-func (e *ExpressionIdentifiant) Display() string {
-	return " expressionValeur"
+func (e *ExpressionIdentifiant) ReturnType() *ttype.TigerType {
+	return nil
+}
+
+func (e *ExpressionIdentifiant) GetErrorCount() int {
+	return 0
 }
 
 func (e *ExpressionIdentifiant) Draw(g *cgraph.Graph) *cgraph.Node {

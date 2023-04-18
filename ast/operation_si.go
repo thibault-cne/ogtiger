@@ -18,6 +18,7 @@ type OperationSi struct {
 	Slt  *slt.SymbolTable
 	Ctx  parser.IOperationSiContext
 	Type *ttype.TigerType
+	ErrorCount int
 }
 
 func (e *OperationSi) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -32,6 +33,10 @@ func (e *OperationSi) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger
 
 func (e *OperationSi) ReturnType() *ttype.TigerType {
 	return e.Type
+}
+
+func (e *OperationSi) GetErrorCount() int {
+	return e.ErrorCount
 }
 
 func (e *OperationSi) Draw(g *cgraph.Graph) *cgraph.Node {

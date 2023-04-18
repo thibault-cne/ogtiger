@@ -16,6 +16,7 @@ type OperationAddition struct {
 	Right Ast
 	Ctx   parser.IOperationAdditionContext
 	Type  *ttype.TigerType
+	ErrorCount int
 }
 
 func (e *OperationAddition) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -38,6 +39,7 @@ type OperationSoustraction struct {
 	Right Ast
 	Ctx   parser.IOperationAdditionContext
 	Type  *ttype.TigerType
+	ErrorCount int
 }
 
 func (e *OperationSoustraction) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -59,8 +61,16 @@ func (e *OperationAddition) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
+func (e *OperationAddition) GetErrorCount() int {
+	return e.ErrorCount
+}
+
 func (e *OperationSoustraction) ReturnType() *ttype.TigerType {
 	return e.Type
+}
+
+func (e *OperationSoustraction) GetErrorCount() int {
+	return e.ErrorCount
 }
 
 func (e *OperationAddition) Draw(g *cgraph.Graph) *cgraph.Node {

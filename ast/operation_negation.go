@@ -15,6 +15,7 @@ type OperationNegation struct {
 	Expr Ast
 	Ctx  parser.IOperationNegationContext
 	Type *ttype.TigerType
+	ErrorCount int
 }
 
 func (e *OperationNegation) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -24,6 +25,10 @@ func (e *OperationNegation) VisitSemControl(slt *slt.SymbolTable, L *logger.Step
 
 func (e *OperationNegation) ReturnType() *ttype.TigerType {
 	return e.Type
+}
+
+func (e *OperationNegation) GetErrorCount() int {
+	return e.ErrorCount
 }
 
 func (e *OperationNegation) Draw(g *cgraph.Graph) *cgraph.Node {

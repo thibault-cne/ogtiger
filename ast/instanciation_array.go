@@ -17,6 +17,7 @@ type InstanciationArray struct {
 	DefaultValue Ast
 	Ctx  parser.InstanciationArrayContext
 	Type *ttype.TigerType
+	ErrorCount int
 }
 
 func (e *InstanciationArray) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -30,6 +31,10 @@ func (e *InstanciationArray) VisitSemControl(slt *slt.SymbolTable, L *logger.Ste
 
 func (e *InstanciationArray) ReturnType() *ttype.TigerType {
 	return e.Type
+}
+
+func (e *InstanciationArray) GetErrorCount() int {
+	return e.ErrorCount
 }
 
 func (e *InstanciationArray) Draw(g *cgraph.Graph) *cgraph.Node {
@@ -56,6 +61,7 @@ func (l *AstCreatorListener) InstanciationArrayEnter(ctx parser.InstanciationArr
 func (l *AstCreatorListener) InstanciationArrayExit(ctx parser.InstanciationArrayContext) {
 	instanciationArray := &InstanciationArray{
 		Ctx:  ctx,
+		ErrorCount: 0,
 	}
 
 	instanciationArray.DefaultValue = l.PopAst()
@@ -67,14 +73,18 @@ func (l *AstCreatorListener) InstanciationArrayExit(ctx parser.InstanciationArra
 		value, c := GetChildTextAndCtx(ctx.GetChild(2))
 
 		l.Logger.NewSemanticError(logger.ErrorArraySizeIsNotAnInteger, c, value)
+		instanciationArray.ErrorCount++
 	}
 
 	if !instanciationArray.Id.ReturnType().ElementType.Equals(instanciationArray.DefaultValue.ReturnType()) {
 		typeName := instanciationArray.Id.(*Identifiant).Id
 		actualType := instanciationArray.DefaultValue.ReturnType()
 		expectedType := instanciationArray.Id.ReturnType().ElementType
+
+		_, c := GetChildTextAndCtx(ctx.GetChild(5))
 		
-		l.Logger.NewSemanticError(logger.ErrorWrongDefaultValueArray, &ctx, typeName, expectedType, actualType)
+		l.Logger.NewSemanticError(logger.ErrorWrongDefaultValueArray, c, typeName, expectedType, actualType)
+		instanciationArray.ErrorCount++
 	}
 
 	instanciationArray.Type = ttype.NewArrayType(instanciationArray.DefaultValue.ReturnType())

@@ -26,8 +26,8 @@ func (e *ExpressionUnaire) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
-func (e *ExpressionUnaire) Display() string {
-	return " expressionUnaire"
+func (e *ExpressionUnaire) GetErrorCount() int {
+	return 0
 }
 
 func (e *ExpressionUnaire) Draw(g *cgraph.Graph) *cgraph.Node {

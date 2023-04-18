@@ -19,6 +19,7 @@ type OperationBoucle struct {
 	Slt      *slt.SymbolTable
 	Ctx      parser.IOperationBoucleContext
 	Type     *ttype.TigerType
+	ErrorCount int
 }
 
 func (e *OperationBoucle) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -33,8 +34,8 @@ func (e *OperationBoucle) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
-func (e *OperationBoucle) Display() string {
-	return " pour"
+func (e *OperationBoucle) GetErrorCount() int {
+	return e.ErrorCount
 }
 
 func (e *OperationBoucle) Draw(g *cgraph.Graph) *cgraph.Node {

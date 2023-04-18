@@ -17,6 +17,7 @@ type OperationTantQue struct {
 	Slt   *slt.SymbolTable
 	Ctx   parser.IOperationTantqueContext
 	Type  *ttype.TigerType
+	ErrorCount int
 }
 
 func (e *OperationTantQue) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -27,6 +28,10 @@ func (e *OperationTantQue) VisitSemControl(slt *slt.SymbolTable, L *logger.StepL
 
 func (e *OperationTantQue) ReturnType() *ttype.TigerType {
 	return e.Type
+}
+
+func (e *OperationTantQue) GetErrorCount() int {
+	return e.ErrorCount
 }
 
 func (e *OperationTantQue) Draw(g *cgraph.Graph) *cgraph.Node {

@@ -16,6 +16,7 @@ type OperationMultiplication struct {
 	Right Ast
 	Ctx   parser.IOperationMultiplicationContext
 	Type  *ttype.TigerType
+	ErrorCount int
 }
 
 func (e *OperationMultiplication) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -39,6 +40,7 @@ type OperationDivision struct {
 	Right Ast
 	Ctx   parser.IOperationMultiplicationContext
 	Type  *ttype.TigerType
+	ErrorCount int
 }
 
 func (e *OperationDivision) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -60,8 +62,16 @@ func (e *OperationMultiplication) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
+func (e *OperationMultiplication) GetErrorCount() int {
+	return e.ErrorCount
+}
+
 func (e *OperationDivision) ReturnType() *ttype.TigerType {
 	return e.Type
+}
+
+func (e *OperationDivision) GetErrorCount() int {
+	return e.ErrorCount
 }
 
 func (e *OperationMultiplication) Draw(g *cgraph.Graph) *cgraph.Node {

@@ -14,6 +14,7 @@ import (
 type Break struct {
 	Ctx  parser.BreakContext
 	Type *ttype.TigerType
+	ErrorCount int
 }
 
 func (e *Break) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -22,6 +23,10 @@ func (e *Break) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antl
 
 func (e *Break) ReturnType() *ttype.TigerType {
 	return e.Type
+}
+
+func (e *Break) GetErrorCount() int {
+	return e.ErrorCount
 }
 
 func (e *Break) Draw(g *cgraph.Graph) *cgraph.Node {

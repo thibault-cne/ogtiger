@@ -16,6 +16,7 @@ type Expression struct {
 	Right Ast
 	Ctx   parser.IExpressionContext
 	Type  *ttype.TigerType
+	ErrorCount int
 }
 
 func (e *Expression) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -28,9 +29,10 @@ func (e *Expression) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
-func (e *Expression) Display() string {
-	return " expression"
+func (e *Expression) GetErrorCount() int {
+	return e.ErrorCount
 }
+
 
 func (e *Expression) Draw(g *cgraph.Graph) *cgraph.Node {
 	nodeId := fmt.Sprintf("N%p", e)

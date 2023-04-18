@@ -25,6 +25,10 @@ func (e *ChaineChr) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
+func (e *ChaineChr) GetErrorCount() int {
+	return 0
+}
+
 func (e *ChaineChr) Draw(g *cgraph.Graph) *cgraph.Node {
 	nodeId := fmt.Sprintf("N%p", e)
 	node, _ := g.CreateNode(nodeId)

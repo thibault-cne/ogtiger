@@ -16,6 +16,7 @@ type DeclarationArrayType struct {
 	AType       Ast
 	Ctx         parser.DeclarationArrayTypeContext
 	Type        *ttype.TigerType
+	ErrorCount  int
 }
 
 func (e *DeclarationArrayType) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -28,6 +29,10 @@ func (e *DeclarationArrayType) VisitSemControl(slt *slt.SymbolTable, L *logger.S
 
 func (e *DeclarationArrayType) ReturnType() *ttype.TigerType {
 	return e.Type
+}
+
+func (e *DeclarationArrayType) GetErrorCount() int {
+	return e.ErrorCount
 }
 
 func (e *DeclarationArrayType) Draw(g *cgraph.Graph) *cgraph.Node {

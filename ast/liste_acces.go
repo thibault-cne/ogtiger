@@ -23,6 +23,7 @@ type ListAcces struct {
 	AccesChamps []Ast
 	Ctx         parser.ListeAccesContext
 	Type        *ttype.TigerType
+	ErrorCount int
 }
 
 type Field struct {
@@ -41,6 +42,10 @@ func (e *ListAcces) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) 
 
 func (e *ListAcces) ReturnType() *ttype.TigerType {
 	return e.Type
+}
+
+func (e *ListAcces) GetErrorCount() int {
+	return e.ErrorCount
 }
 
 func (e *ListAcces) Draw(g *cgraph.Graph) *cgraph.Node {
@@ -123,10 +128,12 @@ func (l *AstCreatorListener) ListAccesExit(ctx parser.ListeAccesContext) {
 	t := listAcces.Identifiant.ReturnType()
 	element := listAcces.Identifiant.(*Identifiant).Id
 
-	for _, a := range acces {
+	for i, a := range acces {
+		_, c := GetChildTextAndCtx(ctx.GetChild(i))
+
 		if a.Type == FieldTypeArr {
 			if t.ElementType == nil {
-				l.Logger.NewSemanticError(logger.ErrorVarIsNotAnArray, a.Ctx, element)
+				l.Logger.NewSemanticError(logger.ErrorVarIsNotAnArray, c, element)
 				break
 			}
 

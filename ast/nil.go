@@ -24,8 +24,8 @@ func (e *Nil) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
-func (e *Nil) Display() string {
-	return " nil"
+func (e *Nil) GetErrorCount() int {
+	return 0
 }
 
 func (e *Nil) Draw(g *cgraph.Graph) *cgraph.Node {
