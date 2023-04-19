@@ -21,10 +21,19 @@ type OperationSi struct {
 }
 
 func (e *OperationSi) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	e.Cond.VisitSemControl(e.Slt, L)
+	condCtx := e.Cond.VisitSemControl(e.Slt, L)
 	e.Then.VisitSemControl(e.Slt, L)
+
+	if !e.Cond.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Condition of the if is not an integer", condCtx)
+	}
+	
 	if e.Else != nil {
 		e.Else.VisitSemControl(e.Slt, L)
+
+		if !e.Then.ReturnType().Equals(e.Else.ReturnType()) {
+			L.NewSemanticError(logger.ErrorWrongTypeInIfElse, e.Ctx, e.Then.ReturnType(), e.Else.ReturnType())
+		}
 	}
 
 	return e.Ctx

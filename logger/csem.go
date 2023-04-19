@@ -27,6 +27,7 @@ const (
 	ErrorWrongTypeInSubstraction	SemError = "Wrong types for substraction. Left is %v, and right is %v"
 	ErrorWrongTypeInMultiplication	SemError = "Wrong types for multiplication. Left is %v, and right is %v"
 	ErrorWrongTypeInDivision		SemError = "Wrong types for division. Left is %v, and right is %v"
+	ErrorWrongTypeInIfElse			SemError = "Then and else must return the same type. Then returns %s, and else %v"
 )
 
 type SemanticError struct {

@@ -1,0 +1,8 @@
+/* 1 error */
+let
+    var x := 1
+in
+    if x
+    then 1
+    else "foo"
+end
