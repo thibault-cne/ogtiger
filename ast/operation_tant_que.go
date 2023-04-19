@@ -20,8 +20,13 @@ type OperationTantQue struct {
 }
 
 func (e *OperationTantQue) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	e.Cond.VisitSemControl(e.Slt, L)
+	condCtx := e.Cond.VisitSemControl(e.Slt, L)
 	e.Block.VisitSemControl(e.Slt, L)
+
+	if !e.Cond.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Condition of the while loop is not an integer", condCtx)
+	}
+
 	return e.Ctx
 }
 
