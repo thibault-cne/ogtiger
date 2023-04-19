@@ -19,17 +19,19 @@ type OperationMultiplication struct {
 }
 
 func (e *OperationMultiplication) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	leftCtx := e.Left.VisitSemControl(slt, L)
-	rightCtx := e.Right.VisitSemControl(slt, L)
+	e.Left.VisitSemControl(slt, L)
+	e.Right.VisitSemControl(slt, L)
 
-	if !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
-		L.NewSemanticError("Left side of the multiplication is not an integer", leftCtx)
+	typeInt := ttype.NewTigerType(ttype.Int)
+	typeString := ttype.NewTigerType(ttype.String)
+
+	if e.Left.ReturnType().Equals(e.Right.ReturnType()) && !e.Left.ReturnType().Equals(typeInt) {
+		L.NewSemanticError("Multiplication between non integer", e.Ctx)
 	}
 
-	if !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
-		L.NewSemanticError("Right side of the multiplication is not an integer", rightCtx)
+	if !((e.Left.ReturnType().Equals(typeString) && e.Right.ReturnType().Equals(typeInt)) || (e.Left.ReturnType().Equals(typeInt) && e.Right.ReturnType().Equals(typeString))) {
+		L.NewSemanticError("Multiplication between non integer and non string", e.Ctx)
 	}
-
 
 	return e.Ctx
 }
