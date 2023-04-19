@@ -61,6 +61,11 @@ func (l *AstCreatorListener) DeclarationTypeClassiqueExit(ctx parser.Declaration
 		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, &ctx, declType.Identifiant.(*Identifiant).Id)
 	}
 
+	// Verify if the type is already defined
+	if _, err := l.Slt.GetSymbol(declType.TType.(*Identifiant).Id); err != nil {
+		l.Logger.NewSemanticError(logger.ErrorTypeIsNotDefined, &ctx, declType.TType.(*Identifiant).Id)
+	}
+
 	t := &slt.Symbol{
 		Name: declType.Identifiant.(*Identifiant).Id,
 		Type: declType.TType.ReturnType(),

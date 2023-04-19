@@ -1,0 +1,9 @@
+/* 1 error */
+let
+    type t = int
+    type x = y
+    type z = t
+    type y = string
+in
+    (1+1)
+end
