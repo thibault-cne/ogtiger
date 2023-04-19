@@ -18,7 +18,12 @@ type OperationNegation struct {
 }
 
 func (e *OperationNegation) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	e.Expr.VisitSemControl(slt, L)
+	exprCtx := e.Expr.VisitSemControl(slt, L)
+
+	if !e.Expr.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Expression of the negation is not an integer", exprCtx)
+	}
+
 	return e.Ctx
 }
 
