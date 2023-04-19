@@ -27,6 +27,18 @@ func (e *InstanciationRecord) VisitSemControl(slt *slt.SymbolTable, L *logger.St
 	for _, expression := range e.Expressions {
 		expression.VisitSemControl(slt, L)
 	}
+
+	// Check types of the expressions
+	for i := range e.Identifiants {
+		fieldType, err := e.Type.GetRecordFieldType(e.Identifiants[i].(*Identifiant).Id)
+
+		if err != nil {
+			L.NewSemanticError(logger.ErrorFieldDoesNotExistInRecord, e.Identifiants[i].(*Identifiant).Ctx, e.Identifiants[i].(*Identifiant).Id, e.Identifiant.(*Identifiant).Id)
+		} else if !fieldType.Equals(e.Expressions[i].ReturnType()) {
+			L.NewSemanticError(logger.ErrorWrongTypeInInstanciationRecord, e.Identifiants[i].(*Identifiant).Ctx, fieldType, e.Expressions[i].ReturnType())
+		}
+	}
+
 	return &e.Ctx
 }
 

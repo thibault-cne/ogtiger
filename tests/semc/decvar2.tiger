@@ -1,0 +1,11 @@
+/* 3 errors */
+let
+    type t = {x: int}
+
+    var x := t{x = 4}
+    var y := t{y = 4}
+    var z := t{x = "baz"}
+    var w := t{x = 4, t = "foo"}
+in
+    x
+end
