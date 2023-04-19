@@ -28,6 +28,16 @@ func (e *DeclarationFontion) VisitSemControl(slt *slt.SymbolTable, L *logger.Ste
 	}
 	if e.FType != nil {
 		e.FType.VisitSemControl(e.Slt, L)
+
+		// Verify that the type is defined
+		if _, err := slt.GetSymbol(e.FType.(*Identifiant).Id); err != nil {
+			L.NewSemanticError(logger.ErrorTypeIsNotDefined, e.FType.(*Identifiant).Ctx, e.FType.(*Identifiant).Id)
+		}
+
+		// Verify that the type is the same as the return type of the function
+		if !e.FType.(*Identifiant).ReturnType().Equals(e.Expr.ReturnType()) {
+			L.NewSemanticError(logger.ErrorFunctionMismatchedTypes, e.FType.(*Identifiant).Ctx, e.Id.(*Identifiant).Id, e.FType.ReturnType(), e.Expr.ReturnType())
+		}
 	}
 	e.Expr.VisitSemControl(e.Slt, L)
 	return e.Ctx
@@ -105,7 +115,7 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 
 	// Verify that the Id is not already defined
 	if _, err := l.Slt.GetSymbol(declarationFontion.Id.(*Identifiant).Id); err == nil {
-		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, ctx, declarationFontion.Id.(*Identifiant).Id)
+		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, declarationFontion.Id.(*Identifiant).Ctx, declarationFontion.Id.(*Identifiant).Id)
 	}
 
 	// Add the parameters to the TDS

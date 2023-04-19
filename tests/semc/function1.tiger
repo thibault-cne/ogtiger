@@ -1,0 +1,9 @@
+/* 4 errors */
+let
+    function f(): int = "a"
+    function f(): int = 4
+    function g(): abc = 4
+    function good(): int = 4
+in
+    good()
+end

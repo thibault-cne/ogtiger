@@ -65,7 +65,7 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 
 	for range ctx.AllExpression() {
 		// Prepend the expressions to the list
-		expr.Expressions = append([]Ast{l.PopAst()}, expr.Expressions...)
+		expr.Expressions = append([]Ast{ l.PopAst() }, expr.Expressions...)
 	}
 
 	expr.Type = expr.Expressions[len(expr.Expressions)-1].ReturnType()
