@@ -17,7 +17,6 @@ type DeclarationValeur struct {
 	Expr  Ast
 	Ctx   parser.IDeclarationValeurContext
 	Type  *ttype.TigerType
-	ErrorCount int
 }
 
 func (e *DeclarationValeur) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -32,10 +31,6 @@ func (e *DeclarationValeur) VisitSemControl(slt *slt.SymbolTable, L *logger.Step
 
 func (e *DeclarationValeur) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *DeclarationValeur) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (e *DeclarationValeur) Draw(g *cgraph.Graph) *cgraph.Node {
@@ -68,29 +63,23 @@ func (l *AstCreatorListener) DeclarationValeurExit(ctx parser.IDeclarationValeur
 
 	declarationValeur.Expr = l.PopAst()
 	declarationValeur.Type = declarationValeur.Expr.ReturnType()
-	declarationValeur.ErrorCount = declarationValeur.Expr.GetErrorCount()
 
 	if len(ctx.AllIdentifiant()) > 1 {
 		declarationValeur.VType = l.PopAst()
 		declarationValeur.Type = declarationValeur.VType.ReturnType()
-		declarationValeur.ErrorCount += declarationValeur.VType.GetErrorCount()
 
 		// Verify that the type exists
 		if _, err := l.Slt.GetSymbol(declarationValeur.VType.(*Identifiant).Id); err != nil {
 			l.Logger.NewSemanticError(logger.ErrorTypeIsNotDefined, ctx, declarationValeur.VType.(*Identifiant).Id)
-			declarationValeur.ErrorCount++
 		}
 	}
 
 	declarationValeur.Id = l.PopAst()
 	if _, err := l.Slt.GetSymbolInScoope(declarationValeur.Id.(*Identifiant).Id); err == nil {
 		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, ctx, declarationValeur.Id.(*Identifiant).Id)
-		declarationValeur.ErrorCount++
 	}
 
-	if declarationValeur.ErrorCount == 0 {
-		l.Slt.CreateSymbol(declarationValeur.Id.(*Identifiant).Id, declarationValeur.Type)
-	}
+	l.Slt.CreateSymbol(declarationValeur.Id.(*Identifiant).Id, declarationValeur.Type)
 	
 	l.PushAst(declarationValeur)
 }

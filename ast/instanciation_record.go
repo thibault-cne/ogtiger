@@ -17,7 +17,6 @@ type InstanciationRecord struct {
 	Expressions  []Ast
 	Ctx          parser.InstanciationRecordContext
 	Type         *ttype.TigerType
-	ErrorCount int
 }
 
 func (e *InstanciationRecord) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -33,10 +32,6 @@ func (e *InstanciationRecord) VisitSemControl(slt *slt.SymbolTable, L *logger.St
 
 func (e *InstanciationRecord) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *InstanciationRecord) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (e *InstanciationRecord) Draw(g *cgraph.Graph) *cgraph.Node {

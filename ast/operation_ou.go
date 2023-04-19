@@ -16,7 +16,6 @@ type OperationOu struct {
 	Right Ast
 	Ctx   parser.IOperationOuContext
 	Type  *ttype.TigerType
-	ErrorCount int
 }
 
 func (e *OperationOu) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -26,10 +25,6 @@ func (e *OperationOu) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger
 
 func (e *OperationOu) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *OperationOu) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (e *OperationOu) Draw(g *cgraph.Graph) *cgraph.Node {

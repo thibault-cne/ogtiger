@@ -16,7 +16,6 @@ type OperationAddition struct {
 	Right Ast
 	Ctx   parser.IOperationAdditionContext
 	Type  *ttype.TigerType
-	ErrorCount int
 }
 
 func (e *OperationAddition) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -39,7 +38,6 @@ type OperationSoustraction struct {
 	Right Ast
 	Ctx   parser.IOperationAdditionContext
 	Type  *ttype.TigerType
-	ErrorCount int
 }
 
 func (e *OperationSoustraction) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -61,16 +59,8 @@ func (e *OperationAddition) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
-func (e *OperationAddition) GetErrorCount() int {
-	return e.ErrorCount
-}
-
 func (e *OperationSoustraction) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *OperationSoustraction) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (e *OperationAddition) Draw(g *cgraph.Graph) *cgraph.Node {
@@ -120,22 +110,26 @@ func (l *AstCreatorListener) OperationAdditionExit(ctx parser.IOperationAddition
 
 	// Get minus and plus and term number
 	for i := 0; 2*i < (ctx.GetChildCount() - 1); i++ {
+		right := elements[len(elements)-1]
+
 		switch ctx.GetChild(2*i + 1).(*antlr.TerminalNodeImpl).GetText() {
 		case "+":
 			temp := &OperationAddition{
 				Ctx:   ctx,
 				Left:  node,
-				Right: elements[len(elements)-1],
+				Right: right,
 				Type:  ttype.NewTigerType(ttype.Int),
 			}
+
 			node = temp
 		case "-":
 			temp := &OperationSoustraction{
 				Ctx:   ctx,
 				Left:  node,
-				Right: elements[len(elements)-1],
+				Right: right,
 				Type:  ttype.NewTigerType(ttype.Int),
 			}
+
 			node = temp
 		}
 

@@ -21,10 +21,6 @@ func (e *ExpressionIdentifiant) ReturnType() *ttype.TigerType {
 	return nil
 }
 
-func (e *ExpressionIdentifiant) GetErrorCount() int {
-	return 0
-}
-
 func (e *ExpressionIdentifiant) Draw(g *cgraph.Graph) *cgraph.Node {
 	nodeId := fmt.Sprintf("N%p", e)
 	node, _ := g.CreateNode(nodeId)

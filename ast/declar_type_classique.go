@@ -16,7 +16,6 @@ type DeclarationTypeClassique struct {
 	TType       Ast
 	Ctx         parser.DeclarationTypeClassiqueContext
 	Type        *ttype.TigerType
-	ErrorCount int
 }
 
 func (e *DeclarationTypeClassique) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -28,10 +27,6 @@ func (e *DeclarationTypeClassique) VisitSemControl(slt *slt.SymbolTable, L *logg
 
 func (e *DeclarationTypeClassique) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *DeclarationTypeClassique) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (e *DeclarationTypeClassique) Draw(g *cgraph.Graph) *cgraph.Node {

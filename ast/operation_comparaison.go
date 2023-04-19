@@ -17,7 +17,6 @@ type OperationComparaison struct {
 	Right Ast
 	Ctx   parser.IOperationComparaisonContext
 	Type  *ttype.TigerType
-	ErrorCount int
 }
 
 func (e *OperationComparaison) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -28,10 +27,6 @@ func (e *OperationComparaison) VisitSemControl(slt *slt.SymbolTable, L *logger.S
 
 func (e *OperationComparaison) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *OperationComparaison) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (e *OperationComparaison) Draw(g *cgraph.Graph) *cgraph.Node {

@@ -1,6 +1,9 @@
 let
     var x := 3
     var y := "caca"
+    var z := x + y
+    var z := x + x - y
+    var z := x + x
 in
     x + y
 end

@@ -16,7 +16,6 @@ type DeclarationChamp struct {
 	Right Ast
 	Ctx   parser.IDeclarationChampContext
 	Type  *ttype.TigerType
-	ErrorCount int
 }
 
 func (e *DeclarationChamp) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -28,10 +27,6 @@ func (e *DeclarationChamp) VisitSemControl(slt *slt.SymbolTable, L *logger.StepL
 
 func (e *DeclarationChamp) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *DeclarationChamp) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (e *DeclarationChamp) Draw(g *cgraph.Graph) *cgraph.Node {

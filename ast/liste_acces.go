@@ -23,7 +23,6 @@ type ListAcces struct {
 	AccesChamps []Ast
 	Ctx         parser.ListeAccesContext
 	Type        *ttype.TigerType
-	ErrorCount int
 }
 
 type Field struct {
@@ -42,10 +41,6 @@ func (e *ListAcces) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) 
 
 func (e *ListAcces) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *ListAcces) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (e *ListAcces) Draw(g *cgraph.Graph) *cgraph.Node {

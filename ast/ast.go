@@ -37,7 +37,6 @@ func NewAstCreatorListener(L *logger.StepLogger) *AstCreatorListener {
 type Ast interface {
 	Draw(g *cgraph.Graph) *cgraph.Node
 	ReturnType() *ttype.TigerType
-	GetErrorCount() int
 	VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext
 }
 

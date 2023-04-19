@@ -15,7 +15,6 @@ type Program struct {
 	Expr Ast
 	Ctx  parser.IProgramContext
 	Type *ttype.TigerType
-	ErrorCount int
 }
 
 func (e *Program) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -25,10 +24,6 @@ func (e *Program) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) an
 
 func (e *Program) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *Program) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (e *Program) Draw(g *cgraph.Graph) *cgraph.Node {

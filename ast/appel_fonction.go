@@ -16,7 +16,6 @@ type AppelFonction struct {
 	Args        []Ast
 	Ctx         parser.AppelFonctionContext
 	Type        *ttype.TigerType
-	ErrorCount int
 }
 
 func (e *AppelFonction) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -46,10 +45,6 @@ func (e *AppelFonction) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogg
 
 func (e *AppelFonction) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *AppelFonction) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (a *AppelFonction) Draw(g *cgraph.Graph) *cgraph.Node {

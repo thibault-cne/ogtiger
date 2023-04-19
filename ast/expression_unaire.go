@@ -26,10 +26,6 @@ func (e *ExpressionUnaire) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
-func (e *ExpressionUnaire) GetErrorCount() int {
-	return 0
-}
-
 func (e *ExpressionUnaire) Draw(g *cgraph.Graph) *cgraph.Node {
 	nodeId := fmt.Sprintf("N%p", e)
 	node, _ := g.CreateNode(nodeId)

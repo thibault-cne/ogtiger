@@ -25,10 +25,6 @@ func (e *Break) ReturnType() *ttype.TigerType {
 	return e.Type
 }
 
-func (e *Break) GetErrorCount() int {
-	return e.ErrorCount
-}
-
 func (e *Break) Draw(g *cgraph.Graph) *cgraph.Node {
 	nodeId := fmt.Sprintf("N%p", e)
 	node, _ := g.CreateNode(nodeId)

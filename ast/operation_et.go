@@ -16,7 +16,6 @@ type OperationEt struct {
 	Right Ast
 	Ctx   parser.IOperationEtContext
 	Type  *ttype.TigerType
-	ErrorCount int
 }
 
 func (e *OperationEt) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -27,10 +26,6 @@ func (e *OperationEt) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger
 
 func (e *OperationEt) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *OperationEt) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (e *OperationEt) Draw(g *cgraph.Graph) *cgraph.Node {

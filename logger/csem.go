@@ -21,6 +21,7 @@ const (
 	ErrorArrayIndexIsNotAnInteger	SemError = "Array index %v is not an integer"
 	ErrorArraySizeIsNotAnInteger	SemError = "Array size %v is not an integer"
 	ErrorWrongDefaultValueArray		SemError = "Wrong default value for array of type %v. Expected %v, got %v instead"
+	ErrorWrongTypesExpression		SemError = "Wrong types for expression. Left is %v, and right is %v"
 )
 
 type SemanticError struct {

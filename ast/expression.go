@@ -20,8 +20,13 @@ type Expression struct {
 }
 
 func (e *Expression) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
-	e.Left.VisitSemControl(slt, L)
+	leftCtx := e.Left.VisitSemControl(slt, L)
 	e.Right.VisitSemControl(slt, L)
+
+	if !e.Left.ReturnType().Equals(e.Right.ReturnType()) {
+		L.NewSemanticError(logger.ErrorWrongTypesExpression, leftCtx, e.Left.ReturnType(), e.Right.ReturnType())
+	}
+
 	return e.Ctx
 }
 

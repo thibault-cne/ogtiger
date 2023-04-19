@@ -16,7 +16,6 @@ type DeclarationRecordType struct {
 	Champs      []Ast
 	Ctx         parser.DeclarationRecordTypeContext
 	Type        *ttype.TigerType
-	ErrorCount  int
 }
 
 func (e *DeclarationRecordType) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -31,10 +30,6 @@ func (e *DeclarationRecordType) VisitSemControl(slt *slt.SymbolTable, L *logger.
 
 func (e *DeclarationRecordType) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *DeclarationRecordType) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (e *DeclarationRecordType) Draw(g *cgraph.Graph) *cgraph.Node {

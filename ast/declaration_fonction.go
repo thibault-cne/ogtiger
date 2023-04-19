@@ -19,7 +19,6 @@ type DeclarationFontion struct {
 	Ctx   parser.IDeclarationFonctionContext
 	Slt   *slt.SymbolTable
 	Type  *ttype.TigerType
-	ErrorCount int
 }
 
 func (e *DeclarationFontion) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -36,10 +35,6 @@ func (e *DeclarationFontion) VisitSemControl(slt *slt.SymbolTable, L *logger.Ste
 
 func (e *DeclarationFontion) ReturnType() *ttype.TigerType {
 	return e.Type
-}
-
-func (e *DeclarationFontion) GetErrorCount() int {
-	return e.ErrorCount
 }
 
 func (e *DeclarationFontion) Draw(g *cgraph.Graph) *cgraph.Node {
