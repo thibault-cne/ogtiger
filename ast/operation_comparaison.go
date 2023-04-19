@@ -22,6 +22,11 @@ type OperationComparaison struct {
 func (e *OperationComparaison) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
 	e.Left.VisitSemControl(slt, L)
 	e.Right.VisitSemControl(slt, L)
+
+	if !e.Left.ReturnType().Equals(e.Right.ReturnType()) {
+		L.NewSemanticError(logger.ErrorWrongTypesInComparison, e.Ctx, e.Left.ReturnType(), e.Right.ReturnType())
+	}
+
 	return e.Ctx
 }
 
