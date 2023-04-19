@@ -59,12 +59,12 @@ func (l *AstCreatorListener) DeclarationArrayTypeExit(ctx parser.DeclarationArra
 
 	// Verify that the type is not already defined
 	if _, err := l.Slt.GetSymbol(declArrType.Identifiant.(*Identifiant).Id); err == nil {
-		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, &ctx, declArrType.Identifiant.(*Identifiant).Id)
+		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, declArrType.Identifiant.(*Identifiant).Ctx, declArrType.Identifiant.(*Identifiant).Id)
 	}
 
 	// Verify that the type is defined
 	if _, err := l.Slt.GetSymbol(declArrType.AType.(*Identifiant).Id); err != nil {
-		l.Logger.NewSemanticError(logger.ErrorTypeIsNotDefined, &ctx, declArrType.AType.(*Identifiant).Id)
+		l.Logger.NewSemanticError(logger.ErrorTypeIsNotDefined, declArrType.AType.(*Identifiant).Ctx, declArrType.AType.(*Identifiant).Id)
 	}
 
 	t := &slt.Symbol{

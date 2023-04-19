@@ -67,24 +67,24 @@ func (l *AstCreatorListener) DeclarationRecordTypeExit(ctx parser.DeclarationRec
 	}
 
 	for range ctx.AllDeclarationChamp() {
-		declRecordType.Champs = append(declRecordType.Champs, l.PopAst())
+		declRecordType.Champs = append([]Ast{ l.PopAst() }, declRecordType.Champs...)
 	}
 
 	declRecordType.Identifiant = l.PopAst()
 
 	// Verify that the type is not already defined
 	if _, err := l.Slt.GetSymbol(declRecordType.Identifiant.(*Identifiant).Id); err == nil {
-		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, &ctx, declRecordType.Identifiant.(*Identifiant).Id)
+		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, declRecordType.Identifiant.(*Identifiant).Ctx, declRecordType.Identifiant.(*Identifiant).Id)
 	}
 
 	typeFields := []*ttype.RecordField{}
-	for i, champ := range declRecordType.Champs {
+	for _, champ := range declRecordType.Champs {
 		if champ.(*DeclarationChamp).Right.ReturnType() == nil {
-			l.Logger.NewSemanticError(logger.ErrorTypeIsNotDefined, &ctx, champ.(*DeclarationChamp).Right.(*Identifiant).Id)
+			l.Logger.NewSemanticError(logger.ErrorTypeIsNotDefined, champ.(*DeclarationChamp).Ctx, champ.(*DeclarationChamp).Right.(*Identifiant).Id)
 		}
 
 		if _, ok := fields[champ.(*DeclarationChamp).Left.(*Identifiant).Id]; ok {
-			l.Logger.NewSemanticError(logger.ErrorRecordFieldAlreadyDefined, ctx.AllDeclarationChamp()[i], champ.(*DeclarationChamp).Left.(*Identifiant).Id)
+			l.Logger.NewSemanticError(logger.ErrorRecordFieldAlreadyDefined, champ.(*DeclarationChamp).Ctx, champ.(*DeclarationChamp).Left.(*Identifiant).Id)
 		}
 
 		typeFields = append(typeFields, &ttype.RecordField{
