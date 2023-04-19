@@ -193,7 +193,7 @@ func (s *SymbolTable) Draw(g *dot.Graph, edges *string) dot.Node {
 	label += "|{name|type|offset}"
 
 	for k, v := range s.Table {
-		if v.Type.ID != ttype.Function {
+		if  v.Type != nil && v.Type.ID != ttype.Function {
 			t := strings.ReplaceAll(v.Type.String(), "{", "(")
 			t = strings.ReplaceAll(t, "}", ")")
 			label += fmt.Sprintf("|{%s|%s|%d}", k, t, v.Offset)
@@ -208,7 +208,7 @@ func (s *SymbolTable) Draw(g *dot.Graph, edges *string) dot.Node {
 	var nodes []dot.Node
 
 	for k, v := range s.Table {
-		if v.Type.ID == ttype.Function {
+		if v.Type != nil && v.Type.ID == ttype.Function {
 			t := strings.ReplaceAll(v.Type.String(), "{", "(")
 			t = strings.ReplaceAll(t, "}", ")")
 			label += fmt.Sprintf("|{%s|%s|<%s> 0}", k, t, k)
