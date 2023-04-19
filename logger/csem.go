@@ -23,6 +23,10 @@ const (
 	ErrorWrongDefaultValueArray		SemError = "Wrong default value for array of type %v. Expected %v, got %v instead"
 	ErrorWrongTypesExpression		SemError = "Wrong types for expression. Left is %v, and right is %v"
 	ErrorWrongTypesInComparison		SemError = "Wrong types for comparison. Left is %v, and right is %v"
+	ErrorWrongTypeInAddition		SemError = "Wrong types for addition. Left is %v, and right is %v"
+	ErrorWrongTypeInSubstraction	SemError = "Wrong types for substraction. Left is %v, and right is %v"
+	ErrorWrongTypeInMultiplication	SemError = "Wrong types for multiplication. Left is %v, and right is %v"
+	ErrorWrongTypeInDivision		SemError = "Wrong types for division. Left is %v, and right is %v"
 )
 
 type SemanticError struct {

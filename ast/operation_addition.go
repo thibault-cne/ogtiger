@@ -22,12 +22,16 @@ func (e *OperationAddition) VisitSemControl(slt *slt.SymbolTable, L *logger.Step
 	leftCtx := e.Left.VisitSemControl(slt, L)
 	rightCtx := e.Right.VisitSemControl(slt, L)
 
-	if !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
-		L.NewSemanticError("Left side of the addition is not an integer", leftCtx)
+	if !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) && !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.String)) {
+		L.NewSemanticError("Left side of the addition is not an integer or a string", leftCtx)
 	}
 
-	if !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
-		L.NewSemanticError("Right side of the addition is not an integer", rightCtx)
+	if !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) && !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.String)) {
+		L.NewSemanticError("Right side of the addition is not an integer or a string", rightCtx)
+	}
+
+	if !e.Left.ReturnType().Equals(e.Right.ReturnType()) {
+		L.NewSemanticError(logger.ErrorWrongTypeInAddition, e.Ctx, e.Left.ReturnType(), e.Right.ReturnType())
 	}
 
 	return e.Ctx
@@ -44,12 +48,16 @@ func (e *OperationSoustraction) VisitSemControl(slt *slt.SymbolTable, L *logger.
 	leftCtx := e.Left.VisitSemControl(slt, L)
 	rightCtx := e.Right.VisitSemControl(slt, L)
 
-	if !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
-		L.NewSemanticError("Left side of the substraction is not an integer", leftCtx)
+	if !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) && !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.String)) {
+		L.NewSemanticError("Left side of the substraction is not an integer or a string", leftCtx)
 	}
 
-	if !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
-		L.NewSemanticError("Right side of the substraction is not an integer", rightCtx)
+	if !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) && !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.String)) {
+		L.NewSemanticError("Right side of the substraction is not an integer or a string", rightCtx)
+	}
+
+	if !e.Left.ReturnType().Equals(e.Right.ReturnType()) {
+		L.NewSemanticError(logger.ErrorWrongTypeInSubstraction, e.Ctx, e.Left.ReturnType(), e.Right.ReturnType())
 	}
 
 	return e.Ctx

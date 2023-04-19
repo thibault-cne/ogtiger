@@ -1,0 +1,25 @@
+/* 8 errors */
+let
+    type arrayOfInt = array of int
+
+    var w := 2
+    var x := 1
+    var y := "foo"
+    var z := "baz"
+    var a := arrayOfInt[3] of 0
+in
+    (
+        w + x;
+        w + y; /* 1 error */
+        y + z;
+        "foo" + z;
+        "foo" + w; /* 1 error */
+        a + z; /* 2 errors */
+        w - x;
+        w - y; /* 1 error */
+        y - z;
+        "foo" - z;
+        "foo" - w; /* 1 error */
+        a - z /* 2 errors */
+    )
+end
