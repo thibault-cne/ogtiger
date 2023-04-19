@@ -1,0 +1,17 @@
+/* 7 errors */
+let
+    var w := 1
+    var x := "foo"
+    var y := 2
+    var z := "baz"
+in
+    (
+        w & 1;
+        x & 1; /* 1 error */
+        y & w;
+        x & y; /* 1 error */
+        x & z; /* 2 errors */
+        x & "foo"; /* 2 errors */
+        y & "foo" /* 1 error */
+    )
+end

@@ -1,0 +1,13 @@
+/* 2 errors */
+let
+    var x := "foo"
+    var y := 5
+    var z := "baz"
+in
+    (
+        x > y; /* error 1 */
+        x > 4; /* error 2 */
+        "baz" > x;
+        x > z
+    )
+end
