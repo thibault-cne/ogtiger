@@ -1,9 +1,16 @@
-/* 1 error */
+/* 4 error */
 let
     type t = int
     type x = y
     type z = t
     type y = string
+    type t = y
+
+    type a1 = array of int
+    type a2 = array of string
+    type a3 = array of abc
+    type a4 = array of a1
+    type a1 = array of int
 in
     (1+1)
 end
