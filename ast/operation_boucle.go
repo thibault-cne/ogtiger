@@ -23,9 +23,18 @@ type OperationBoucle struct {
 
 func (e *OperationBoucle) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
 	e.Start.VisitSemControl(e.Slt, L)
-	e.StartVal.VisitSemControl(e.Slt, L)
-	e.EndVal.VisitSemControl(e.Slt, L)
+	startValCtx := e.StartVal.VisitSemControl(e.Slt, L)
+	endValCtx := e.EndVal.VisitSemControl(e.Slt, L)
 	e.Block.VisitSemControl(e.Slt, L)
+
+	if !e.StartVal.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Start value of the loop is not an integer", startValCtx)
+	}
+
+	if !e.EndVal.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("End value of the loop is not an integer", endValCtx)
+	}
+
 	return e.Ctx
 }
 
