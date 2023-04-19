@@ -48,16 +48,12 @@ func (e *OperationSoustraction) VisitSemControl(slt *slt.SymbolTable, L *logger.
 	leftCtx := e.Left.VisitSemControl(slt, L)
 	rightCtx := e.Right.VisitSemControl(slt, L)
 
-	if !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) && !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.String)) {
-		L.NewSemanticError("Left side of the substraction is not an integer or a string", leftCtx)
+	if !e.Left.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Left side of the substraction is not an integer", leftCtx)
 	}
 
-	if !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) && !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.String)) {
-		L.NewSemanticError("Right side of the substraction is not an integer or a string", rightCtx)
-	}
-
-	if !e.Left.ReturnType().Equals(e.Right.ReturnType()) {
-		L.NewSemanticError(logger.ErrorWrongTypeInSubstraction, e.Ctx, e.Left.ReturnType(), e.Right.ReturnType())
+	if !e.Right.ReturnType().Equals(ttype.NewTigerType(ttype.Int)) {
+		L.NewSemanticError("Right side of the substraction is not an integer", rightCtx)
 	}
 
 	return e.Ctx

@@ -1,4 +1,4 @@
-/* 8 errors */
+/* 12 errors */
 let
     type arrayOfInt = array of int
 
@@ -17,8 +17,8 @@ in
         a + z; /* 2 errors */
         w - x;
         w - y; /* 1 error */
-        y - z;
-        "foo" - z;
+        y - z; /* 2 errors */
+        "foo" - z; /* 2 errors */
         "foo" - w; /* 1 error */
         a - z /* 2 errors */
     )
