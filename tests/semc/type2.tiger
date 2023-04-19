@@ -1,0 +1,9 @@
+/* 2 errors */
+let
+    type x = int
+    type r = {x: x, y: int, x: string}
+    type r = {x: x, y: int}
+    type good = {x: x, y: string}
+in
+    (1+2)
+end

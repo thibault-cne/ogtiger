@@ -59,6 +59,8 @@ func (l *AstCreatorListener) DeclarationRecordTypeEnter(ctx parser.DeclarationRe
 }
 
 func (l *AstCreatorListener) DeclarationRecordTypeExit(ctx parser.DeclarationRecordTypeContext) {
+	var fields map[string]bool = make(map[string]bool)
+	
 	// Get back the last element of the stack
 	declRecordType := &DeclarationRecordType{
 		Ctx: ctx,
@@ -76,14 +78,20 @@ func (l *AstCreatorListener) DeclarationRecordTypeExit(ctx parser.DeclarationRec
 	}
 
 	typeFields := []*ttype.RecordField{}
-	for _, champ := range declRecordType.Champs {
+	for i, champ := range declRecordType.Champs {
 		if champ.(*DeclarationChamp).Right.ReturnType() == nil {
 			l.Logger.NewSemanticError(logger.ErrorTypeIsNotDefined, &ctx, champ.(*DeclarationChamp).Right.(*Identifiant).Id)
 		}
+
+		if _, ok := fields[champ.(*DeclarationChamp).Left.(*Identifiant).Id]; ok {
+			l.Logger.NewSemanticError(logger.ErrorRecordFieldAlreadyDefined, ctx.AllDeclarationChamp()[i], champ.(*DeclarationChamp).Left.(*Identifiant).Id)
+		}
+
 		typeFields = append(typeFields, &ttype.RecordField{
 			Name: champ.(*DeclarationChamp).Left.(*Identifiant).Id,
 			Type: champ.(*DeclarationChamp).Right.ReturnType(),
 		})
+		fields[champ.(*DeclarationChamp).Left.(*Identifiant).Id] = true
 	}
 
 	t := &slt.Symbol{
