@@ -60,6 +60,7 @@ func (l *AstCreatorListener) DeclarationValeurExit(ctx parser.IDeclarationValeur
 	declarationValeur := &DeclarationValeur{
 		Ctx: ctx,
 	}
+	var isNil = false
 
 	declarationValeur.Expr = l.PopAst()
 	declarationValeur.Type = declarationValeur.Expr.ReturnType()
@@ -72,12 +73,29 @@ func (l *AstCreatorListener) DeclarationValeurExit(ctx parser.IDeclarationValeur
 		if _, err := l.Slt.GetSymbol(declarationValeur.VType.(*Identifiant).Id); err != nil {
 			l.Logger.NewSemanticError(logger.ErrorTypeIsNotDefined, ctx, declarationValeur.VType.(*Identifiant).Id)
 		}
+
+		// Verify that the expr is not nil
+		if ctx.GetChild(5).(*parser.ExpressionContext).GetText() == "nil" {
+			isNil = true
+		}
+	} else {
+		if ctx.GetChild(3).(*parser.ExpressionContext).GetText() == "nil" {
+			isNil = true
+		}
 	}
 
 	declarationValeur.Id = l.PopAst()
+
 	if _, err := l.Slt.GetSymbolInScoope(declarationValeur.Id.(*Identifiant).Id); err == nil {
 		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, ctx, declarationValeur.Id.(*Identifiant).Id)
 	}
+
+	// If isNil check if the type is a record type
+	if isNil && !(declarationValeur.Type.ID == ttype.Record || declarationValeur.Type.ID == ttype.AnyRecord) {
+		l.Logger.NewSemanticError(logger.ErrorNilIsOnlyForRecordTypes, ctx)
+	}
+
+	
 
 	l.Slt.CreateSymbol(declarationValeur.Id.(*Identifiant).Id, declarationValeur.Type)
 	

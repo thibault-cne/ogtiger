@@ -30,6 +30,7 @@ const (
 	ErrorWrongTypeInIfElse			SemError = "Then and else must return the same type. Then returns %s, and else %v"
 	ErrorRecordFieldAlreadyDefined	SemError = "Record field %v is already defined"
 	ErrorFunctionMismatchedTypes	SemError = "Function %v has mismatched types. Expected %v, got %v instead"
+	ErrorNilIsOnlyForRecordTypes	SemError = "Nil is only for record types"
 )
 
 type SemanticError struct {

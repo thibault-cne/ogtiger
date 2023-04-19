@@ -1,0 +1,9 @@
+let
+    type t = {x: int}
+    
+    var x := nil
+    var y: int := nil
+    var z: t := nil
+in
+    x
+end
