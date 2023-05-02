@@ -6,6 +6,7 @@ type Options struct {
 	AST  string
 	File string
 	Slt string
+	Ast string
 
 	Steps int
 }
@@ -30,6 +31,9 @@ func Parse(osArgs []string) (*Options, error) {
 			options.Steps++
 		case &Slt:
 			options.Slt = flag.Value
+			options.Steps++
+		case &ASM:
+			options.Ast = flag.Value
 			options.Steps++
 		}
 	}

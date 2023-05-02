@@ -21,6 +21,13 @@ var Slt = Flag{
 	TakeValue: Necessary,
 }
 
+var ASM = Flag{
+	Short:     'a',
+	Long:      "asm",
+	Values:     []string{"output"},
+	TakeValue: Necessary,
+}
+
 var Flags = []*Flag{
-	&AST, &File, &Slt,
+	&AST, &File, &Slt, &ASM,
 }
