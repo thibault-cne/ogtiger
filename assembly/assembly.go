@@ -52,7 +52,7 @@ func (w *AssemblyWriter) ExitRegion()  {
 }
 
 func (w *AssemblyWriter) WriteToFile(filename string) {
-	f, err := os.Create(fmt.Sprintf("output/%s", filename))
+	f, err := os.Create(fmt.Sprintf("output/%s.s", filename))
 
 	if err != nil {
 		panic(err)
