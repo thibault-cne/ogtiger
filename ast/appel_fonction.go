@@ -98,13 +98,20 @@ func (l *AstCreatorListener) AppelFonctionExit(ctx parser.AppelFonctionContext) 
 func (e *AppelFonction) EnterAsm(writer *asm.AssemblyWriter) {
 	defer e.ExitAsm(writer)
 
-	if e.Identifiant.(*Identifiant).Id == "print" {
+	fnId := e.Identifiant.(*Identifiant).Id
+
+	if fnId == "print" {
 		writer.Ldr("R0", "format_str", asm.NI, 0)
 		writer.Stmfd("SP", []string{"R0"})
 	}
 
-	for _, a := range e.Args {
+	for i, a := range e.Args {
 		a.EnterAsm(writer)
+
+		// Result is stored in R8 so we just push it in the stack
+		writer.SkipLine()
+		writer.Comment(fmt.Sprintf("Arg %s of function %s", e.Type.Parameters[i].Name, fnId), 1)
+		writer.Stmfd("SP", []string{"R8"})
 	}
 }
 
