@@ -91,6 +91,14 @@ func (e *Definition) EnterAsm(writer *asm.AssemblyWriter) {
 	label := fmt.Sprintf("blk_%d_%d", e.Slt.Region, e.Slt.Scope)
 	writer.Label(label)
 
+	writer.Comment("Display edit on entering a block", 1)
+	registers := []string{string(asm.BasePointer), "R0"}
+	writer.Ldr("R0", "R10", asm.NI, - (e.Slt.Scope * 4))
+	writer.Stmfd(string(asm.StackPointer), registers)
+	writer.Mov(string(asm.BasePointer), string(asm.StackPointer), asm.NI)
+	writer.Str(string(asm.BasePointer), "R10", asm.NI, - (e.Slt.Scope * 4))
+	writer.SkipLine()
+
 	for _, a := range e.Declarations {
 		a.EnterAsm(writer)
 	}
@@ -101,5 +109,11 @@ func (e *Definition) EnterAsm(writer *asm.AssemblyWriter) {
 }
 
 func (e *Definition) ExitAsm(writer *asm.AssemblyWriter) {
+	writer.Comment("Display edit on exiting a block", 1)
+	registers := []string{string(asm.BasePointer), "R0"}
+	writer.Ldmfd(string(asm.StackPointer), registers)
+	writer.Str("R0", "R10", asm.NI, - (e.Slt.Scope * 4))
+	writer.SkipLine()
+	
 	writer.ExitRegion()
 }
