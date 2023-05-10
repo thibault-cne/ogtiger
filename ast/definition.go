@@ -113,7 +113,6 @@ func (e *Definition) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	registers := []string{string(asm.BasePointer), "R0"}
 	writer.Ldmfd(string(asm.StackPointer), registers)
 	writer.Str("R0", "R10", asm.NI, - (e.Slt.Scope * 4))
-	writer.SkipLine()
 
 	writer.ExitRegion()
 }
