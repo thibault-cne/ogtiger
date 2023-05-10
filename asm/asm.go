@@ -293,22 +293,22 @@ func (w *AssemblyWriter) Comment(comment string, tabs int) {
 
 func (w *AssemblyWriter) Print() {
 	instr := `
-	_print:
-		STMFD R13!, {BP, LR}
-		MOV BP, SP
-		STMFD R13!, {R0, R1}
+_print:
+	STMFD R13!, {BP, LR}
+	MOV BP, SP
+	STMFD R13!, {R0, R1}
 
-		LDR R0, [BP, #16]
-		LDR R1, [BP, #12]
+	LDR R0, [BP, #16]
+	LDR R1, [BP, #12]
 
-		BL printf
+	BL printf
 
-		MOV R0, #0
+	MOV R0, #0
 
-		BL fflush
+	BL fflush
 
-		LDMFD R13!, {R0, R1}
-		LDMFD R13!, {PC, BP}
+	LDMFD R13!, {R0, R1}
+	LDMFD R13!, {PC, BP}
 	`
 
 	w.Raw(instr)
