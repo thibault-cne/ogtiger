@@ -292,3 +292,16 @@ func (s *SymbolTable) DisplaySLT(file string) {
 	// Save the file
 	ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
+
+func (slt *SymbolTable) MaxScope() int {
+	max := slt.Scope
+
+	for _, c := range slt.Children {
+		cMax := c.MaxScope()
+		if cMax > max {
+			max = cMax
+		}
+	}
+
+	return max
+}
