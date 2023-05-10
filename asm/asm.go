@@ -60,7 +60,8 @@ func NewAssemblyWriter() *AssemblyWriter {
 
 func (w *AssemblyWriter) NewRegion()  {
 	w.indexSID += 1
-	w.BufferIndex, w.indexQueue = w.indexSID, append([]int{w.indexSID}, w.indexQueue...)
+	w.indexQueue = append([]int{w.BufferIndex}, w.indexQueue...)
+	w.BufferIndex = w.indexSID
 
 	w.Buffers = append(w.Buffers, &RegionBuffer{
 		Buffer: bytes.Buffer{},
