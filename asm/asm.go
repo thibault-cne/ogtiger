@@ -30,37 +30,45 @@ const (
 )
 
 type AssemblyWriter struct {
+	indexSID int
+	indexQueue []int
+
 	BufferIndex int
+
+	DataBuffer bytes.Buffer
 	Buffers []*RegionBuffer
 }
 
 type RegionBuffer struct {
-	Region int
 	Buffer bytes.Buffer
 }
 
 func NewAssemblyWriter() *AssemblyWriter {
 	return &AssemblyWriter{
+		indexSID: 0,
+		indexQueue: []int{},
+
 		BufferIndex: 0,
+		DataBuffer: bytes.Buffer{},
 		Buffers: []*RegionBuffer{
 			{
-				Region: 0,
 				Buffer: bytes.Buffer{},
 			},
 		},
 	}
 }
 
-func (w *AssemblyWriter) NewRegion(region int)  {
-	w.BufferIndex += 1
+func (w *AssemblyWriter) NewRegion()  {
+	w.indexSID += 1
+	w.BufferIndex, w.indexQueue = w.indexSID, append([]int{w.indexSID}, w.indexQueue...)
+
 	w.Buffers = append(w.Buffers, &RegionBuffer{
-		Region: region,
 		Buffer: bytes.Buffer{},
 	})
 }
 
 func (w *AssemblyWriter) ExitRegion()  {
-	w.BufferIndex -= 1
+	w.BufferIndex, w.indexQueue = w.indexQueue[0], w.indexQueue[1:]
 }
 
 func (w *AssemblyWriter) WriteToFile(filename string) {
@@ -76,6 +84,15 @@ func (w *AssemblyWriter) WriteToFile(filename string) {
 		f.Write(regBuffer.Buffer.Bytes())
 		f.WriteString("\n")
 	}
+
+	f.WriteString(".data\n")
+	f.WriteString("\tformat_str:\t\t\t.ascii\t\t\"%s\\0\"\n")
+	f.WriteString("\tformat_int:\t\t\t.ascii\t\t\"%d\\0\"\n")
+	f.WriteString("\tformat_debug_int:\t.ascii\t\t\"debug: %d\\n\\0\"\n")
+	f.WriteString("\tformat_debug_x:\t\t.ascii\t\t\"debug: %x\\n\\0\"\n")
+	f.WriteString("\tformat_debug_addr:\t.ascii\t\t\"debug: %p\\n\\0\"\n")
+	f.WriteString("\tscanf_int:\t\t\t.ascii\t\t\"%d\"\n")
+	f.Write(w.DataBuffer.Bytes())
 }
 
 func (w *AssemblyWriter) Raw(s string) {
@@ -312,4 +329,16 @@ _print:
 	`
 
 	w.Raw(instr)
+}
+
+func (w *AssemblyWriter) Exit(status int) {
+	instr := fmt.Sprintf("\tMOV R0, #%d\n", status)
+	instr = fmt.Sprintf("_exit:\n%s\tMOV R7, #1\n\tSWI 0\n", instr)
+
+	w.Raw(instr)
+}
+
+func (w *AssemblyWriter) AddData(constant *Constants) {
+	w.DataBuffer.WriteString(constant.ToASM())
+	w.DataBuffer.WriteString("\n")
 }

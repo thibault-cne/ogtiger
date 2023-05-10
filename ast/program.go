@@ -75,8 +75,12 @@ func (e *Program) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 }
 
 func (e *Program) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	writer.B("_exit", asm.NI)
 	writer.End()
 
-	writer.NewRegion(0)
+	writer.NewRegion()
 	writer.Print()
+
+	writer.NewRegion()
+	writer.Exit(0)
 }

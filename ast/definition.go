@@ -86,7 +86,7 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 func (e *Definition) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	defer e.ExitAsm(writer, slt)
 
-	writer.NewRegion(e.Slt.Region)
+	writer.NewRegion()
 
 	label := fmt.Sprintf("blk_%d_%d", e.Slt.Region, e.Slt.Scope)
 	writer.Label(label)
