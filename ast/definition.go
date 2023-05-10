@@ -83,8 +83,8 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 	l.PushAst(expr)
 }
 
-func (e *Definition) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *Definition) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 
 	writer.NewRegion(e.Slt.Region)
 
@@ -100,20 +100,20 @@ func (e *Definition) EnterAsm(writer *asm.AssemblyWriter) {
 	writer.SkipLine()
 
 	for _, a := range e.Declarations {
-		a.EnterAsm(writer)
+		a.EnterAsm(writer, e.Slt)
 	}
 
 	for _, a := range e.Expressions {
-		a.EnterAsm(writer)
+		a.EnterAsm(writer, e.Slt)
 	}
 }
 
-func (e *Definition) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *Definition) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	writer.Comment("Display edit on exiting a block", 1)
 	registers := []string{string(asm.BasePointer), "R0"}
 	writer.Ldmfd(string(asm.StackPointer), registers)
 	writer.Str("R0", "R10", asm.NI, - (e.Slt.Scope * 4))
 	writer.SkipLine()
-	
+
 	writer.ExitRegion()
 }

@@ -38,10 +38,10 @@ func (l *AstCreatorListener) ExpressionIdentifiantExit(ctx parser.ExpressionIden
 	// Nothing to do
 }
 
-func (e *ExpressionIdentifiant) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *ExpressionIdentifiant) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *ExpressionIdentifiant) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *ExpressionIdentifiant) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

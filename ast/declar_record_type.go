@@ -107,10 +107,10 @@ func (l *AstCreatorListener) DeclarationRecordTypeExit(ctx parser.DeclarationRec
 	l.PushAst(declRecordType)
 }
 
-func (e *DeclarationRecordType) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *DeclarationRecordType) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *DeclarationRecordType) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *DeclarationRecordType) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

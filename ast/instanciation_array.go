@@ -85,10 +85,10 @@ func (l *AstCreatorListener) InstanciationArrayExit(ctx parser.InstanciationArra
 	l.PushAst(instanciationArray)
 }
 
-func (e *InstanciationArray) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *InstanciationArray) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *InstanciationArray) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *InstanciationArray) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

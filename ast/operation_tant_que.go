@@ -70,10 +70,10 @@ func (l *AstCreatorListener) OperationTantQueExit(ctx parser.IOperationTantqueCo
 	l.PushAst(oT)
 }
 
-func (e *OperationTantQue) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *OperationTantQue) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *OperationTantQue) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *OperationTantQue) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

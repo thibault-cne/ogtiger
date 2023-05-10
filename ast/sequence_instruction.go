@@ -63,10 +63,10 @@ func (l *AstCreatorListener) SequenceInstructionExit(ctx parser.ISequenceInstruc
 	l.PushAst(opSeq)
 }
 
-func (e *SequenceInstruction) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *SequenceInstruction) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *SequenceInstruction) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *SequenceInstruction) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

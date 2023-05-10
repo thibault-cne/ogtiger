@@ -94,10 +94,10 @@ func (l *AstCreatorListener) OperationSiExit(ctx parser.IOperationSiContext) {
 	l.PushAst(OperationSi)
 }
 
-func (e *OperationSi) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *OperationSi) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *OperationSi) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *OperationSi) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

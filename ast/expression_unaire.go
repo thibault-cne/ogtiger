@@ -46,10 +46,10 @@ func (l *AstCreatorListener) ExpressionUnaireExit(ctx parser.IExpressionUnaireCo
 	// Nothing to do
 }
 
-func (e *ExpressionUnaire) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *ExpressionUnaire) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *ExpressionUnaire) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *ExpressionUnaire) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

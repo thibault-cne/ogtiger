@@ -50,10 +50,10 @@ func (l *AstCreatorListener) ChaineChrExit(ctx parser.ChaineChrContext) {
 	l.PushAst(chainChr)
 }
 
-func (e *ChaineChr) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *ChaineChr) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *ChaineChr) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *ChaineChr) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

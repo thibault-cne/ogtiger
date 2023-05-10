@@ -59,10 +59,10 @@ func (l *AstCreatorListener) DeclarationChampExit(ctx parser.IDeclarationChampCo
 	l.PushAst(declarationChamp)
 }
 
-func (e *DeclarationChamp) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *DeclarationChamp) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *DeclarationChamp) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *DeclarationChamp) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

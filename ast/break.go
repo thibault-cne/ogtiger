@@ -47,10 +47,10 @@ func (l *AstCreatorListener) BreakExit(ctx parser.BreakContext) {
 	l.PushAst(it)
 }
 
-func (e *Break) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *Break) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *Break) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *Break) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

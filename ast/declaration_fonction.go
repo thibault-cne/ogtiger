@@ -150,10 +150,10 @@ func (l *AstCreatorListener) DeclarationFontionExit(ctx parser.IDeclarationFonct
 	l.PushAst(declarationFontion)
 }
 
-func (e *DeclarationFontion) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *DeclarationFontion) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *DeclarationFontion) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *DeclarationFontion) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

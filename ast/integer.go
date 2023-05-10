@@ -50,10 +50,10 @@ func (l *AstCreatorListener) IntegerExit(ctx parser.EntierContext) {
 	l.PushAst(it)
 }
 
-func (e *Integer) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *Integer) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *Integer) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *Integer) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	writer.Mov("r8", e.Valeur, asm.NI)
 }

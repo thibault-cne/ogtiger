@@ -80,10 +80,10 @@ func (l *AstCreatorListener) DeclarationArrayTypeExit(ctx parser.DeclarationArra
 	l.PushAst(declArrType)
 }
 
-func (e *DeclarationArrayType) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *DeclarationArrayType) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *DeclarationArrayType) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *DeclarationArrayType) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

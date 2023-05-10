@@ -40,8 +40,8 @@ type Ast interface {
 	ReturnType() *ttype.TigerType
 	VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext
 
-	EnterAsm(writer *asm.AssemblyWriter)
-	ExitAsm(writer *asm.AssemblyWriter)
+	EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable)
+	ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable)
 }
 
 func (ast *AstCreatorListener) PopAst() Ast {

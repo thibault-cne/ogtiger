@@ -58,13 +58,13 @@ func (l *AstCreatorListener) OperationNegationExit(ctx parser.IOperationNegation
 	l.PushAst(operationNegation)
 }
 
-func (e *OperationNegation) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *OperationNegation) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 
-	e.Expr.EnterAsm(writer)
+	e.Expr.EnterAsm(writer, slt)
 }
 
-func (e *OperationNegation) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *OperationNegation) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	writer.Mov("r0", "0", asm.NI)
 	writer.Sub("r8", "r0", "r8", asm.NI)
 }

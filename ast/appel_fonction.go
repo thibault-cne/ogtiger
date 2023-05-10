@@ -95,26 +95,35 @@ func (l *AstCreatorListener) AppelFonctionExit(ctx parser.AppelFonctionContext) 
 	l.PushAst(appelFonction)
 }
 
-func (e *AppelFonction) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *AppelFonction) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 
 	fnId := e.Identifiant.(*Identifiant).Id
 
+	writer.Comment(fmt.Sprintf("Call the %s fn", fnId), 1)
+
 	if fnId == "print" {
+		writer.Comment("Load the format string parameter for the print function", 1)
 		writer.Ldr("R0", "format_str", asm.NI, 0)
 		writer.Stmfd("SP", []string{"R0"})
+		writer.SkipLine()
 	}
 
 	for i, a := range e.Args {
-		a.EnterAsm(writer)
+		a.EnterAsm(writer, slt)
 
 		// Result is stored in R8 so we just push it in the stack
-		writer.SkipLine()
+		if i != 0 {
+			writer.SkipLine()
+		}
 		writer.Comment(fmt.Sprintf("Arg %s of function %s", e.Type.Parameters[i].Name, fnId), 1)
 		writer.Stmfd("SP", []string{"R8"})
 	}
+
+	writer.SkipLine()
+	writer.Bl(fmt.Sprintf("_%s", fnId), asm.NI)
 }
 
-func (e *AppelFonction) ExitAsm(writer *asm.AssemblyWriter) {
-	// Nothing to do
+func (e *AppelFonction) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	writer.SkipLine()
 }

@@ -75,10 +75,10 @@ func (l *AstCreatorListener) OperationComparaisonExit(ctx parser.IOperationCompa
 	l.PushAst(opCompar)
 }
 
-func (e *OperationComparaison) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *OperationComparaison) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *OperationComparaison) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *OperationComparaison) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }

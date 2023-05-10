@@ -16,7 +16,6 @@ type Program struct {
 	Expr Ast
 	Ctx  parser.IProgramContext
 	Type *ttype.TigerType
-	Slt *slt.SymbolTable
 }
 
 func (e *Program) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -47,7 +46,6 @@ func (l *AstCreatorListener) ProgramExit(ctx parser.IProgramContext) {
 	prog := &Program{
 		Ctx:  ctx,
 		Type: ttype.NewTigerType(ttype.NoReturn),
-		Slt: l.Slt,
 	}
 
 	prog.Expr = l.PopAst()
@@ -56,13 +54,13 @@ func (l *AstCreatorListener) ProgramExit(ctx parser.IProgramContext) {
 	l.PushAst(prog)
 }
 
-func (e *Program) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *Program) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 
 	// TODO: Add the lib functions
 	writer.Label("main")
 	writer.Comment("Display allocation", 1)
-	writer.Mov("R0", fmt.Sprintf("#%d", e.Slt.MaxScope() * 4), asm.NI)
+	writer.Mov("R0", fmt.Sprintf("#%d", slt.MaxScope() * 4), asm.NI)
 	writer.Bl("malloc", asm.NI)
 	writer.Mov("R10", "R0", asm.NI)
 
@@ -73,9 +71,9 @@ func (e *Program) EnterAsm(writer *asm.AssemblyWriter) {
 		writer.B(label, asm.NI)
 	}
 
-	e.Expr.EnterAsm(writer)
+	e.Expr.EnterAsm(writer, slt)
 }
 
-func (e *Program) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *Program) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	writer.End()
 }

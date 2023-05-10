@@ -144,18 +144,18 @@ func (l *AstCreatorListener) OperationAdditionExit(ctx parser.IOperationAddition
 	l.PushAst(node)
 }
 
-func (e *OperationAddition) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *OperationAddition) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *OperationAddition) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *OperationAddition) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }
 
-func (e *OperationSoustraction) EnterAsm(writer *asm.AssemblyWriter) {
-	defer e.ExitAsm(writer)
+func (e *OperationSoustraction) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	defer e.ExitAsm(writer, slt)
 }
 
-func (e *OperationSoustraction) ExitAsm(writer *asm.AssemblyWriter) {
+func (e *OperationSoustraction) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// Nothing to do
 }
