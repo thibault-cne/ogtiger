@@ -16,6 +16,7 @@ type Program struct {
 	Expr Ast
 	Ctx  parser.IProgramContext
 	Type *ttype.TigerType
+	Slt *slt.SymbolTable
 }
 
 func (e *Program) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -46,6 +47,7 @@ func (l *AstCreatorListener) ProgramExit(ctx parser.IProgramContext) {
 	prog := &Program{
 		Ctx:  ctx,
 		Type: ttype.NewTigerType(ttype.NoReturn),
+		Slt: l.Slt,
 	}
 
 	prog.Expr = l.PopAst()
@@ -59,7 +61,12 @@ func (e *Program) EnterAsm(writer *asm.AssemblyWriter) {
 
 	// TODO: Add the lib functions
 	writer.Label("main")
+	writer.Comment("Display allocation", 1)
+	writer.Mov("R0", fmt.Sprintf("#%d", e.Slt.MaxScope() * 4), asm.NI)
+	writer.Bl("malloc", asm.NI)
+	writer.Mov("R10", "R0", asm.NI)
 
+	writer.SkipLine()
 	switch e.Expr.(type) {
 	case *Definition:
 		label := fmt.Sprintf("blk_%d_%d", e.Expr.(*Definition).Slt.Region, e.Expr.(*Definition).Slt.Scope)
