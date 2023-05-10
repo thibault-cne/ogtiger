@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -47,4 +48,12 @@ func (l *AstCreatorListener) ChaineChrExit(ctx parser.ChaineChrContext) {
 	chainChr.Valeur = ctx.GetChild(0).(*antlr.TerminalNodeImpl).GetText()
 
 	l.PushAst(chainChr)
+}
+
+func (e *ChaineChr) EnterAsm(writer *asm.AssemblyWriter) {
+	defer e.ExitAsm(writer)
+}
+
+func (e *ChaineChr) ExitAsm(writer *asm.AssemblyWriter) {
+	// Nothing to do
 }

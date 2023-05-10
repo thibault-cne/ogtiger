@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -60,4 +61,12 @@ func (l *AstCreatorListener) SequenceInstructionExit(ctx parser.ISequenceInstruc
 	opSeq.Type = opSeq.Instructions[len(opSeq.Instructions)-1].ReturnType()
 
 	l.PushAst(opSeq)
+}
+
+func (e *SequenceInstruction) EnterAsm(writer *asm.AssemblyWriter) {
+	defer e.ExitAsm(writer)
+}
+
+func (e *SequenceInstruction) ExitAsm(writer *asm.AssemblyWriter) {
+	// Nothing to do
 }

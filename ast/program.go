@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -51,4 +52,23 @@ func (l *AstCreatorListener) ProgramExit(ctx parser.IProgramContext) {
 
 	// Push the new element on the stack
 	l.PushAst(prog)
+}
+
+func (e *Program) EnterAsm(writer *asm.AssemblyWriter) {
+	defer e.ExitAsm(writer)
+
+	// TODO: Add the lib functions
+	writer.Label("main")
+
+	switch e.Expr.(type) {
+	case *Definition:
+		label := fmt.Sprintf("blk_%d_%d", e.Expr.(*Definition).Slt.Region, e.Expr.(*Definition).Slt.Scope)
+		writer.B(label, asm.NI)
+	}
+
+	e.Expr.EnterAsm(writer)
+}
+
+func (e *Program) ExitAsm(writer *asm.AssemblyWriter) {
+	writer.End()
 }

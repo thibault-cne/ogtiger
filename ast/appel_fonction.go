@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -22,7 +23,6 @@ func (e *AppelFonction) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogg
 	idCtx := e.Identifiant.VisitSemControl(slt, L)
 	id := e.Identifiant.(*Identifiant).Id
 	f, err := slt.GetSymbol(id)
-
 	if err != nil || f.Type.ID != ttype.Function {
 		L.NewSemanticError(logger.ErrorFunctionNotDefined, idCtx, id)
 		return &e.Ctx
@@ -93,4 +93,21 @@ func (l *AstCreatorListener) AppelFonctionExit(ctx parser.AppelFonctionContext) 
 
 	// Push the new element on the stack
 	l.PushAst(appelFonction)
+}
+
+func (e *AppelFonction) EnterAsm(writer *asm.AssemblyWriter) {
+	defer e.ExitAsm(writer)
+
+	if e.Identifiant.(*Identifiant).Id == "print" {
+		writer.Ldr("R0", "format_str", asm.NI, 0)
+		writer.Stmfd("SP", []string{"R0"})
+	}
+
+	for _, a := range e.Args {
+		a.EnterAsm(writer)
+	}
+}
+
+func (e *AppelFonction) ExitAsm(writer *asm.AssemblyWriter) {
+	// Nothing to do
 }

@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -49,9 +50,21 @@ func (l *AstCreatorListener) OperationNegationEnter(ctx parser.IOperationNegatio
 func (l *AstCreatorListener) OperationNegationExit(ctx parser.IOperationNegationContext) {
 	operationNegation := &OperationNegation{
 		Ctx: ctx,
+		Type: ttype.NewTigerType(ttype.Int),
 	}
 
 	operationNegation.Expr = l.PopAst()
 
 	l.PushAst(operationNegation)
+}
+
+func (e *OperationNegation) EnterAsm(writer *asm.AssemblyWriter) {
+	defer e.ExitAsm(writer)
+
+	e.Expr.EnterAsm(writer)
+}
+
+func (e *OperationNegation) ExitAsm(writer *asm.AssemblyWriter) {
+	writer.Mov("r0", "0", asm.NI)
+	writer.Sub("r8", "r0", "r8", asm.NI)
 }

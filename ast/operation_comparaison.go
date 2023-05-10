@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -72,4 +73,12 @@ func (l *AstCreatorListener) OperationComparaisonExit(ctx parser.IOperationCompa
 	opCompar.Op = ctx.GetChild(1).(*antlr.TerminalNodeImpl).GetText()
 
 	l.PushAst(opCompar)
+}
+
+func (e *OperationComparaison) EnterAsm(writer *asm.AssemblyWriter) {
+	defer e.ExitAsm(writer)
+}
+
+func (e *OperationComparaison) ExitAsm(writer *asm.AssemblyWriter) {
+	// Nothing to do
 }

@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -80,4 +81,25 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 	l.Slt = l.Slt.Parent
 
 	l.PushAst(expr)
+}
+
+func (e *Definition) EnterAsm(writer *asm.AssemblyWriter) {
+	defer e.ExitAsm(writer)
+
+	writer.NewRegion(e.Slt.Region)
+
+	label := fmt.Sprintf("blk_%d_%d", e.Slt.Region, e.Slt.Scope)
+	writer.Label(label)
+
+	for _, a := range e.Declarations {
+		a.EnterAsm(writer)
+	}
+
+	for _, a := range e.Expressions {
+		a.EnterAsm(writer)
+	}
+}
+
+func (e *Definition) ExitAsm(writer *asm.AssemblyWriter) {
+	writer.ExitRegion()
 }

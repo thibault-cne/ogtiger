@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ogtiger/assembly"
+	"ogtiger/asm"
 	"ogtiger/ast"
 	"ogtiger/logger"
 	"ogtiger/options"
@@ -71,23 +71,16 @@ func parse(input string, options *options.Options) {
 
 	log.DisplaySemanticErrors()
 
-	if options.AST != "" {
-		listener.DisplayAST(options.AST)
+	if options.Ast != "" {
+		listener.DisplayAST(options.Ast)
 	}
 	if options.Slt != "" {
 		listener.Slt.DisplaySLT(options.Slt)
 	}
-	if options.Ast != "" {
-		asm := assembly.AssemblyWriter{
-			BufferIndex: -1,
-			Buffers:    make([]*assembly.RegionBuffer, 0),
-		}
-		asm.NewRegion(0)
-
-		asm.Label("main")
-		asm.B("main", assembly.NI)
-		asm.End()
-		asm.WriteToFile(options.Ast)
+	if options.Asm != "" {
+		writer := asm.NewAssemblyWriter()
+		listener.AstStack[0].EnterAsm(writer)
+		writer.WriteToFile(options.Ast)
 	}
 }
 

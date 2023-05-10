@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -95,9 +96,22 @@ func (l *AstCreatorListener) DeclarationValeurExit(ctx parser.IDeclarationValeur
 		l.Logger.NewSemanticError(logger.ErrorNilIsOnlyForRecordTypes, ctx)
 	}
 
-	
-
 	l.Slt.CreateSymbol(declarationValeur.Id.(*Identifiant).Id, declarationValeur.Type)
 	
 	l.PushAst(declarationValeur)
+}
+
+func (e *DeclarationValeur) EnterAsm(writer *asm.AssemblyWriter) {
+	defer e.ExitAsm(writer)
+
+	writer.Comment(fmt.Sprintf("Declarations de %s", e.Id.(*Identifiant).Id), 1)
+	e.Expr.EnterAsm(writer)
+}
+
+func (e *DeclarationValeur) ExitAsm(writer *asm.AssemblyWriter) {
+	// TODO: handle arrays and struct
+	writer.Stmfd(string(asm.StackPointer), []string{string(asm.R8)})
+	
+	
+	writer.SkipLine()
 }

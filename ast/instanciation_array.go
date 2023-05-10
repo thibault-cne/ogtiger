@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -82,4 +83,12 @@ func (l *AstCreatorListener) InstanciationArrayExit(ctx parser.InstanciationArra
 	instanciationArray.Type = ttype.NewArrayType(instanciationArray.DefaultValue.ReturnType())
 
 	l.PushAst(instanciationArray)
+}
+
+func (e *InstanciationArray) EnterAsm(writer *asm.AssemblyWriter) {
+	defer e.ExitAsm(writer)
+}
+
+func (e *InstanciationArray) ExitAsm(writer *asm.AssemblyWriter) {
+	// Nothing to do
 }

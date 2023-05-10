@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -71,4 +72,12 @@ func (l *AstCreatorListener) OperationEtExit(ctx parser.IOperationEtContext) {
 	}
 
 	l.PushAst(node)
+}
+
+func (e *OperationEt) EnterAsm(writer *asm.AssemblyWriter) {
+	defer e.ExitAsm(writer)
+}
+
+func (e *OperationEt) ExitAsm(writer *asm.AssemblyWriter) {
+	// Nothing to do
 }

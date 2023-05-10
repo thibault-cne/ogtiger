@@ -13,6 +13,7 @@ const (
 	Type
 	Function
 	NoReturn
+	Any
 )
 
 type RecordField struct {
@@ -43,6 +44,11 @@ func (t *TigerType) Equals(other *TigerType) bool {
 	if t == nil || other == nil {
 		return false
 	}
+
+	if t.ID == Any || other.ID == Any {
+		return true
+	}
+
 	if t.ID != other.ID {
 		return false
 	}
@@ -180,6 +186,8 @@ func (t *TigerType) String() string {
 		return t.ReturnType.String()
 	case NoReturn:
 		return "void"
+	case Any:
+		return "any"
 	}
 
 	return "unknown"

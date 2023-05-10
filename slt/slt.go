@@ -36,7 +36,12 @@ func NewSymbolTable() *SymbolTable {
 	// Add the built-in functions and types
 	print := &Symbol{
 		Name: "print",
-		Type: ttype.NewFunctionType(ttype.NewTigerType(ttype.NoReturn), []*ttype.FunctionParameter{}),
+		Type: ttype.NewFunctionType(ttype.NewTigerType(ttype.NoReturn), []*ttype.FunctionParameter{
+			{
+				Name: "x",
+				Type: ttype.NewTigerType(ttype.Any),
+			},
+		}),
 		SymbolTable: &SymbolTable{
 			Table:  make(map[string]*Symbol),
 			Region: REGION_CPT + 1,
@@ -65,7 +70,10 @@ func NewSymbolTable() *SymbolTable {
 		},
 	}
 	REGION_CPT += 3
+
+	print.SymbolTable.CreateSymbol("x", ttype.NewTigerType(ttype.Any))
 	slt.AddSymbol("print", print)
+	
 	slt.AddSymbol("flush", flush)
 	slt.AddSymbol("getchar", getchar)
 

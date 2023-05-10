@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -38,6 +39,9 @@ type Ast interface {
 	Draw(g *cgraph.Graph) *cgraph.Node
 	ReturnType() *ttype.TigerType
 	VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext
+
+	EnterAsm(writer *asm.AssemblyWriter)
+	ExitAsm(writer *asm.AssemblyWriter)
 }
 
 func (ast *AstCreatorListener) PopAst() Ast {

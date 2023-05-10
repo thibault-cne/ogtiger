@@ -3,10 +3,10 @@ package options
 import "fmt"
 
 type Options struct {
-	AST  string
+	Ast  string
 	File string
 	Slt string
-	Ast string
+	Asm string
 
 	Steps int
 }
@@ -24,7 +24,7 @@ func Parse(osArgs []string) (*Options, error) {
 	for _, flag := range flags {
 		switch flag.Flag {
 		case &AST:
-			options.AST = flag.Value
+			options.Ast = flag.Value
 			options.Steps++
 		case &File:
 			options.File = flag.Value
@@ -33,7 +33,7 @@ func Parse(osArgs []string) (*Options, error) {
 			options.Slt = flag.Value
 			options.Steps++
 		case &ASM:
-			options.Ast = flag.Value
+			options.Asm = flag.Value
 			options.Steps++
 		}
 	}

@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -47,4 +48,12 @@ func (l *AstCreatorListener) IntegerExit(ctx parser.EntierContext) {
 	it.Valeur = ctx.GetText()
 
 	l.PushAst(it)
+}
+
+func (e *Integer) EnterAsm(writer *asm.AssemblyWriter) {
+	defer e.ExitAsm(writer)
+}
+
+func (e *Integer) ExitAsm(writer *asm.AssemblyWriter) {
+	writer.Mov("r8", e.Valeur, asm.NI)
 }

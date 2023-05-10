@@ -1,4 +1,4 @@
-package assembly
+package asm
 
 import (
 	"bytes"
@@ -37,6 +37,18 @@ type AssemblyWriter struct {
 type RegionBuffer struct {
 	Region int
 	Buffer bytes.Buffer
+}
+
+func NewAssemblyWriter() *AssemblyWriter {
+	return &AssemblyWriter{
+		BufferIndex: 0,
+		Buffers: []*RegionBuffer{
+			{
+				Region: 0,
+				Buffer: bytes.Buffer{},
+			},
+		},
+	}
 }
 
 func (w *AssemblyWriter) NewRegion(region int)  {
@@ -265,4 +277,39 @@ func (w *AssemblyWriter) Fill(addr string, value string) {
 
 func (w *AssemblyWriter) End() {
 	w.Raw("\tEND\n")
+}
+
+func (w *AssemblyWriter) Comment(comment string, tabs int) {
+	instr := ""
+
+	for i := 0; i < tabs; i++ {
+		instr += "\t"
+	}
+
+	instr = fmt.Sprintf("%s/* %s */\n", instr, comment)
+
+	w.Raw(instr)
+}
+
+func (w *AssemblyWriter) Print() {
+	instr := `
+	_print:
+		STMFD R13!, {BP, LR}
+		MOV BP, SP
+		STMFD R13!, {R0, R1}
+
+		LDR R0, [BP, #16]
+		LDR R1, [BP, #12]
+
+		BL printf
+
+		MOV R0, #0
+
+		BL fflush
+
+		LDMFD R13!, {R0, R1}
+		LDMFD R13!, {PC, BP}
+	`
+
+	w.Raw(instr)
 }

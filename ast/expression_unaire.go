@@ -2,6 +2,7 @@ package ast
 
 import (
 	"fmt"
+	"ogtiger/asm"
 	"ogtiger/logger"
 	"ogtiger/parser"
 	"ogtiger/slt"
@@ -42,5 +43,13 @@ func (l *AstCreatorListener) ExpressionUnaireEnter(ctx parser.IExpressionUnaireC
 }
 
 func (l *AstCreatorListener) ExpressionUnaireExit(ctx parser.IExpressionUnaireContext) {
+	// Nothing to do
+}
+
+func (e *ExpressionUnaire) EnterAsm(writer *asm.AssemblyWriter) {
+	defer e.ExitAsm(writer)
+}
+
+func (e *ExpressionUnaire) ExitAsm(writer *asm.AssemblyWriter) {
 	// Nothing to do
 }

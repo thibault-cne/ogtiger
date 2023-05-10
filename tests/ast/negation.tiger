@@ -1,5 +1,5 @@
 let
     var x := -1
 in
-    x
+    print(x)
 end
