@@ -105,6 +105,8 @@ func (t *TigerType) SizeInStack() int {
 		return 0
 	case Function:
 		return 0
+	case Any:
+		return 4
 	}
 	return 0
 }
