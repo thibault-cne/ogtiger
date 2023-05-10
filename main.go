@@ -79,7 +79,7 @@ func parse(input string, options *options.Options) {
 	}
 	if options.Asm != "" {
 		writer := asm.NewAssemblyWriter()
-		listener.AstStack[0].EnterAsm(writer)
+		listener.AstStack[0].EnterAsm(writer, listener.Slt)
 		writer.WriteToFile(options.Ast)
 	}
 }
