@@ -235,6 +235,12 @@ func (w *AssemblyWriter) Ldr(dst string, addr string, flag Flag, offset int) {
 	w.Raw(instr)
 }
 
+func (w *AssemblyWriter) Ldstr(dst string, addr string, flag Flag) {
+	instr := fmt.Sprintf("\tLDR%s %s, =%s\n", flag, dst, addr)
+
+	w.Raw(instr)
+}
+
 func (w *AssemblyWriter) Str(dst string, addr string, flag Flag, offset int) {
 	instr := fmt.Sprintf("\tSTR%s %s, [%s, #%d]\n", flag, dst, addr, offset)
 
@@ -253,7 +259,7 @@ func (w *AssemblyWriter) Ldmfd(src string, regs []string) {
 	}
 
 
-	instr := fmt.Sprintf("\tLDMFD %s, !{%s}\n", src, regsStr)
+	instr := fmt.Sprintf("\tLDMFD %s!, {%s}\n", src, regsStr)
 
 	w.Raw(instr)
 }
@@ -270,7 +276,7 @@ func (w *AssemblyWriter) Stmfd(dst string, regs []string) {
 	}
 
 
-	instr := fmt.Sprintf("\tSTMFD %s, !{%s}\n", dst, regsStr)
+	instr := fmt.Sprintf("\tSTMFD %s!, {%s}\n", dst, regsStr)
 
 	w.Raw(instr)
 }
@@ -312,29 +318,29 @@ func (w *AssemblyWriter) Comment(comment string, tabs int) {
 func (w *AssemblyWriter) Print() {
 	instr := `
 _print:
-	STMFD R13!, {BP, LR}
-	MOV BP, SP
-	STMFD R13!, {R0, R1}
+	STMFD r13!, {r11, r14}
+	MOV r11, r13
+	STMFD r13!, {r0, r1}
 
-	LDR R0, [BP, #16]
-	LDR R1, [BP, #12]
+	LDR r0, [r11, #12]
+	LDR r1, [r11, #8]
 
 	BL printf
 
-	MOV R0, #0
+	MOV r0, #0
 
 	BL fflush
 
-	LDMFD R13!, {R0, R1}
-	LDMFD R13!, {PC, BP}
+	LDMFD r13!, {r0, r1}
+	LDMFD r13!, {r15, r11}
 	`
 
 	w.Raw(instr)
 }
 
 func (w *AssemblyWriter) Exit(status int) {
-	instr := fmt.Sprintf("\tMOV R0, #%d\n", status)
-	instr = fmt.Sprintf("_exit:\n%s\tMOV R7, #1\n\tSWI 0\n", instr)
+	instr := fmt.Sprintf("\tMOV r0, #%d\n", status)
+	instr = fmt.Sprintf("_exit:\n%s\tMOV r7, #1\n\tSWI 0\n", instr)
 
 	w.Raw(instr)
 }

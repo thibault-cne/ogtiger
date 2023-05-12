@@ -55,5 +55,5 @@ func (e *Integer) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 }
 
 func (e *Integer) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
-	writer.Mov("r8", e.Valeur, asm.NI)
+	writer.Mov("r8", fmt.Sprintf("#%s", e.Valeur), asm.NI)
 }

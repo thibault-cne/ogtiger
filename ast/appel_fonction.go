@@ -104,8 +104,8 @@ func (e *AppelFonction) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTabl
 
 	if fnId == "print" {
 		writer.Comment("Load the format string parameter for the print function", 1)
-		writer.Ldr("R0", "format_str", asm.NI, 0)
-		writer.Stmfd("SP", []string{"R0"})
+		writer.Ldstr("r0", "format_debug_int", asm.NI)
+		writer.Stmfd(string(asm.StackPointer), []string{"r0"})
 		writer.SkipLine()
 	}
 
@@ -117,7 +117,7 @@ func (e *AppelFonction) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTabl
 			writer.SkipLine()
 		}
 		writer.Comment(fmt.Sprintf("Arg %s of function %s", e.Type.Parameters[i].Name, fnId), 1)
-		writer.Stmfd("SP", []string{"R8"})
+		writer.Stmfd(string(asm.StackPointer), []string{"r8"})
 	}
 
 	writer.SkipLine()
@@ -126,4 +126,11 @@ func (e *AppelFonction) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTabl
 
 func (e *AppelFonction) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	writer.SkipLine()
+
+	writer.Comment("Remove args", 1)
+	if e.Identifiant.(*Identifiant).Id == "print" {
+		writer.Add(string(asm.StackPointer), string(asm.StackPointer), "#8", asm.NI)
+	} else {
+		writer.Add(string(asm.StackPointer), string(asm.StackPointer), fmt.Sprintf("#%d", len(e.Type.Parameters) * 4), asm.NI)
+	}
 }

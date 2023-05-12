@@ -126,7 +126,7 @@ func (s *SymbolTable) GetSymbol(name string) (*Symbol, error) {
 	return nil, fmt.Errorf("Symbol %s not found", name)
 }
 
-func (s *SymbolTable) GetSymbolInScoope(name string) (*Symbol, error) {
+func (s *SymbolTable) GetSymbolInScope(name string) (*Symbol, error) {
 	if val, ok := s.Table[name]; ok {
 		return val, nil
 	}
@@ -304,4 +304,14 @@ func (slt *SymbolTable) MaxScope() int {
 	}
 
 	return max
+}
+
+func (slt *SymbolTable) GetVarScopeDiff(s string) int {
+	if _, err := slt.GetSymbolInScope(s); err == nil {
+		return 0
+	} else if slt.Parent == nil {
+		return -1
+	} else {
+		return slt.Parent.GetVarScopeDiff(s) + 1
+	}
 }

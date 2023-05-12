@@ -18,6 +18,7 @@ type Definition struct {
 	Slt          *slt.SymbolTable
 	Ctx          parser.IDefinitionContext
 	Type         *ttype.TigerType
+	DeclarationCount int
 }
 
 func (e *Definition) VisitSemControl(slt *slt.SymbolTable, L *logger.StepLogger) antlr.ParserRuleContext {
@@ -62,6 +63,7 @@ func (l *AstCreatorListener) DefinitionEnter(ctx parser.IDefinitionContext) {
 func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 	expr := &Definition{
 		Ctx: ctx,
+		DeclarationCount: 0,
 	}
 
 	for range ctx.AllExpression() {
@@ -74,6 +76,13 @@ func (l *AstCreatorListener) DefinitionExit(ctx parser.IDefinitionContext) {
 	for range ctx.AllDeclaration() {
 		// Prepend the declarations to the list
 		expr.Declarations = append([]Ast{ l.PopAst() }, expr.Declarations...)
+
+		switch expr.Declarations[0].(type) {
+		case *DeclarationFontion:
+			break
+		default:
+			expr.DeclarationCount += 1
+		}
 	}
 
 	// Pop the TDS
@@ -90,13 +99,13 @@ func (e *Definition) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) 
 
 	label := fmt.Sprintf("blk_%d_%d", e.Slt.Region, e.Slt.Scope)
 	writer.Label(label)
+	registers := []string{string(asm.BasePointer), string(asm.LinkRegister), string(asm.R0)}
 
 	writer.Comment("Display edit on entering a block", 1)
-	registers := []string{string(asm.BasePointer), "R0"}
-	writer.Ldr("R0", "R10", asm.NI, - (e.Slt.Scope * 4))
+	writer.Ldr("r0", "r10", asm.NI, - (e.Slt.Scope * 4))
 	writer.Stmfd(string(asm.StackPointer), registers)
 	writer.Mov(string(asm.BasePointer), string(asm.StackPointer), asm.NI)
-	writer.Str(string(asm.BasePointer), "R10", asm.NI, - (e.Slt.Scope * 4))
+	writer.Str(string(asm.BasePointer), "r10", asm.NI, - (e.Slt.Scope * 4))
 	writer.SkipLine()
 
 	for _, a := range e.Declarations {
@@ -109,10 +118,17 @@ func (e *Definition) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) 
 }
 
 func (e *Definition) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
+	writer.SkipLine()
+	writer.Comment("Remove declaration from stack", 1)
+	writer.Add(string(asm.StackPointer), string(asm.StackPointer), fmt.Sprintf("#%d", e.DeclarationCount * 4), asm.NI)
+	
+	writer.SkipLine()
 	writer.Comment("Display edit on exiting a block", 1)
-	registers := []string{string(asm.BasePointer), "R0"}
+	writer.Ldmfd(string(asm.StackPointer), []string{string(asm.R0)})
+	writer.Str("r0", "r10", asm.NI, - (e.Slt.Scope * 4))
+
+	registers := []string{string(asm.ProgramCounter), string(asm.BasePointer)}
 	writer.Ldmfd(string(asm.StackPointer), registers)
-	writer.Str("R0", "R10", asm.NI, - (e.Slt.Scope * 4))
 
 	writer.ExitRegion()
 }

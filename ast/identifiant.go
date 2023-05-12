@@ -59,15 +59,16 @@ func (e *Identifiant) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable)
 	}
 
 	s, err := slt.GetSymbol(e.Id)
+	varScopeDiff := slt.GetVarScopeDiff(e.Id)
 
 	if err != nil {
 		panic(err)
 	}
 
 	writer.Comment(fmt.Sprintf("Use the static chain to get the value of %s", e.Id), 1)
-	writer.Ldr("R0", "R10", asm.NI, -((slt.Scope - s.Offset) * 4))
-	writer.Add("R0", "R0", fmt.Sprintf("#%d", e.Type.SizeInStack()), asm.NI)
-	writer.Ldr("R8", "R0", asm.NI, 0)
+	writer.Ldr("r0", "r10", asm.NI, -((slt.Scope - varScopeDiff) * 4))
+	writer.Add("r0", "r0", fmt.Sprintf("#%d", s.Offset), asm.NI)
+	writer.Ldr("r8", "r0", asm.NI, 0)
 }
 
 func (e *Identifiant) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {

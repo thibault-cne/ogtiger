@@ -60,15 +60,15 @@ func (e *Program) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// TODO: Add the lib functions
 	writer.Label("main")
 	writer.Comment("Display allocation", 1)
-	writer.Mov("R0", fmt.Sprintf("#%d", slt.MaxScope() * 4), asm.NI)
+	writer.Mov("r0", fmt.Sprintf("#%d", slt.MaxScope() * 4), asm.NI)
 	writer.Bl("malloc", asm.NI)
-	writer.Mov("R10", "R0", asm.NI)
+	writer.Mov("r10", "r0", asm.NI)
 
 	writer.SkipLine()
 	switch e.Expr.(type) {
 	case *Definition:
 		label := fmt.Sprintf("blk_%d_%d", e.Expr.(*Definition).Slt.Region, e.Expr.(*Definition).Slt.Scope)
-		writer.B(label, asm.NI)
+		writer.Bl(label, asm.NI)
 	}
 
 	e.Expr.EnterAsm(writer, slt)
@@ -76,7 +76,6 @@ func (e *Program) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 
 func (e *Program) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	writer.B("_exit", asm.NI)
-	writer.End()
 
 	writer.NewRegion()
 	writer.Print()

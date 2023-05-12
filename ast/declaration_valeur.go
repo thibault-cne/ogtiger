@@ -87,7 +87,7 @@ func (l *AstCreatorListener) DeclarationValeurExit(ctx parser.IDeclarationValeur
 
 	declarationValeur.Id = l.PopAst()
 
-	if _, err := l.Slt.GetSymbolInScoope(declarationValeur.Id.(*Identifiant).Id); err == nil {
+	if _, err := l.Slt.GetSymbolInScope(declarationValeur.Id.(*Identifiant).Id); err == nil {
 		l.Logger.NewSemanticError(logger.ErrorIdIsAlreadyDefinedInScope, ctx, declarationValeur.Id.(*Identifiant).Id)
 	}
 

@@ -65,6 +65,6 @@ func (e *OperationNegation) EnterAsm(writer *asm.AssemblyWriter, slt *slt.Symbol
 }
 
 func (e *OperationNegation) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
-	writer.Mov("r0", "0", asm.NI)
+	writer.Mov("r0", "#0", asm.NI)
 	writer.Sub("r8", "r0", "r8", asm.NI)
 }
