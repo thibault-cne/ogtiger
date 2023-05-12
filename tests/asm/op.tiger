@@ -7,5 +7,6 @@ in
     print(x + y);
     print(z - y);
     print(x * y);
-    print(z_2 / y)
+    print(z_2 / y);
+    print("toto")
 end

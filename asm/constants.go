@@ -38,10 +38,14 @@ func NewStrConstant(strValue string) *Constants {
 func (c *Constants) ToASM() string {
 	switch c.Type {
 	case 0:
-		return fmt.Sprintf("string_%s:\t\t\t.word\t\t%d", c.Id, c.IntValue)
+		return fmt.Sprintf("\tstring_%s:\t\t\t.word\t\t%d", c.Id, c.IntValue)
 	case 1:
-		return fmt.Sprintf("string_%s:\t\t\t.ascii\t\t\"%s\\0\"", c.Id, c.StrValue)
+		return fmt.Sprintf("\tstring_%s:\t\t\t.ascii\t\t\"%s\\0\"", c.Id, c.StrValue)
 	}
 
 	return ""
+}
+
+func (c *Constants) GetId() string {
+	return fmt.Sprintf("string_%s", c.Id)
 }

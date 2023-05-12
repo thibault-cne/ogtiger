@@ -104,6 +104,7 @@ func (l *AstCreatorListener) DeclarationValeurExit(ctx parser.IDeclarationValeur
 func (e *DeclarationValeur) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	defer e.ExitAsm(writer, slt)
 
+	writer.SkipLine()
 	writer.Comment(fmt.Sprintf("Declarations de %s", e.Id.(*Identifiant).Id), 1)
 	e.Expr.EnterAsm(writer, slt)
 }
@@ -111,7 +112,4 @@ func (e *DeclarationValeur) EnterAsm(writer *asm.AssemblyWriter, slt *slt.Symbol
 func (e *DeclarationValeur) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	// TODO: handle arrays and struct
 	writer.Stmfd(string(asm.StackPointer), []string{string(asm.R8)})
-	
-	
-	writer.SkipLine()
 }

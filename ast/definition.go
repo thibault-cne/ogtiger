@@ -106,7 +106,6 @@ func (e *Definition) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) 
 	writer.Stmfd(string(asm.StackPointer), registers)
 	writer.Mov(string(asm.BasePointer), string(asm.StackPointer), asm.NI)
 	writer.Str(string(asm.BasePointer), "r10", asm.NI, - (e.Slt.Scope * 4))
-	writer.SkipLine()
 
 	for _, a := range e.Declarations {
 		a.EnterAsm(writer, e.Slt)

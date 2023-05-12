@@ -45,13 +45,30 @@ func (l *AstCreatorListener) ChaineChrExit(ctx parser.ChaineChrContext) {
 		Type: ttype.NewTigerType(ttype.String),
 	}
 
-	chainChr.Valeur = ctx.GetChild(0).(*antlr.TerminalNodeImpl).GetText()
+	str := ctx.GetChild(0).(*antlr.TerminalNodeImpl).GetText()
+
+	// Remove surrounding quotes if present
+	if str[0] == '"' {
+		str = str[1:]
+	}
+	if str[len(str) - 1] == '"' {
+		str = str[:len(str) - 1]
+	}
+
+	chainChr.Valeur = str
 
 	l.PushAst(chainChr)
 }
 
 func (e *ChaineChr) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	defer e.ExitAsm(writer, slt)
+
+	c := asm.NewStrConstant(e.Valeur)
+
+	writer.SkipLine()
+	writer.Comment("Load string", 1)
+	writer.AddData(c)
+	writer.Ldstr(string(asm.R8), c.GetId(), asm.NI)
 }
 
 func (e *ChaineChr) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
