@@ -1,2 +1,3 @@
 # OGTiger
-An ARM compiler for Tiger written in Go.
+
+An ARMv7 compiler for Tiger written in Go.
