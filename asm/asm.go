@@ -316,8 +316,7 @@ func (w *AssemblyWriter) Comment(comment string, tabs int) {
 }
 
 func (w *AssemblyWriter) Print() {
-	instr := `
-_print:
+	instr := `_print:
 	STMFD r13!, {r11, r14}
 	MOV r11, r13
 	STMFD r13!, {r0, r1}
