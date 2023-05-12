@@ -146,6 +146,18 @@ func (l *AstCreatorListener) OperationAdditionExit(ctx parser.IOperationAddition
 
 func (e *OperationAddition) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	defer e.ExitAsm(writer, slt)
+
+	writer.SkipLine()
+	writer.Comment("Addition", 1)
+	
+	e.Left.EnterAsm(writer, slt)
+
+	writer.Stmfd(string(asm.StackPointer), []string{string(asm.R8)})
+
+	e.Right.EnterAsm(writer, slt)
+
+	writer.Ldmfd(string(asm.StackPointer), []string{string(asm.R0)})
+	writer.Add(string(asm.R8), string(asm.R0), string(asm.R8), asm.NI)
 }
 
 func (e *OperationAddition) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
@@ -154,6 +166,18 @@ func (e *OperationAddition) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolT
 
 func (e *OperationSoustraction) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	defer e.ExitAsm(writer, slt)
+
+	writer.SkipLine()
+	writer.Comment("Substraction", 1)
+	
+	e.Left.EnterAsm(writer, slt)
+
+	writer.Stmfd(string(asm.StackPointer), []string{string(asm.R8)})
+
+	e.Right.EnterAsm(writer, slt)
+
+	writer.Ldmfd(string(asm.StackPointer), []string{string(asm.R0)})
+	writer.Sub(string(asm.R8), string(asm.R0), string(asm.R8), asm.NI)
 }
 
 func (e *OperationSoustraction) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {

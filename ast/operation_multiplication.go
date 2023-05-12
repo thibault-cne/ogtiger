@@ -27,11 +27,9 @@ func (e *OperationMultiplication) VisitSemControl(slt *slt.SymbolTable, L *logge
 	typeString := ttype.NewTigerType(ttype.String)
 
 	if e.Left.ReturnType().Equals(e.Right.ReturnType()) && !e.Left.ReturnType().Equals(typeInt) {
-		L.NewSemanticError("Multiplication between non integer", e.Ctx)
-	}
-
-	if !((e.Left.ReturnType().Equals(typeString) && e.Right.ReturnType().Equals(typeInt)) || (e.Left.ReturnType().Equals(typeInt) && e.Right.ReturnType().Equals(typeString))) {
-		L.NewSemanticError("Multiplication between non integer and non string", e.Ctx)
+		if !((e.Left.ReturnType().Equals(typeString) && e.Right.ReturnType().Equals(typeInt)) || (e.Left.ReturnType().Equals(typeInt) && e.Right.ReturnType().Equals(typeString))) {
+			L.NewSemanticError("Multiplication between non integer and non string", e.Ctx)
+		}
 	}
 
 	return e.Ctx
@@ -143,6 +141,18 @@ func (l *AstCreatorListener) OperationMultiplicationExit(ctx parser.IOperationMu
 
 func (e *OperationMultiplication) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	defer e.ExitAsm(writer, slt)
+
+	writer.SkipLine()
+	writer.Comment("Multiplication", 1)
+	
+	e.Left.EnterAsm(writer, slt)
+
+	writer.Stmfd(string(asm.StackPointer), []string{string(asm.R8)})
+
+	e.Right.EnterAsm(writer, slt)
+
+	writer.Ldmfd(string(asm.StackPointer), []string{string(asm.R0)})
+	writer.Mul(string(asm.R8), string(asm.R0), string(asm.R8), asm.NI)
 }
 
 func (e *OperationMultiplication) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
@@ -151,6 +161,18 @@ func (e *OperationMultiplication) ExitAsm(writer *asm.AssemblyWriter, slt *slt.S
 
 func (e *OperationDivision) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {
 	defer e.ExitAsm(writer, slt)
+
+	writer.SkipLine()
+	writer.Comment("Divide", 1)
+	
+	e.Left.EnterAsm(writer, slt)
+
+	writer.Stmfd(string(asm.StackPointer), []string{string(asm.R8)})
+
+	e.Right.EnterAsm(writer, slt)
+
+	writer.Ldmfd(string(asm.StackPointer), []string{string(asm.R0)})
+	writer.Sdiv(string(asm.R8), string(asm.R0), string(asm.R8), asm.NI)
 }
 
 func (e *OperationDivision) ExitAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTable) {

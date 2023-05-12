@@ -1,0 +1,11 @@
+let
+    var x := -1
+    var y := 5
+    var z := 7
+    var z_2 := 5
+in
+    print(x + y);
+    print(z - y);
+    print(x * y);
+    print(z_2 / y)
+end

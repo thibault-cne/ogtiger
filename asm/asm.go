@@ -133,6 +133,24 @@ func (w *AssemblyWriter) Sbc(dst string, val1 string, val2 string, flag Flag) {
 	w.Raw(instr)
 }
 
+func (w *AssemblyWriter) Mul(dst string, val1 string, val2 string, flag Flag) {
+	instr := fmt.Sprintf("\tMUL%s %s, %s, %s\n", flag, dst, val1, val2)
+
+	w.Raw(instr)
+}
+
+func (w *AssemblyWriter) Sdiv(dst string, val1 string, val2 string, flag Flag) {
+	instr := fmt.Sprintf("\tSDIV%s %s, %s, %s\n", flag, dst, val1, val2)
+
+	w.Raw(instr)
+}
+
+func (w *AssemblyWriter) Udiv(dst string, val1 string, val2 string, flag Flag) {
+	instr := fmt.Sprintf("\tUDIV%s %s, %s, %s\n", flag, dst, val1, val2)
+
+	w.Raw(instr)
+}
+
 func (w *AssemblyWriter) Rsb(dst string, val1 string, val2 string, flag Flag) {
 	instr := fmt.Sprintf("\tRSB%s %s, %s, %s\n", flag, dst, val1, val2)
 

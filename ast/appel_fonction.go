@@ -100,13 +100,25 @@ func (e *AppelFonction) EnterAsm(writer *asm.AssemblyWriter, slt *slt.SymbolTabl
 
 	fnId := e.Identifiant.(*Identifiant).Id
 
+	writer.SkipLine()
 	writer.Comment(fmt.Sprintf("Call the %s fn", fnId), 1)
 
 	if fnId == "print" {
+		var formatStr string
+
+		switch e.Args[0].ReturnType().ID {
+		case ttype.String:
+			formatStr = "format_str"
+		case ttype.Int:
+			formatStr = "format_int"
+		default:
+			// TODO: log that instead
+			panic(fmt.Errorf("Error"))
+		}
+
 		writer.Comment("Load the format string parameter for the print function", 1)
-		writer.Ldstr("r0", "format_debug_int", asm.NI)
+		writer.Ldstr("r0", formatStr, asm.NI)
 		writer.Stmfd(string(asm.StackPointer), []string{"r0"})
-		writer.SkipLine()
 	}
 
 	for i, a := range e.Args {
